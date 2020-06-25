@@ -6,7 +6,7 @@
 
 using namespace std;
 template<typename T>
-T randFunction(T& a, T& b)
+T randFunction(T a, T b)
 {
     srand(time(0));
     T c = rand() % (b - a + 1) + a;

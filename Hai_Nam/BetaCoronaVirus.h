@@ -3,18 +3,6 @@
 #include "commonFunction.h"
 class BetaCoronaVirus :public CoronaVirus
 {
-public:
-
-	BetaCoronaVirus();
-	~BetaCoronaVirus();
-	void doBorn();
-	std::vector< CoronaVirus*> doClone();
-	void doDie();
-	void initResistance();
-	void setDNA(string setDNA);
-	void setVirusResistance(int setVirusResistance);
-	
-
 private:
 	enum class Protein
 	{
@@ -24,6 +12,15 @@ private:
 	};
 	Protein m_protein;
 public:
-	void setProtein(Protein setProtein);
+
+	BetaCoronaVirus();
+	~BetaCoronaVirus();
+
+	void doBorn();
+	std::vector< CoronaVirus*> doClone();
+	void doDie();
+	void initResistance();
+
+	void setProtein(Protein i_protein);
 };
 

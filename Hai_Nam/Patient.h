@@ -22,16 +22,15 @@ public:
 	void doStart();
 	void doDide();
 	void takeMedicine(int i_medicineResistance);
-	void setResistance(int p_resistance);
+	void setResistance(int i_resistance);
+	int getResistace();
+	int getVirusNumbet();
+	int getTotalVirus();
 	//State getState();
-	
-
-	
-
 private:
 	
 	int m_patientResistance;
-	vector<CoronaVirus*> m_listVirusInPatient; // list virus trong nguoi benh nhan
+	list<CoronaVirus*> m_listVirusInPatient; // list virus trong nguoi benh nhan
 	State m_state;
 public:
 	void setState(State setState);

@@ -15,6 +15,7 @@ int main()
 	Patient p;
 	p.setResistance(1000);
 	const int k_medicineResistance = 1;
+	int count = 1;
 	while (p.getSate() == Patient::State::ALIVE)
 	{
 		p.takeMedicine(k_medicineResistance);

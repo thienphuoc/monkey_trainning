@@ -1,4 +1,5 @@
 #include "Patient.h"
+#include <list>
 
 Patient::Patient()
 {
@@ -20,10 +21,8 @@ void Patient::initResistance()
 void Patient::doStart()
 {
     m_state = State::ALIVE;
-    int a = 10;
-    int b = 20;
     const int k_virusNum = 10;
-    for (size_t i = 0; i < k_virusNum; i++)
+    for (size_t i = 0; i < k_virusNum; ++i)
     {
         CoronaVirus* virus = new AlphaCoronaVirus();
         virus->setVirusResistance(100);
@@ -33,38 +32,72 @@ void Patient::doStart()
 
 void Patient::doDide()
 {
-    m_patientResistance = 0;
-    setState(State::DIE);
+    m_listVirusInPatient.clear();
+    m_state = State::DIE;
     
 }
 
 void Patient::takeMedicine(int i_medicineResistance)
 {
-    CoronaVirus* virus = new AlphaCoronaVirus();
-    /*for (auto i = m_listVirusInPatient.begin(); i != m_listVirusInPatient.end(); ++i)
+    list<CoronaVirus*>::iterator it;
+
+    int sumOfvirusResistance = 0;
+
+    for (it = m_listVirusInPatient.begin(); it != m_listVirusInPatient.end(); ++it)
     {
-        int result = virus->reduceResistance(i_medicineResistance);
-        if (result <= 0)
+        (*it)->reduceResistance(i_medicineResistance); // set value i_medicineResistance rand(1-60)
+        if ((*it)->getVirusResistance() <= 0)
         {
-            
+            it = m_listVirusInPatient.erase(it); // delete it 
+        }
+        else
+        {
+            // tranfers all element of  (*it)->doClone at begin of m_listVirusinPatient
+           // m_listVirusInPatient.splice()
+            (*it)->doClone();
+        }
+        if (it == m_listVirusInPatient.end())
+        {
+            break;
         }
         
-    }*/
-    auto it = m_listVirusInPatient.begin();
-    while (it != m_listVirusInPatient.end())
+    }
+    for (it = m_listVirusInPatient.begin(); it != m_listVirusInPatient.end(); it++)
     {
-        auto curr = it++;
-        int result = virus->reduceResistance(i_medicineResistance);
-        if (result <= 0)
-        {
-            m_listVirusInPatient.erase(curr);
-        }
+        sumOfvirusResistance += (*it)->getVirusResistance();
+    }
+    cout << "Total Virus Resistance : " << sumOfvirusResistance << endl;
+    cout << "m_listVirusInpatient.size : " << m_listVirusInPatient.size() << endl;
+    if (sumOfvirusResistance > m_patientResistance)
+    {
+        doDide();
     }
 }
 
-void Patient::setResistance(int p_resistance)
+void Patient::setResistance(int i_resistance)
 {
-    m_patientResistance = p_resistance;
+    m_patientResistance = i_resistance;
+}
+
+int Patient::getResistace()
+{
+    return m_patientResistance;
+}
+
+int Patient::getVirusNumbet()
+{
+    return (int)m_listVirusInPatient.size();
+}
+
+int Patient::getTotalVirus()
+{
+    int sum = 0;
+    list<CoronaVirus*>::iterator it;
+    for (it = m_listVirusInPatient.begin(); it != m_listVirusInPatient.end(); ++it)
+    {
+        sum += (*it)->getVirusResistance();
+    }
+    return sum;
 }
 
 void Patient::setState(State setState)
@@ -76,7 +109,7 @@ void Patient::setState(State setState)
 
 Patient ::State Patient::getSate()
 {
-    return State();
+    return m_state;;
 }
 
 

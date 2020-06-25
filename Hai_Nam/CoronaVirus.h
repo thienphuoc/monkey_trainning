@@ -12,10 +12,12 @@ public:
     CoronaVirus();
     CoronaVirus(CoronaVirus& obj);
     ~CoronaVirus();
+
     void loadADNInformation();
     int reduceResistance(int i_medicineResistance);
-    void setDNA(string setDNA);
-    void setVirusResistance(int setVirusResistance);
+    void setDNA(string i_DNA);
+    void setVirusResistance(int i_virusResistance);
+
     virtual void doBorn() = 0;
     virtual std::vector< CoronaVirus*> doClone() = 0;
     virtual void doDie() = 0;

@@ -10,8 +10,7 @@
 
 CoronaVirus::CoronaVirus()
 {
-    m_dna = "";
-    m_virusResistance = 0;
+   cout<< "CoronaVirus constructor() \n";
     //log("CoronaVirus constructor() \n");
 }
 
@@ -33,10 +32,7 @@ void CoronaVirus::loadADNInformation()
     newFile.open("ATGX.txt", ios::in);
     if (newFile.is_open())
     {
-        while (getline(newFile, m_dna))
-        {
-            cout << m_dna << endl;
-        }
+        getline(newFile, m_dna);
     }
     newFile.close();
    // log("CoronaVirus loadADNinformation() \n");
@@ -44,23 +40,23 @@ void CoronaVirus::loadADNInformation()
 
 int CoronaVirus::reduceResistance(int i_medicineResistance)
 {
-    int a = 1;
+   /* int a = 1;
     int b = 60;
-    i_medicineResistance = randFunction(a, b);
+    i_medicineResistance = randFunction(a, b);*/
     m_virusResistance -= i_medicineResistance;
     return m_virusResistance; 
     //log("CoronaVirus reduceResistance() \n");
 }
 
-void CoronaVirus::setDNA(string setDNA)
+void CoronaVirus::setDNA(string i_DNA)
 {
-    m_dna = setDNA;
+    m_dna = i_DNA;
   //  log("CoronaVirus setDNA() \n");
 }
 
-void CoronaVirus::setVirusResistance(int setVirusResistance)
+void CoronaVirus::setVirusResistance(int i_virusResistance)
 {
-    m_virusResistance = setVirusResistance;
+   this-> m_virusResistance = i_virusResistance;
    // log("CoronaVirus setVirusResistance() \n");
 }
 
