@@ -13,11 +13,11 @@
 
 int main()
 {
-	//				TEST 1
+	//				TEST CASE 1
 		//CoronaVirus* f1 = new AlphaCoronaVirus();
 		//delete f1;
 	
-	//				TEST 2
+	//				TEST CASE 2
 		//CoronaVirus* f2 = new BetaCoronaVirus();
 		//delete f2;
 	
@@ -26,23 +26,27 @@ int main()
 	const int k_medicineResistance = 1;
 
 	int counter = 1;
-
 	while (p.getState() == PATIENT_STATE::ALIVE)
 	{
-		std::cout << "\tTakeMedicine() counter: " << counter <<"\n\t\ti_medicineResistance = " << k_medicineResistance << "\n\t\tPatient Resistance = " << p.getResistance() << std::endl;
+		std::cout << "\tTakeMedicine() counter: " << counter << "\n\t\ti_medicineResistance = " << k_medicineResistance << "\n\t\tPatient Resistance = " << p.getResistance() << std::endl;
 		p.takeMedicine(k_medicineResistance);
 		counter++;
-		
-		/*if (p.getVirusNumber() == 0)
+
+		/*			TEST CASE 7
+
+		if (p.getVirusNumber() == 0)
 			break;
-		*/	
+		else
+			p.getVirusList();
+		*/
 	}
 
+	
 	/*
-	if(p.getStat() == PATIENT_STATE::ALIVE)
+	if(p.getState() == PATIENT_STATE::ALIVE)
 		log("The patient has been cured!\n");
 	*/
-
+	
 
 	return 0;
 }

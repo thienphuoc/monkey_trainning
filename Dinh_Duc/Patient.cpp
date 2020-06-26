@@ -17,7 +17,7 @@
 
 	void Patient::doStart()
 	{
-		const int k_initVirusNum = 5;	//10;	//random(10, 20);
+		const int k_initVirusNum = 10;	//10;	//random(10, 20);
 
 		for (int i = 0; i < k_initVirusNum; i++)
 		{
@@ -35,11 +35,11 @@
 			*/
 
 
-			/*					TEST CASE 3, 5
+			//					TEST CASE 3, 5
 			CoronaVirus* virus = new AlphaCoronaVirus;
 			virus->setResistance(100);
 			m_virusList.push_back(virus);
-			*/
+			
 
 
 			/*					TEST CASE 4, 6
@@ -49,14 +49,14 @@
 			*/
 
 
-			//					TEST CASE 7
+			/*					TEST CASE 7
 			CoronaVirus* aVirus = new AlphaCoronaVirus;
 			aVirus->setResistance(150);
 			m_virusList.push_back(aVirus);
 			CoronaVirus* bVirus = new BetaCoronaVirus;
 			bVirus->setResistance(90);
 			m_virusList.push_back(bVirus);
-			
+			*/
 		}
 
 		m_state = PATIENT_STATE::ALIVE;
@@ -113,10 +113,7 @@
 
 	void Patient::takeMedicine(int i_medicine)
 	{
-		//loop through virus list
-		//if virus dies - remove from the list
-		//if virus doesn't die - clone
-		//if patient.resistance < sum(virus.resistance) - doDie
+		
 		std::list<CoronaVirus*>::iterator it;
 		int virusResistanceSum = 0;
 	
