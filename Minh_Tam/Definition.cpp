@@ -1,14 +1,14 @@
-#include iostream
-#include string
+#pragram once
+#include <iostream>
+#include <string>
 
 #include "Definition.h"
 
-using namespace std;
 
-int randFunction(T& begin, T& end)
+int randFunction(int begin, int end)
 {
-    srand(time(0));
-    T result = rand() % (end - begin + 1) + begin;
+    
+    result = rand() % (end - begin + 1) + begin;
     return result;
 }
 

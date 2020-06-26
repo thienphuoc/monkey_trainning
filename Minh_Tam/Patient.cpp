@@ -31,6 +31,7 @@ void doStart()
 
 void takeMedicine() {
 	list<CoronaVirus*>::interator it;
+	int resistanceSum = 0;
 
 	for (it = m_virusList.begin(); it != m_virusList.end(); it++)
 	{
@@ -43,6 +44,15 @@ void takeMedicine() {
 		{
 			m_virusList.splice(m_virusList.begin(), (*it)->doClone());
 		}
+	}
+
+	for (it = m_virusList.begin(); it != m_virusList.end(); it++)
+	{
+		resistanceSum += it->getResistance();
+	}
+	if (resistanceSum > m_resistance)
+	{
+		doDie();
 	}
 }
 void doDie()

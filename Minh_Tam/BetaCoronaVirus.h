@@ -1,3 +1,4 @@
+#pragma once
 #include "CoronaVirus.h"
 #include "Definition.h"
 using namespace std;
@@ -17,4 +18,9 @@ public:
 	BetaCoronaVirus();
 	~BetaCoronaVirus();
 	BetaCoronaVirus(const BetaCoronaVirus& obj);
+
+	void doBorn();
+	std::list< CoronaVirus*> doClone();
+	void doDie();
+	void initResistance();
 };

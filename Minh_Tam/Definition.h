@@ -1,9 +1,7 @@
+#pragma once
+#include "Definition.h"
 #include <iostream>
-#include <string>
-#include <cstdlib>
-#include <ctime>
 
-using namespace std;
 
-	int randFunction(T& begin, T& end);
-	void log(string temp);
+void log(std::string temp);
+int randFunction(int begin, int end);

@@ -1,7 +1,8 @@
-
+#pragma once
 #include <iostream>
+#include <list>
 #include <string>
-#include <fstream>
+#include "CoronaVirus.h"
 #include "Definition.h"
 
 using namespace std;
@@ -9,23 +10,25 @@ using namespace std;
 class CoronaVirus
 {
 private:
-	string m_dna;
-	int m_resistance;
+    string m_dna;
+    int m_resistance;
 
 public:
     CoronaVirus();
-    CoronaVirus(CoronaVirus& obj);
     ~CoronaVirus();
+    CoronaVirus(CoronaVirus& obj);
+
     void loadADNInformation();
     int reduceResistance(int i_medicineResistance);
-    void setDNA(string setDNA);
+    void setDNA(string DNA);
     void setVirusResistance(int VirusResistance);
     int getVirusResistance();
-    virtual void doBorn();
-    virtual list< CoronaVirus*> doClone();
-    virtual void doDie();
-    virtual void initResistance();
-    
+
+    virtual void doBorn() = 0;
+    virtual std::list< CoronaVirus*> doClone() = 0;
+    virtual void doDie() = 0;
+    virtual void initResistance() = 0;
+
 
 };
 

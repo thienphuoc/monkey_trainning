@@ -1,3 +1,4 @@
+#pragma once
 #include "AlphaCoronaVirus.h"
 
 using namespace std;

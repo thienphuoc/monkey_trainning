@@ -1,22 +1,27 @@
-
+#pragma once
+#include <iostream>
 #include "CoronaVirus.h"
 #include "Definition.h"
 
-using namespace std;
 
 class AlphaCoronaVirus : public CoronaVirus
 {
 private:
 	enum Color
 	{
-		BLUE = 0x0000ff,
-		RED = 0xff0000
+		BLUE,
+		RED
 	};
 
 	Color m_color;
 public: 
 	AlphaCoronaVirus();
 	~AlphaCoronaVirus();
-	AlphaCoronaVirus(const AlphacoronaVirus& obj);
+	AlphaCoronaVirus(const AlphaCoronaVirus& obj);
+
+	void doBorn();
+	std::list< CoronaVirus*> doClone();
+	void doDie();
+	void initResistance();
 };
 

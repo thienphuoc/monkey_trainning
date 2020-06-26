@@ -10,10 +10,10 @@ private:
 	list<CoronaVirus*> m_virusList;
 	enum STATE
 	{
-		0 = DIE,
-		1 = ALIVE
+		DIE,
+		ALIVE
 	};
-	State m_state;
+	STATE m_state;
 
 public:
 	Patient();
@@ -22,5 +22,5 @@ public:
 	void doStart();
 	void takeMedicine();
 	void doDie();
-	State getState();
+	STATE getState();
 };
