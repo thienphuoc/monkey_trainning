@@ -35,28 +35,28 @@
 			*/
 
 
-			//					TEST CASE 3
+			/*					TEST CASE 3, 5
 			CoronaVirus* virus = new AlphaCoronaVirus;
 			virus->setResistance(100);
 			m_virusList.push_back(virus);
+			*/
 
 
-
-			/*					TEST CASE 4
+			/*					TEST CASE 4, 6
 			CoronaVirus* virus = new BetaCoronaVirus;
 			virus->setResistance(100);
 			m_virusList.push_back(virus);
 			*/
 
 
-			/*					TEST CASE 7
+			//					TEST CASE 7
 			CoronaVirus* aVirus = new AlphaCoronaVirus;
 			aVirus->setResistance(150);
 			m_virusList.push_back(aVirus);
 			CoronaVirus* bVirus = new BetaCoronaVirus;
 			bVirus->setResistance(90);
 			m_virusList.push_back(bVirus);
-			*/
+			
 		}
 
 		m_state = PATIENT_STATE::ALIVE;
@@ -102,6 +102,15 @@
 
 	}
 
+	/*void Patient::getVirusList()
+	{
+		std::list<CoronaVirus*>::iterator it;
+		for (it = m_virusList.begin(); it != m_virusList.end(); it++)
+			std::cout << (*it)->getResistance() << "   ";
+		std::cout << std::endl;
+	}
+	*/
+
 	void Patient::takeMedicine(int i_medicine)
 	{
 		//loop through virus list
@@ -110,20 +119,22 @@
 		//if patient.resistance < sum(virus.resistance) - doDie
 		std::list<CoronaVirus*>::iterator it;
 		int virusResistanceSum = 0;
-		for (it = m_virusList.begin(); it != m_virusList.end(); it++)
+	
+		it = m_virusList.begin();
+		while (it != m_virusList.end())
 		{
-			//(*it)->reduceResistance(random(1, 60));
 			(*it)->reduceResistance(i_medicine);
-			if ((*it)->getResistance() <= 0)
-				it = m_virusList.erase(it);
-			else
+			if ((*it)->getResistance() > 0)
 			{
 				m_virusList.splice(m_virusList.begin(), (*it)->doClone());
+				it++;
 			}
-			if (it == m_virusList.end())
-				break;
+			else
+			{
+				it = m_virusList.erase(it);
+			}
+			
 		}
-
 
 		for (it = m_virusList.begin(); it != m_virusList.end(); it++)
 			virusResistanceSum += (*it)->getResistance();
@@ -132,7 +143,6 @@
 
 		if (virusResistanceSum > m_resistance)
 		{
-			//std::cout << "Total Virus Resistance = " << virusResistanceSum << "\nm_virusList.size()= " << m_virusList.size() << std::endl;
 			doDie();
 		}
 
