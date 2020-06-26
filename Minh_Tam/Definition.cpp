@@ -1,14 +1,15 @@
-#pragram once
+
 #include <iostream>
 #include <string>
 
 #include "Definition.h"
 
+using namespace std;
 
 int randFunction(int begin, int end)
 {
-    
-    result = rand() % (end - begin + 1) + begin;
+
+    int result = rand() % (end - begin + 1) + begin;
     return result;
 }
 

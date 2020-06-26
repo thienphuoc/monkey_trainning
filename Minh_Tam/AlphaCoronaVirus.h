@@ -14,7 +14,7 @@ private:
 	};
 
 	Color m_color;
-public: 
+public:
 	AlphaCoronaVirus();
 	~AlphaCoronaVirus();
 	AlphaCoronaVirus(const AlphaCoronaVirus& obj);

@@ -5,7 +5,7 @@ using namespace std;
 
 class BetaCoronaVirus :public CoronaVirus
 {
-private:
+protected:
 	enum class Protein
 	{
 		NS3,

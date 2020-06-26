@@ -13,7 +13,7 @@ CoronaVirus::CoronaVirus()
     log("CoronaVirus constructor()");
 }
 
-CoronaVirus::~CoronaVirus(){
+CoronaVirus::~CoronaVirus() {
     log("CoronaVirus destructor()");
 }
 CoronaVirus::CoronaVirus(CoronaVirus& obj)
@@ -39,24 +39,28 @@ void CoronaVirus::loadADNInformation()
 
 int CoronaVirus::reduceResistance(int i_medicineResistance)
 {
-    i_medicineResistance = randFunction(1, 60);
+    //i_medicineResistance = randFunction(1, 60);
     m_resistance -= i_medicineResistance;
 
     return m_resistance;
+    log("CoronaVirus reduceResistance");
 }
 
 void CoronaVirus::setDNA(string DNA)
 {
     m_dna = DNA;
+    log("CoronaVirus setDNA");
 }
 
 void CoronaVirus::setVirusResistance(int VirusResistance)
 {
     m_resistance = VirusResistance;
+    log("CoronaVirus setVirusResistance");
 }
 
 int CoronaVirus::getVirusResistance()
 {
     return m_resistance;
+    log("CoronaVirus getVirusResistance");
 
 }

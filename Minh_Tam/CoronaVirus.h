@@ -9,7 +9,7 @@ using namespace std;
 
 class CoronaVirus
 {
-private:
+protected:
     string m_dna;
     int m_resistance;
 
