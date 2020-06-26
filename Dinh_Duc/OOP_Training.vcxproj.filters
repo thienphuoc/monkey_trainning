@@ -21,9 +21,33 @@
     <ClCompile Include="Definition.cpp">
       <Filter>Resource Files</Filter>
     </ClCompile>
+    <ClCompile Include="CoronaVirus.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="AlphaCoronaVirus.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="BetaCoronaVirus.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Patient.cpp">
+      <Filter>Resource Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Definition.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="CoronaVirus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="AlphaCoronaVirus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="BetaCoronaVirus.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Patient.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

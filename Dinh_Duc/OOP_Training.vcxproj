@@ -141,11 +141,19 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="AlphaCoronaVirus.cpp" />
+    <ClCompile Include="BetaCoronaVirus.cpp" />
+    <ClCompile Include="CoronaVirus.cpp" />
     <ClCompile Include="Definition.cpp" />
+    <ClCompile Include="Patient.cpp" />
     <ClCompile Include="Source.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="AlphaCoronaVirus.h" />
+    <ClInclude Include="BetaCoronaVirus.h" />
+    <ClInclude Include="CoronaVirus.h" />
     <ClInclude Include="Definition.h" />
+    <ClInclude Include="Patient.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
