@@ -1,0 +1,11 @@
+1. Những tính chất của hướng đối tượng trong bài tập trên:
+- Tính đóng gói: Các dữ liệu và phương thức xử lý dữ liệu liên quan đến nhau được gộp chung trong 1 class, giúp dễ quản lý và nâng cấp nếu cần. Bên cạnh đó là tính che dấu thông tin, phải sử dụng các hàm get - set để truy cập tránh đọc dữ liệu sai cách.
+- Tính kế thừa: 2 lớp virus Alpha và Beta được kế thừa từ CoronaVirus để sử dụng lại các thuộc tính và phương thức giống nhau.
+- Tính đa hình: Các lớp vitrual tại lớp cha được override lại tại lớp con để các lớp con khi sử dụng có thể gọi chung một phương thức nhưng có thể thực hiện cách công việc khác nhau.
+
+2. Sự khác biệt giữa list và vector:
+- list : là dạng danh sách liên kết, các node được nối với nhau, ưu điểm là có thể thêm - xóa - sửa các node ở giữa một cách nhanh chóng, vùng nhớ được sử dụng tối ưu, không dư thừa; nhược điểm là truy xuất lâu hơn vector do phải duyệt tuần tự.
+- vector : mảng cấp phát động; ưu - nhược điểm ngược lại với list.
+
+3. Để tránh lỗi include nhiều lần khi sử dụng nhiều file header lồng nhau ta sử dụng "pragma once" để tránh lỗi.
+ 
