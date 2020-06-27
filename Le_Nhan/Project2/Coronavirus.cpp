@@ -6,8 +6,6 @@ using namespace std;
 
 Coronavirus::Coronavirus()
 {
-	getResistance();
-	loadADNInformation();
 	log("Coronavirus Contructor\n");
 	//loadADNInformation();
 }
@@ -47,11 +45,6 @@ int Coronavirus::reduceResistance(int i_medicineResistance)
 	m_resistance = m_resistance - i_medicineResistance;
 	log("Coronavirus reduceResistance\n");
 	return m_resistance;
-}
-
-void Coronavirus::setResistance(int m_newResistance)
-{
-	m_resistance = m_newResistance;
 }
 
 int Coronavirus::getResistance()

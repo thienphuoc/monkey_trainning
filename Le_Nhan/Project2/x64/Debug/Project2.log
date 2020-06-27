@@ -1,0 +1,2 @@
+﻿  Patient.cpp
+C:\Users\DELL\source\repos\Project2\Project2\Patient.cpp(52,29): error C2082: redefinition of formal parameter 'i_medicineResistance'

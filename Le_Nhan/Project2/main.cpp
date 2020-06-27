@@ -2,6 +2,10 @@
 
 int main()
 {
+	Coronavirus* f1 = new AlphaCoronavirus();
+	delete f1;
+	Coronavirus* f2 = new BetaCoronavirus();
+	delete f2;
 
 	Patient p1;
 	p1.setResistance(1000);
