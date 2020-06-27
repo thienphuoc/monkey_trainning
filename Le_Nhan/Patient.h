@@ -16,7 +16,7 @@ public:
 	Patient();
 	//destructor
 	~Patient();
-	int initResistance();
+	void initResistance();
 	void doStart();
 	void takeMedicine(int k_medicineResistance);//k_medicineResistance: gia tri cua thuoc(Benh nhan uong thuoc)
 	//giai phong danh sach virus

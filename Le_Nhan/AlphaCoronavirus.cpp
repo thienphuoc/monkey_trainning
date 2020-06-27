@@ -4,7 +4,7 @@ AlphaCoronavirus::AlphaCoronavirus()
 {
 	doBorn();
 	initResistance();
-	log("AlphaCoronavirus Contructor\n");
+	//log("AlphaCoronavirus Contructor\n");
 }
 AlphaCoronavirus::~AlphaCoronavirus()
 {
@@ -50,6 +50,6 @@ void AlphaCoronavirus::initResistance()
 		m_resistance = rand() % 11 + 10;
 	if (m_color == BLUE)
 		m_resistance = rand() % 6 + 10;
-	log("AlphaCoronavirus initResistance()\n");
+	//log("AlphaCoronavirus initResistance()\n");
 	//return m_resistance;
 }

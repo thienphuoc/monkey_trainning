@@ -23,7 +23,8 @@ public:
 	//load information of DNA
 	void loadADNInformation();
 	int reduceResistance(int i_medicineResistance);
-	int getResistance();
+	int getVirusResistance();
+	void setVirusResistance(int m_newResistance);
 	//aa
 	virtual void doBorn() = 0;
 	virtual list<Coronavirus*> doClone() = 0;

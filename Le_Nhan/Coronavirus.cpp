@@ -6,6 +6,9 @@ using namespace std;
 
 Coronavirus::Coronavirus()
 {
+	//getResistance();
+	//
+	loadADNInformation();
 	log("Coronavirus Contructor\n");
 	//loadADNInformation();
 }
@@ -37,6 +40,7 @@ void Coronavirus::loadADNInformation()
 			m_dna = readATGX;
 		}
 	}
+	readFileATGX.close();
 	log("Coronavirus loadADNInformation()\n");
 }
 
@@ -47,7 +51,12 @@ int Coronavirus::reduceResistance(int i_medicineResistance)
 	return m_resistance;
 }
 
-int Coronavirus::getResistance()
+void Coronavirus::setVirusResistance(int n_newResistance)
+{
+	m_resistance = n_newResistance;
+}
+
+int Coronavirus::getVirusResistance()
 {
 	return m_resistance;
 }
