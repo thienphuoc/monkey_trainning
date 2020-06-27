@@ -24,6 +24,7 @@ public:
 	void loadADNInformation();
 	int reduceResistance(int i_medicineResistance);
 	int getResistance();
+	void setResistance(int m_newResistance);
 	//aa
 	virtual void doBorn() = 0;
 	virtual list<Coronavirus*> doClone() = 0;
