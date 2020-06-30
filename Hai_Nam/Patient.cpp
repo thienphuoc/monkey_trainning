@@ -55,7 +55,7 @@ void Patient::takeMedicine(int i_medicineResistance)
             // tranfers all element of  (*it)->doClone at begin of m_listVirusinPatient
            // m_listVirusInPatient.splice()
             //(*it)->doClone();
-            m_virusList.splice(m_virusList.begin(), (*it)->doClone());
+            m_virusList.splice(m_virusList.begin(), (*it)->doClone()); // transfre elements from (*it)->doClone to begin of m_virusList
         }
         if (it == m_listVirusInPatient.end())
         {
