@@ -26,7 +26,7 @@ AlphaCoronaVirus::AlphaCoronaVirus(const AlphaCoronaVirus& obj)
 void AlphaCoronaVirus::doBorn()
 {
     loadADNInformation();
-    Color temp = randFunction(0, 1) ? Color::BLUE : Color::RED;
+    Color m_color = randFunction(0, 1) ? Color::BLUE : Color::RED;
     log("CoronaVirus doBorn()");
 
 }
@@ -51,6 +51,7 @@ void AlphaCoronaVirus::initResistance()
     switch (m_color)
     {
     case RED:  setVirusResistance(randFunction(10, 20));
+        break;
     case BLUE: setVirusResistance(randFunction(10, 15));
         break;
     }
