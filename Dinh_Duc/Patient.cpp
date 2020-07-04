@@ -128,6 +128,7 @@
 			}
 			else
 			{
+				delete (*it);
 				it = m_virusList.erase(it);
 			}
 			
