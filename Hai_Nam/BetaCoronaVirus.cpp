@@ -21,14 +21,20 @@ void BetaCoronaVirus::doBorn()
    // log("AlphaCoronaVirus doBorn() \n");
 }
 
-std::vector< CoronaVirus*> BetaCoronaVirus::doClone()
+std::list< CoronaVirus*> BetaCoronaVirus::doClone()
 {
-	vector<CoronaVirus*> listVirus;
+	list<CoronaVirus*> listVirus;
 	BetaCoronaVirus* newBetaVirus = new BetaCoronaVirus();
 	newBetaVirus->setDNA(m_dna);
 	newBetaVirus->setVirusResistance(m_virusResistance);
 	newBetaVirus->setProtein(m_protein);
 	listVirus.push_back(newBetaVirus);
+	/*int currentVirusRes = getVirusResistance();
+	list<CoronaVirus*> listVirus;
+	BetaCoronaVirus* virus = this;
+	listVirus.push_back(virus);
+	listVirus.push_back(virus);*/
+
 
 
 	//  log("AlphaCoronaVirus doClone() \n");
@@ -46,25 +52,46 @@ void BetaCoronaVirus::doDie()
 
 void BetaCoronaVirus::initResistance()
 {
-	if (m_protein == Protein::NS3)
+	//if (m_protein == Protein::NS3)
+	//{
+	//	int a = 1;
+	//	int b = 10;
+	//	setVirusResistance(randFunction(a, b));
+	//}
+	//else if (m_protein == Protein::NS5)
+	//{
+	//	int a = 11;
+	//	int b = 20;
+	//	setVirusResistance(randFunction(a, b));
+	//}
+	//else if (m_protein == Protein::E)
+	//{
+	//	int a = 21;
+	//	int b = 30;
+	//	setVirusResistance(randFunction(a, b));
+	//}
+	//// log("AlphaCoronaVirus initResistance() \n");
+	switch (m_protein)
 	{
-		int a = 1;
-		int b = 10;
-		setVirusResistance(randFunction(a, b));
-	}
-	else if (m_protein == Protein::NS5)
+	case  Protein::NS3 :
+		{
+		setVirusResistance(randFunction(1, 10));
+		break;
+		}
+	case Protein ::E :
 	{
-		int a = 11;
-		int b = 20;
-		setVirusResistance(randFunction(a, b));
+		setVirusResistance(randFunction(11, 20));
+		break;
 	}
-	else if (m_protein == Protein::E)
+	case Protein ::NS5:
 	{
-		int a = 21;
-		int b = 30;
-		setVirusResistance(randFunction(a, b));
+		setVirusResistance(randFunction(21, 30));
+		break;
 	}
-	// log("AlphaCoronaVirus initResistance() \n");
+	default:
+		break;
+	}
+	
 }
 
 void BetaCoronaVirus::setProtein(Protein i_protein)
