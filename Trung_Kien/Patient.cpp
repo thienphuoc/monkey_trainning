@@ -35,8 +35,9 @@
 		{
 			int medic = (rand() % 60) + 1;
 			if ((*it)->getResistance() < 0)
-				
+				Coronavirus *x=*it;
 				it = m_virusList.erase(it);
+				delete(x);
 			else {
 				temp.push_back(*it);
 				++it;
