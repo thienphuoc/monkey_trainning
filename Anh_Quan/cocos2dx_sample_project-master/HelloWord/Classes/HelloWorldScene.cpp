@@ -214,7 +214,8 @@ bool HelloWorld::init()
     keyboardListener->onKeyPressed = [=](EventKeyboard::KeyCode keycode, Event *event) {
         //auto moveAction = MoveTo::create(2, Point(100, 100));
         auto moveAction = MoveTo::create(2, Point((origin.x + visibleSize.width/2), origin.y + visibleSize.height/2));
-         //auto callBack = CC_CALLBACK_1(<#__selector__#>, <#__target__, ...#>)
+        // auto callBack = CC_CALLBACK_1(<#__selector__#>, <#__target__, ...#>)
+        //auto callback = CC_CALLBACK_1(<#__selector__#>, <#__target__, ...#>)
         auto logCallBack = CallFunc::create([=]() -> void{
              //log("Hello");
          });
@@ -223,8 +224,8 @@ bool HelloWorld::init()
          auto setCallBack = CallFunc::create([=](){
              character->setPosition(140, 390);
          });
-        auto seq = Sequence::create(moveAction, jumpAction, setCallBack, nullptr);
-
+        auto seq = Sequence::create(moveAction, logCallBack, jumpAction, setCallBack, nullptr);
+        
         switch (keycode) {
             case EventKeyboard::KeyCode::KEY_A: {
                 // skill by character a
@@ -278,12 +279,18 @@ bool HelloWorld::init()
             case EventKeyboard::KeyCode::KEY_F: {
                 // Follow
                 //character->runAction(Follow::create(<#Node *followedNode#>));
-                character->runAction(Follow::create(character));
+                //Camera::create()->runAction(Follow::create(character, Rect::ZERO));
+                auto followCharacter = Follow::create(character, Rect::ZERO);
+                this->runAction(followCharacter);
+                
+                break;
             }
             case EventKeyboard::KeyCode::KEY_T: {
                 // Fate
                 character->runAction(FadeTo::create(0.2,0.2));
                 shadow->runAction(FadeTo::create(0.2, 0.2));
+                
+                break;
             }
             case EventKeyboard::KeyCode::KEY_N: {
                 // tintby
@@ -313,7 +320,7 @@ bool HelloWorld::init()
             case EventKeyboard::KeyCode::KEY_S: {
                 // run sequence
                 character->runAction(seq);
-                
+                break;
             }
             case EventKeyboard::KeyCode::KEY_P: {
                 // run a spawn
@@ -325,14 +332,21 @@ bool HelloWorld::init()
                 
                 auto spawn = Spawn::create(moveAction, scaleAction, callBackFunc, nullptr);
                 character->runAction(spawn);
+                
+                break;
             }
             case EventKeyboard::KeyCode::KEY_Y: {
                 // Loop the above sequence forever
-                auto repeatForever = RepeatForever::create(seq);                character->runAction(repeatForever);
+               auto repeatForever = RepeatForever::create(seq);                character->runAction(repeatForever);
+                
+                break;
             }
             case EventKeyboard::KeyCode::KEY_O: {
+                // Repeat seq 3 times
                 auto repeatthreetimes = Repeat::create(seq, 3);
                 character->runAction(repeatthreetimes);
+                
+                break;
             }
             default:
                 break;
