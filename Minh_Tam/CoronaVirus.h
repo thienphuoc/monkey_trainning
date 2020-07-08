@@ -15,7 +15,7 @@ protected:
 
 public:
     CoronaVirus();
-    ~CoronaVirus();
+    virtual ~CoronaVirus();
     CoronaVirus(CoronaVirus& obj);
 
     void loadADNInformation();

@@ -6,7 +6,7 @@
 class AlphaCoronaVirus :public CoronaVirus
 { 
 private :
-	enum Color
+	enum class Color
 	{
 		BLUE = 0x0000ff,
 		RED = 0xff0000
@@ -21,7 +21,7 @@ public :
 	AlphaCoronaVirus(const AlphaCoronaVirus& obj);
 
 	void doBorn();
-	std::vector< CoronaVirus*> doClone();
+	std::list< CoronaVirus*> doClone();
 	void doDie();
 	void initResistance();
 	
