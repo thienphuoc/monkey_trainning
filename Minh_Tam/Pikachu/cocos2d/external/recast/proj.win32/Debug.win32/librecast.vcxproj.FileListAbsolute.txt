@@ -1,0 +1,2 @@
+C:\Users\Monkey\Documents\Minh Tam\Pikachu\proj.win32\Debug.win32\librecast.pdb
+C:\Users\Monkey\Documents\Minh Tam\Pikachu\cocos2d\external\recast\proj.win32\Debug.win32\librecast.pdb
