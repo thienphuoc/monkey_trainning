@@ -1,0 +1,2 @@
+C:\Users\Monkey\Documents\GitHub\monkey_trainning\Minh_Tam\Debug\OOP.exe
+C:\Users\Monkey\Documents\GitHub\monkey_trainning\Minh_Tam\Debug\OOP.pdb
