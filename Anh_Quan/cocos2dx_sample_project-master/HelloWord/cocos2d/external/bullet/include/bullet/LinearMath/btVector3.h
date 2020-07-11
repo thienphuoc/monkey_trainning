@@ -39,7 +39,9 @@ subject to the following restrictions:
 #endif
 
 
-#define BT_SHUFFLE(x,y,z,w) ((w)<<6 | (z)<<4 | (y)<<2 | (x))
+//#define BT_SHUFFLE(x,y,z,w) ((w)<<6 | (z)<<4 | (y)<<2 | (x))
+#define BT_SHUFFLE(x, y, z, w) (((w) << 6 | (z) << 4 | (y) << 2 | (x)) & 0xff)
+
 //#define bt_pshufd_ps( _a, _mask ) (__m128) _mm_shuffle_epi32((__m128i)(_a), (_mask) )
 #define bt_pshufd_ps( _a, _mask ) _mm_shuffle_ps((_a), (_a), (_mask) )
 #define bt_splat3_ps( _a, _i ) bt_pshufd_ps((_a), BT_SHUFFLE(_i,_i,_i, 3) )
@@ -325,7 +327,7 @@ public:
         vd = _mm_mul_ss(vd, y); // vd * 0.5 * y0 * y0
         z = _mm_sub_ss(z, vd);  // 1.5 - vd * 0.5 * y0 * y0 
 
-        y = _mm_mul_ss(y, z);   // y0 * (1.5 - vd * 0.5 * y0 * y0)
+        y = _mm_mul_ss(y, z);   // y0 * (1.5 - vd * 0.5 * y0 * y0) 
 
 		y = bt_splat_ps(y, 0x80);
 		mVec128 = _mm_mul_ps(mVec128, y);
