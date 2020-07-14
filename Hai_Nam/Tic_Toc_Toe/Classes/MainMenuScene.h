@@ -26,7 +26,11 @@
 #define __MAINMENU_SCENE_H__
 
 #include "cocos2d.h"
-
+USING_NS_CC;
+#include "extensions/cocos-ext.h"
+#include "ui/CocosGUI.h"
+USING_NS_CC_EXT;
+using namespace ui;
 class MainMenuScene : public cocos2d::Scene
 {
 public:
@@ -39,6 +43,8 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenuScene);
+private:
+    void touchEvent(Ref* sender, Widget::TouchEventType type);
 };
 
 #endif // __MAINMENU_SCENE_H__

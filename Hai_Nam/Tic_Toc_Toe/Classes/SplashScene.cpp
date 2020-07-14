@@ -24,6 +24,8 @@
 
 #include "SplashScene.h"
 #include "SimpleAudioEngine.h"
+#include "Definitions.h"
+#include "MainMenuScene.h"
 
 USING_NS_CC;
 
@@ -51,9 +53,20 @@ bool SplashScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+  
+    this->scheduleOnce(schedule_selector(SplashScene::SwitchToMainMenu), SPLASH_SCENE_SHOW_TIME);
 
+    auto backgrounSprite = Sprite::create("Image/Splash Background.png");
+    backgrounSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    this->addChild(backgrounSprite);
     
     return true;
+}
+void SplashScene::SwitchToMainMenu(float dt)
+{
+    Scene* scene = MainMenuScene::create();
+    TransitionFade* transition = TransitionFade::create(SCENE_TRANSITION_TIME,scene);
+    Director::getInstance()->replaceScene(transition);
 }
 
 

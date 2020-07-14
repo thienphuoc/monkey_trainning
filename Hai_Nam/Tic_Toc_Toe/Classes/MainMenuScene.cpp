@@ -24,6 +24,8 @@
 
 #include "MainMenuScene.h"
 #include "SimpleAudioEngine.h"
+#include "Definitions.h"
+#include "GameScene.h"
 
 USING_NS_CC;
 
@@ -52,8 +54,51 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-   
+    auto mainMenuBackground = Sprite::create(MAIN_MENU_BACKGROUND_FILEPATH);
+    mainMenuBackground->setPosition(Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
+    this->addChild(mainMenuBackground);
+
+    Sprite* title = Sprite::create(MAIN_MENU_TITLE_FILEPATH);
+    title->setPosition(Vec2(visibleSize.width/2+ origin.x, visibleSize.height * 0.75 + origin.y));
+    this->addChild(title);
+
+    Button* playButton = Button::create(MAIN_MENU_PLAY_BUTTON,MAIN_MENU_PLAY_BUTTON_PRESSED);
+    playButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height * 0.4 + origin.y));
+    addChild(playButton);
+
+   playButton->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::touchEvent,this));
+    playButton->setTag(TAG_MAIN_MENU_PLAY_BUTTON);
+    Sprite* playButtonOuter = Sprite::create(MAIN_MENU_PLAY_BUTTON_OUTER);
+    playButtonOuter->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height * 0.4 + origin.y));
+    this->addChild(playButtonOuter);
     return true;
+}
+void MainMenuScene::touchEvent(Ref *sender, Widget::TouchEventType type)
+{
+    Node* node = (Node*)sender;
+    switch (type)
+    {
+    case cocos2d::ui::Widget::TouchEventType::BEGAN:
+        break;
+    case cocos2d::ui::Widget::TouchEventType::MOVED:
+        break;
+    case cocos2d::ui::Widget::TouchEventType::ENDED:
+        if (TAG_MAIN_MENU_PLAY_BUTTON == node->getTag())
+        {
+            Scene* scene = GameScene::createScene();
+            TransitionFade* transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
+            Director::getInstance()->replaceScene(scene);
+        }
+        else if (TAG_ACHIEVEMENTS_BUTTON == node->getTag())
+        {
+
+        }
+        break;
+    case cocos2d::ui::Widget::TouchEventType::CANCELED:
+        break;
+    default:
+        break;
+    }
 }
 
 
