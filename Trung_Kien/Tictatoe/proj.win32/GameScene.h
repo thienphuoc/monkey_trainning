@@ -18,6 +18,7 @@ public:
 	int checkYwin();
 	int check(int i,int j);
 	int check1();
+	int check2();
 	void initDigitMap();
 
 

@@ -11,7 +11,6 @@ bool GameScene::init() {
 	Size size = Director::getInstance()->getVisibleSize();
 	gameScene->setPosition(size.width / 2, size.height / 2);
 	initDigitMap();
-	std::cout << "asd";
 	loadMap(gameScene,digitMap,gameScene->getBoundingBox().size);
 	return true;
 }
@@ -43,6 +42,7 @@ int GameScene::tick(Button* buttonMap[][3],Size size,int i, int j,int digitMap[]
 			
 			check(i,j);
 			check1();
+			check2();
 			
 		}
 		else if (GameScene::turn % 2 == 1) {
@@ -53,6 +53,7 @@ int GameScene::tick(Button* buttonMap[][3],Size size,int i, int j,int digitMap[]
 			digitMap[i][j] = 2;
 			check(i,j);
 			check1();
+			check2();
 		}
 		GameScene::turn++;
 	}
@@ -66,7 +67,16 @@ int GameScene::check(int i,int j) {
 			hangDocX++;
 			if (hangDocX == 3) {
 				//endgame
-				Director::getInstance()->replaceScene(MainMenuScene::createScene());
+				for (int m = 0; m < 3; m++) {
+					Size size = buttonMap[i][m]->getBoundingBox().size;
+					//spriteMap[i][m]->removeAllChildren();
+					Sprite* xTick = Sprite::create("X Win.png");
+					xTick->setAnchorPoint(Vec2(0.5, 0.5));
+					xTick->setPosition(size.width / 2, size.height / 2);
+					buttonMap[i][m]->addChild(xTick);
+					//spriteMap[i][m]->addChild(Sprite::create("X Win.png"), 2);
+				}
+				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 				return 1;
 			}
 		}
@@ -74,7 +84,14 @@ int GameScene::check(int i,int j) {
 			hangNgangX++;
 			if (hangNgangX == 3) {
 				//endgame
-				Director::getInstance()->replaceScene(MainMenuScene::createScene());
+				for (int m = 0; m < 3; m++) {
+					Size size = buttonMap[m][j]->getBoundingBox().size;
+					Sprite* xTick = Sprite::create("X Win.png");
+					xTick->setAnchorPoint(Vec2(0.5, 0.5));
+					xTick->setPosition(size.width / 2, size.height / 2);
+					buttonMap[m][j]->addChild(xTick);
+				}
+				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 				return 1;
 			}
 		}
@@ -82,16 +99,30 @@ int GameScene::check(int i,int j) {
 			hangDocY++;
 			if (hangDocY == 3) {
 				//endgame
-				Director::getInstance()->replaceScene(MainMenuScene::createScene());
-				return 1;
+				for (int m = 0; m < 3; m++) {
+					Size size = buttonMap[i][m]->getBoundingBox().size;
+					Sprite* yTick = Sprite::create("O Win.png");
+					yTick->setAnchorPoint(Vec2(0.5, 0.5));
+					yTick->setPosition(size.width / 2, size.height / 2);
+					buttonMap[i][m]->addChild(yTick);
+				}
+				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+				return 2;
 			}
 		}
 		if (digitMap[c][j] == 2) {
 			hangNgangY++;
 			if (hangNgangY == 3) {
 				//endgame
-				Director::getInstance()->replaceScene(MainMenuScene::createScene());
-				return 1;
+				for (int m = 0; m < 3; m++) {
+					Size size = buttonMap[m][j]->getBoundingBox().size;
+					Sprite* yTick = Sprite::create("O Win.png");
+					yTick->setAnchorPoint(Vec2(0.5, 0.5));
+					yTick->setPosition(size.width / 2, size.height / 2);
+					buttonMap[m][j]->addChild(yTick);
+				}
+				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+				return 2;
 			}
 		}
 		
@@ -106,7 +137,14 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 1) {
 					xwin++;
 					if (xwin == 3) {
-						Director::getInstance()->replaceScene(MainMenuScene::createScene());
+						for (int m = 0; m < 3; m++) {
+							Size size = buttonMap[m][m]->getBoundingBox().size;
+							Sprite* xTick = Sprite::create("X Win.png");
+							xTick->setAnchorPoint(Vec2(0.5, 0.5));
+							xTick->setPosition(size.width / 2, size.height / 2);
+							buttonMap[m][m]->addChild(xTick);
+						}
+						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 						return 1;
 					}
 
@@ -114,7 +152,14 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 2) {
 					ywin++;
 					if (ywin == 3) {
-						Director::getInstance()->replaceScene(MainMenuScene::createScene());
+						for (int m = 0; m < 3; m++) {
+							Size size = buttonMap[m][m]->getBoundingBox().size;
+							Sprite* yTick = Sprite::create("O Win.png");
+							yTick->setAnchorPoint(Vec2(0.5, 0.5));
+							yTick->setPosition(size.width / 2, size.height / 2);
+							buttonMap[m][m]->addChild(yTick);
+						}
+						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 						return 2;
 					}
 				}
@@ -123,7 +168,14 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 1) {
 					xwin1++;
 					if (xwin1 == 3) {
-						Director::getInstance()->replaceScene(MainMenuScene::createScene());
+						for (int m = 0; m < 3; m++) {
+							Size size = buttonMap[m][2-m]->getBoundingBox().size;
+							Sprite* xTick = Sprite::create("X Win.png");
+							xTick->setAnchorPoint(Vec2(0.5, 0.5));
+							xTick->setPosition(size.width / 2, size.height / 2);
+							buttonMap[m][2-m]->addChild(xTick);
+						}
+						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 						return 1;
 					}
 
@@ -131,12 +183,32 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 2) {
 					ywin1++;
 					if (ywin1 == 3) {
-						Director::getInstance()->replaceScene(MainMenuScene::createScene());
+						for (int m = 0; m < 3; m++) {
+							Size size = buttonMap[m][2-m]->getBoundingBox().size;
+							Sprite* yTick = Sprite::create("O Win.png");
+							yTick->setAnchorPoint(Vec2(0.5, 0.5));
+							yTick->setPosition(size.width / 2, size.height / 2);
+							buttonMap[m][2-m]->addChild(yTick);
+						}
+						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
 						return 2;
 					}
 				}
 			}
 		}
+	}
+	return 0;
+}
+int GameScene::check2() {
+	int count = 0;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (digitMap[i][j] != -1) count++;
+		}
+	}
+	if (count == 9) {
+		Director::getInstance()->replaceScene(MainMenuScene::createScene());
+		return 3;
 	}
 	return 0;
 }
