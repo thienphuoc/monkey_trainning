@@ -26,6 +26,7 @@
     <ClCompile Include="Pipe.cpp" />
     <ClCompile Include="Bird.cpp" />
     <ClCompile Include="GameOverScene.cpp" />
+    <ClCompile Include="leaderboard.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -42,6 +43,7 @@
     <ClInclude Include="Pipe.h" />
     <ClInclude Include="Bird.h" />
     <ClInclude Include="GameOverScene.h" />
+    <ClInclude Include="leaderboard.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

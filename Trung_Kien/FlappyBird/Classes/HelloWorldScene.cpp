@@ -52,6 +52,7 @@ bool HelloWorld::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+
     /////////////////////////////
     // 2. add a menu item with "X" image, which is clicked to quit the program
     //    you may modify it.
@@ -121,6 +122,9 @@ bool HelloWorld::init()
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("hit.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("point.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("wing.mp3");
+
+    
+
 
     return true;
 }

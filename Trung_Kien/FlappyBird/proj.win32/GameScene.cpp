@@ -1,6 +1,7 @@
 #include "GameScene.h"
 #include"GameOverScene.h"
 #include "SimpleAudioEngine.h"
+
 USING_NS_CC;
 Scene* GameScene::createScene() {
 	auto scene = Scene::createWithPhysics();
@@ -15,6 +16,7 @@ Scene* GameScene::createScene() {
 	
 }
 bool GameScene::init() {
+	CCLOG("GAme SCeneeeeeeeeee");
 	Sprite* sprite = Sprite::create("background.png");
 	this->addChild(sprite);
 	Size visibleSize = Director::getInstance()->getVisibleSize();
