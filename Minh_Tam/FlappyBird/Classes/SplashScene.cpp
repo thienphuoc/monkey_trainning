@@ -44,7 +44,7 @@ bool SplashScene::init()
 {
     //////////////////////////////
     // 1. super init first
-    if (!Scene::init())
+    if (!Layer::init())
     {
         return false;
     }
