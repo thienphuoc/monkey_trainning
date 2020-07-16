@@ -26,6 +26,8 @@
 #include "SimpleAudioEngine.h"
 #include "GameScene.h"
 #include "Definitions.h"
+#include "cocostudio/CocoStudio.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -51,7 +53,7 @@ bool MainMenuScene::init()
         return false;
     }
 
-    auto visibleSize = Director::getInstance()->getVisibleSize();
+    /*auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
     auto backgroundSprite = Sprite::create("iphonehd/Background.png");
@@ -67,9 +69,27 @@ bool MainMenuScene::init()
 
     auto menu = Menu::create(playItem, NULL);
     menu->setPosition(Point::ZERO);
-    this->addChild(menu);
+    this->addChild(menu);*/
 
 
+    auto mainMenu = CSLoader::getInstance()->createNode("MainMenu.csb");
+    this->addChild(mainMenu);
+
+    auto PlayButton = mainMenu->getChildByName<ui::Button*>("Button_Play");
+    PlayButton->setPressedActionEnabled(true);
+    PlayButton->addClickEventListener([=](Ref*) {
+
+        MainMenuScene::GotoGameScene(this);
+
+        });
+    
+    auto ExitButton = mainMenu->getChildByName<ui::Button*>("Button_exit");
+    ExitButton->setPressedActionEnabled(true);
+    ExitButton->addClickEventListener([=](Ref*) {
+
+        MainMenuScene::menuCloseCallback(this);
+
+        });
 
     return true;
 }

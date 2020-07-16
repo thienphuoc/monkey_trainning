@@ -23,29 +23,35 @@
  ****************************************************************************/
 
 #include "GameOverScene.h"
+#include "SimpleAudioEngine.h"
 #include "GameScene.h"
 #include "MainMenuScene.h"
 #include "Definitions.h"
 
 USING_NS_CC;
+
 unsigned int score;
 
 Scene* GameOverScene::createScene(unsigned int tempScore)
 {
     score = tempScore;
-    auto scene = Scene::create();
 
-    auto layer = GameOverScene::create();
-
-    scene->addChild(layer);
-    return scene;
+    return GameOverScene::create();
 }
 
+// Print useful error message instead of segfaulting when files are not there.
+static void problemLoading(const char* filename)
+{
+    printf("Error while loading: %s\n", filename);
+    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
+}
 
 // on "init" you need to initialize your instance
 bool GameOverScene::init()
 {
-    if (!Layer::init())
+    //////////////////////////////
+    // 1. super init first
+    if (!Scene::init())
     {
         return false;
     }
@@ -53,59 +59,70 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto backgroundSprite = Sprite::create("iphone/Background.png");
-    backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+    auto backgroundSprite = Sprite::create("iphonehd/Background.png");
+    backgroundSprite->setPosition(Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2));
     this->addChild(backgroundSprite);
 
-    auto retryItem = MenuItemImage::create("iphone/RetryButton.png", "RetryButtonClicked.png",
-        CC_CALLBACK_1(GameOverScene::GoToGameScene, this));
-    retryItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 4 * 3));
-    auto mainMenuItem = MenuItemImage::create("iphone/MenuButton.png", "MenuButtonClicked.png",
-        CC_CALLBACK_1(GameOverScene::GoToMainMenuScene, this));
-    mainMenuItem->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 4));
+    auto retryItem = MenuItemImage::create("iphonehd/Retry Button.png", "iphonehd/Retry Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoGameScene, this));
+    retryItem->setPosition(Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 4 * 3));
 
-    auto menu = Menu::create(retryItem, mainMenuItem, NULL);
+    auto mainMemuItem = MenuItemImage::create("iphonehd/Menu Button.png", "iphonehd/Menu Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoMainMenuScene, this));
+    mainMemuItem->setPosition(Point(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 4));
+
+    auto menu = Menu::create(retryItem, mainMemuItem, NULL);
     menu->setPosition(Point::ZERO);
-
     this->addChild(menu);
 
     UserDefault* def = UserDefault::getInstance();
-    auto highScore = def->getIntegerForKey("HIGHSCORE", 0);
-    if (score > highScore)
-    {
+    auto highScore = def->getIntegerForKey("HIGHSCORE FLAPPY", 0);
+    if (score > highScore) {
         highScore = score;
-        def->setIntegerForKey("HIGHSCORE", highScore);
+        def->getIntegerForKey("HIGHSCORE FLAPPY", highScore);
     }
     def->flush();
 
-
     __String* tempScore = __String::createWithFormat("%i", score);
-    auto currentScore = LabelTTF::create(tempScore->getCString(), "fonts/Market Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
-    currentScore->setPosition(Point(visibleSize.width / 4 + origin.x, visibleSize.height / 2 + origin.y));
+    auto currentScore = LabelTTF::create(tempScore->getCString(), "fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
+    currentScore->setPosition(Point(origin.x + visibleSize.width * 0.25, origin.y + visibleSize.height / 2));
     this->addChild(currentScore);
 
     __String* tempHighScore = __String::createWithFormat("%i", highScore);
-
-    auto highScoreLabel = LabelTTF::create(tempHighScore->getCString(), "fonts/Market Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
-
+    auto highScoreLabel = LabelTTF::create(tempHighScore->getCString(), "fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
     highScoreLabel->setColor(Color3B::YELLOW);
-    highScoreLabel->setPosition(Point(visibleSize.width * 0.75 + origin.x, visibleSize.height / 2 + origin.y));
+    highScoreLabel->setPosition(Point(origin.x + visibleSize.width * 0.75, origin.y + visibleSize.height / 2));
     this->addChild(highScoreLabel);
-
 
     return true;
 }
 
-void GameOverScene::GoToMainMenuScene(cocos2d::Ref* sender)
+
+void GameOverScene::menuCloseCallback(Ref* pSender)
 {
-    auto scene = MainMenuScene::createScene();
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+    //Close the cocos2d-x game scene and quit the application
+    Director::getInstance()->end();
+
+    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
+
+    //EventCustom customEndEvent("game_scene_close_event");
+    //_eventDispatcher->dispatchEvent(&customEndEvent);
+
+
 }
 
-void GameOverScene::GoToGameScene(cocos2d::Ref* sender)
-{
-    auto scene = GameScene::createScene();
+void GameOverScene::GotoMainMenuScene(cocos2d::Ref* sender) {
+    auto scene = MainMenuScene::createScene();
+
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+
+
+}
+
+void GameOverScene::GotoGameScene(cocos2d::Ref* sender) {
+    auto scene = GameScene::createScene();
+
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+
+
 }
 
 
