@@ -22,6 +22,8 @@
  THE SOFTWARE.
  ****************************************************************************/
 
+#pragma once
+
 #ifndef __MAIN_MENU_SCENE_H__
 #define __MAIN_MENU_SCENE_H__
 
@@ -33,12 +35,15 @@ public:
     static cocos2d::Scene* createScene();
 
     virtual bool init();
-    
+
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
-    void MainMenuScene::GotoGameScene(cocos2d::Ref* sender);
+
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenuScene);
+
+private:
+    void GotoGameScene(cocos2d::Ref* sender);
 };
 
-#endif // __MAIN_MENU_SCENE_H__
+#endif // __HELLOWORLD_SCENE_H__
