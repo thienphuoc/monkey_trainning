@@ -74,11 +74,14 @@ bool GameOverScene::init()
     this->addChild(menu);
     
     UserDefault *def  = UserDefault::getInstance();
+    __String path = def->getXMLFilePath();
     auto highScore = def->getIntegerForKey("HIGHSCORE FLAPPY", 0);
     if(score > highScore) {
         highScore = score;
-        def->getIntegerForKey("HIGHSCORE FLAPPY", highScore);
+        def->setIntegerForKey("HIGHSCORE FLAPPY", highScore);
     }
+    CCLOG("%s",path.getCString());
+
     def->flush();
     
     __String *tempScore = __String::createWithFormat("%i", score);
