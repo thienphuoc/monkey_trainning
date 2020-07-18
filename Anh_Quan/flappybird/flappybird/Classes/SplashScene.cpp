@@ -26,8 +26,30 @@
 #include "MainMenuScene.h"
 #include "Definitions.h"
 #include "SimpleAudioEngine.h"
+#include "cocostudio/CocoStudio.h"
+#include "GameScene.h"
+#include "ui/CocosGUI.h"
+#include "rapidjson/rapidjson.h"
+#include "rapidjson/document.h"
+#include "network/HttpRequest.h"
+#include "network/HttpResponse.h"
+#include "network/HttpClient.h"
 
 USING_NS_CC;
+
+using namespace rapidjson;
+using namespace network;
+
+struct LeaderBoardInfo {
+    std::string m_name;
+    int m_score;
+    LeaderBoardInfo() {};
+    LeaderBoardInfo(std::string i_name, int i_score) :
+        m_name(i_name),
+        m_score(i_score)
+    {
+    }
+};
 
 Scene* SplashScene::createScene()
 {
@@ -52,20 +74,133 @@ bool SplashScene::init()
     }
 
     //CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackGroundMusic("Resources/Sounds/Hit.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Resources/Sounds/Hit.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Resources/Sounds/Point.mp3");
-    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Resources/Sounds/Wing.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Hit.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Point.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Wing.mp3");
+
+    auto mainMenu = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
+    this->addChild(mainMenu);
+
+    auto playButton = mainMenu->getChildByName<ui::Button*>("button_play");
+    playButton->setPressedActionEnabled(true);
+    playButton->addClickEventListener([=](Ref*) {
+        auto scene = GameScene::createScene();
+        Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+        });
     
-    
+    /*
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
     this->scheduleOnce(schedule_selector(SplashScene::GotoMainScene), DISPLAY_TIME_SPLASH_SCENE)
     ;
     
-    auto backgrounSprite = Sprite::create("Resources/iphonehd/Splash Screen.png");
+    auto backgrounSprite = Sprite::create("iphonehd/Splash Screen.png");
     backgrounSprite->setPosition(Point(visibleSize.width/2 + origin.x, visibleSize.height/2 + origin.y));
     this->addChild(backgrounSprite);
+    */
+
+    auto loaderButton = mainMenu->getChildByName<ui::Button*>("button_leaderboard");
+    loaderButton->setPressedActionEnabled(true);
+    loaderButton->addClickEventListener([=](Ref*) {
+        HttpRequest* request = new HttpRequest();
+        request->setRequestType(HttpRequest::Type::GET);
+        request->setUrl("https://isschool.firebaseio.com/leaderboard.json");
+        request->setResponseCallback([=](HttpClient* sender, HttpResponse* response) {
+            if (200 == response->getResponseCode()) // connect success
+            {
+                CCLOG("Connect success");
+                auto leaderBoard = CSLoader::getInstance()->createNode("csb/leader.csb");
+                if (!leaderBoard) {
+                    CCLOG("Cannot found leader.csb");
+                }
+                else {
+                    CCLOG("leader.csb found");
+                }
+                auto item = utils::findChild <ui::ImageView*>(leaderBoard, "item_bg");
+                if (!item) {
+                    CCLOG("Cannot found item");
+                }
+                else {
+                    CCLOG("item found");
+                }
+                std::vector<char> *buffer = response->getResponseData();
+                if (!buffer) {
+                    CCLOG("Buffer for response returns NULL");
+                }
+                else {
+                    CCLOG("Buffer created");
+                }
+
+                std::string data = std::string(buffer->begin(), buffer->end());
+                //CCLOG("%s", data.c_str());  
+
+                if (!data.empty())
+                {
+                    Document m_document;
+                    m_document.Parse(data.c_str());
+                    std::vector<LeaderBoardInfo> leaderBoardList;
+
+                    for (rapidjson::Value::ConstMemberIterator itr = m_document.MemberBegin(); itr != m_document.MemberEnd(); ++itr)
+                    {
+                       // leaderBoardList.push_back({"thien_phuoc", 2000});
+                        leaderBoardList.push_back({itr->name.GetString(), itr->value.GetInt()});
+                    }
+
+                    for (auto info : leaderBoardList) {
+                        if (auto listview = utils::findChild <ui::ListView*>(leaderBoard, "list_view")) {
+                            auto newItem = item->clone();
+                            
+                            if (auto nameLabel = newItem->getChildByName <ui::Text*>("name")) {
+                                nameLabel->setString(info.m_name);
+                                listview->addChild(nameLabel);
+                            }
+                            else {
+                                CCLOG("Cannot create nameLabel");
+                            }
+
+                            if (auto scoreLabel = newItem->getChildByName <ui::Text*>("score")) {
+                                scoreLabel->setString(StringUtils::format("Score: %i", info.m_score));
+                                listview->addChild(scoreLabel);
+                            }
+                            else {
+                                CCLOG("Cannot create scoreLable");
+                            }
+
+                            listview->addChild(newItem);
+                        }
+                        else {
+                            CCLOG("Cannot find listview");
+                        }
+                    }
+
+
+                }
+                else
+                {
+                    CCLOG("Got empty data");
+                }
+
+
+                this->addChild(leaderBoard);
+
+            }
+            else // connect failed
+            {
+                CCLOG("Connect failed");
+            }
+
+            });
+
+
+        request->setTag("Get test");
+        HttpClient::getInstance()->send(request);
+        request->release();
+//        auto loaderBoard = CSLoader::getInstance()->createNode("csb/leader.csb");
+         // this->addChild(leaderBoard, 1000);
+
+        });
+
     
     return true;
 }

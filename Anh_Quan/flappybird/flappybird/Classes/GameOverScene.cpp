@@ -59,14 +59,14 @@ bool GameOverScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto backgroundSprite = Sprite::create("Resources/iphonehd/Background.png");
+    auto backgroundSprite = Sprite::create("iphonehd/Background.png");
     backgroundSprite->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
     this->addChild(backgroundSprite);
     
-    auto retryItem = MenuItemImage::create("Resources/iphonehd/Retry Button.png", "Resources/iphonehd/Retry Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoGameScene, this));
+    auto retryItem = MenuItemImage::create("iphonehd/Retry Button.png", "iphonehd/Retry Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoGameScene, this));
     retryItem->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/4 * 3));
     
-    auto mainMemuItem = MenuItemImage::create("Resources/iphonehd/Menu Button.png", "Resources/iphonehd/Menu Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoMainMenuScene, this));
+    auto mainMemuItem = MenuItemImage::create("iphonehd/Menu Button.png", "iphonehd/Menu Button Clicked.png", CC_CALLBACK_1(GameOverScene::GotoMainMenuScene, this));
     mainMemuItem->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/4));
     
     auto menu = Menu::create(retryItem, mainMemuItem, NULL);
@@ -82,12 +82,12 @@ bool GameOverScene::init()
     def->flush();
     
     __String *tempScore = __String::createWithFormat("%i", score);
-    auto currentScore = LabelTTF::create(tempScore->getCString(), "Resources/fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
+    auto currentScore = LabelTTF::create(tempScore->getCString(), "fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
     currentScore->setPosition(Point(origin.x + visibleSize.width*0.25, origin.y + visibleSize.height/2));
     this->addChild(currentScore);
     
     __String *tempHighScore = __String::createWithFormat("%i", highScore);
-    auto highScoreLabel = LabelTTF::create(tempHighScore->getCString(), "Resources/fonts/Marker Felt.ttf",  visibleSize.height * SCORE_FONT_SIZE);
+    auto highScoreLabel = LabelTTF::create(tempHighScore->getCString(), "fonts/Marker Felt.ttf",  visibleSize.height * SCORE_FONT_SIZE);
     highScoreLabel->setColor(Color3B::YELLOW);
     highScoreLabel->setPosition(Point(origin.x + visibleSize.width*0.75, origin.y + visibleSize.height/2));
     this->addChild(highScoreLabel);
