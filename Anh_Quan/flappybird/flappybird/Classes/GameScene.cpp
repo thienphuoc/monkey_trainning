@@ -67,7 +67,7 @@ bool GameScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
-    auto backgroundSprite = Sprite::create("Resources/iphonehd/Background.png");
+    auto backgroundSprite = Sprite::create("iphonehd/Background.png");
     backgroundSprite->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
     this->addChild(backgroundSprite);
     
@@ -96,7 +96,7 @@ bool GameScene::init()
     
     score = 0;
     __String *tempScore = __String::createWithFormat("%i", score);
-    scoreLabel = Label::createWithTTF(tempScore->getCString(), "Resources/fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
+    scoreLabel = Label::createWithTTF(tempScore->getCString(), "fonts/Marker Felt.ttf", visibleSize.height * SCORE_FONT_SIZE);
     scoreLabel->setColor(Color3B::WHITE);
     scoreLabel->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.75));
     this->addChild(scoreLabel, 10000);
@@ -129,12 +129,12 @@ bool GameScene::onContactBegin(cocos2d::PhysicsContact &contact) {
     PhysicsBody *b = contact.getShapeB()->getBody();
     
     if( ( BIRD_COLLISION_BITMASK == a->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == b->getCollisionBitmask() ) || (BIRD_COLLISION_BITMASK == b->getCollisionBitmask() && OBSTACLE_COLLISION_BITMASK == a->getCollisionBitmask())) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Resources/Sounds/Hit.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/Hit.mp3");
         auto scene = GameOverScene::createScene(score);
         
         Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
     } else if(( BIRD_COLLISION_BITMASK == a->getCollisionBitmask() && POINT_COLLISION_BITMASK == b->getCollisionBitmask() ) || (BIRD_COLLISION_BITMASK == b->getCollisionBitmask() && POINT_COLLISION_BITMASK == a->getCollisionBitmask())) {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Resources/Sounds/Point.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/Point.mp3");
         
         score ++;
         __String *tempScore = __String::createWithFormat("%i", score);
