@@ -75,7 +75,7 @@ bool MainMenuScene::init()
     soundButton->setPosition(Point(origin.x + visibleSize.width - soundButton->getContentSize().width/2, origin.y + soundButton->getContentSize().height/2));
     this->addChild(soundButton);
     
-    
+     
     
     return true;
 }

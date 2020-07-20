@@ -57,7 +57,7 @@ private:
     cocos2d::Sprite *gridSprite;
     cocos2d::Rect gridSpaces[3][3];
     cocos2d::Sprite *gridPieces[3][3];
-    
+     
     int gridArray[3][3];
     int turn;
     int gameState;

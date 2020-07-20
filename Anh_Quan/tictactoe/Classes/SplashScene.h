@@ -39,7 +39,7 @@ public:
     
     // implement the "static create()" method manually
     CREATE_FUNC(SplashScene);
-    
+     
 private:
     void SwitchToMainMenu(float dt);
 };

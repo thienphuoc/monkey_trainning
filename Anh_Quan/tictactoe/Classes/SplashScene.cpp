@@ -80,6 +80,6 @@ void SplashScene::menuCloseCallback(Ref* pSender)
 void SplashScene::SwitchToMainMenu(float dt) {
     Scene *scene = MainMenuScene::createScene();
     TransitionFade *transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
-    
+     
     Director::getInstance()->replaceScene(transition);
 }

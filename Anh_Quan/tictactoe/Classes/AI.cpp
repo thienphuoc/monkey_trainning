@@ -189,7 +189,7 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
                 if(aiReward >= WIN_REWARD) {
                     bestX = i; bestY = j;
                     CCLOG("Found an place that leads to win at (%i, %i)", i, j);
-                    //CCLOG("BESTX: %i, BESTY: %i, %i, rowSum[0]: %i, columnSum[0]: %i", i, j, aiReward, rowSum[0], columnSum[0]);
+                    //CCLOG("BESTX: %i, BESTY: %i, %i, rowSum[0]: %i, columnSum[0]: %i", i, j, aiReward, rowSum[0], columnSum[0]); 
                     (*gridArray)[i][j] = EMPTY_PIECE;
                     
                     break;
@@ -275,7 +275,7 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
                 (*gridArray)[i][j] = EMPTY_PIECE;
             }
         }
-        
+         
         if(j < 3) {
             break;
         }

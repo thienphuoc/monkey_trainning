@@ -53,5 +53,5 @@
 #define ONE_PIECE_REWARD                    2
 #define TWO_PIECES_REWARD                   20
 #define PREVENT_REWARD                      1
-
+ 
 #endif /* Definitions_h */

@@ -43,7 +43,7 @@ private:
     
     int computeReward(int (*gridArray)[3][3], int piece, int (*canReward)[8], int(*rowSum)[3], int (*columnSum)[3], int* s1 ,int* s2);
     int computePlayerBestReward(int (*gridArray)[3][3], int (*canReward)[8]);
-    int canReward[8];
+    int canReward[8]; 
 };
 
 #endif // __AI_H__

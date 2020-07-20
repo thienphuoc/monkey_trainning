@@ -87,7 +87,7 @@ bool GameScene::init()
     return true;
 }
 
-
+ 
 void GameScene::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
