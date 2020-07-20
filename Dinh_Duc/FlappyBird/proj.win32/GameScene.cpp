@@ -11,7 +11,8 @@ Scene* GameScene::createScene()
 {
     //return GameScene::create();
     auto scene = Scene::createWithPhysics();
-    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    //scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+    scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 
     auto layer = GameScene::create();
     layer->setPhysicsWorld(scene->getPhysicsWorld());
@@ -51,7 +52,7 @@ bool GameScene::init()
 
     auto edgeBody = PhysicsBody::createEdgeBox(visibleSize,PHYSICSBODY_MATERIAL_DEFAULT, 3);
     edgeBody->setCollisionBitmask(OBSTACLE_COLLISION_BITMASK);
-    edgeBody->setContactTestBitmask(false); 
+    edgeBody->setContactTestBitmask(true); 
 
     auto edgeNode = Node::create();
     edgeNode->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));

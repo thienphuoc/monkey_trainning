@@ -1,8 +1,16 @@
 //#include "SplashScene.h"
+#include <vector>
+#include <algorithm>
+
 #include "MainMenu.h"
 #include "GameScene.h"
+#include "LeaderBoard.h"
 #include "Definitions.h"
 #include "SimpleAudioEngine.h"
+#include "cocostudio/CocoStudio.h"
+#include "ui/CocosGUI.h"
+
+
 
 USING_NS_CC;
 
@@ -10,6 +18,8 @@ Scene* MainMenu::createScene()
 {
     auto scene = Scene::create();
 
+    
+    
     auto layer = MainMenu::create();
 
     scene->addChild(layer);
@@ -33,49 +43,80 @@ bool MainMenu::init()
     {
         return false;
     }
-
-    auto visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-
-    auto backgroundSprite = Sprite::create("Background.png");
-    if (backgroundSprite == nullptr)
-    {
-        problemLoading("'Background.png'");
-    }
-    else
-    {
-        // position the sprite on the center of the screen
-        backgroundSprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
-        // add the sprite as a child to this layer
-        this->addChild(backgroundSprite);
-
-    }
-
-    auto titleLogo = Sprite::create("Title.png");
-    titleLogo->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLogo->getContentSize().height / 2));
-    this->addChild(titleLogo);
-
-
-    auto playItem = MenuItemImage::create(
-        "Play Button.png", 
-        "Play Button Clicked.png",
-        CC_CALLBACK_1(MainMenu::goToGameScene, this)
-    );
-
-    auto closeItem = MenuItemImage::create(
-        "CloseNormal.png",
-        "CloseSelected.png",
-        CC_CALLBACK_1(MainMenu::menuCloseCallback, this)
-    );
     
-    playItem->setPosition(Vec2(origin.x+visibleSize.width/2,origin.y+visibleSize.height/2));
-    closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2, origin.y + closeItem->getContentSize().height / 2));
+    
 
-    auto menu = Menu::create(playItem, closeItem, NULL);
-    menu->setPosition(Vec2::ZERO);
-    this->addChild(menu);
+    //auto visibleSize = Director::getInstance()->getVisibleSize();
+    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+
+
+    //auto backgroundSprite = Sprite::create("Background.png");
+    //if (backgroundSprite == nullptr)
+    //{
+    //    problemLoading("'Background.png'");
+    //}
+    //else
+    //{
+    //    // position the sprite on the center of the screen
+    //    backgroundSprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
+
+    //    // add the sprite as a child to this layer
+    //    this->addChild(backgroundSprite);
+
+    //}
+
+    //auto titleLogo = Sprite::create("Title.png");
+    //titleLogo->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLogo->getContentSize().height / 2));
+    //this->addChild(titleLogo);
+
+
+    //auto playItem = MenuItemImage::create(
+    //    "Play Button.png", 
+    //    "Play Button Clicked.png",
+    //    CC_CALLBACK_1(MainMenu::goToGameScene, this)
+    //);
+
+    //auto closeItem = MenuItemImage::create(
+    //    "CloseNormal.png",
+    //    "CloseSelected.png",
+    //    CC_CALLBACK_1(MainMenu::menuCloseCallback, this)
+    //);
+    //
+    //playItem->setPosition(Vec2(origin.x+visibleSize.width/2,origin.y+visibleSize.height/2));
+    //closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2, origin.y + closeItem->getContentSize().height / 2));
+
+    //auto menu = Menu::create(playItem, closeItem, NULL);
+    //menu->setPosition(Vec2::ZERO);
+    //this->addChild(menu);
+
+    auto mainMenu = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
+    this->addChild(mainMenu);
+
+    auto button_play = mainMenu->getChildByName<ui::Button*>("button_play");
+    button_play->setPressedActionEnabled(true);
+    button_play->addClickEventListener([=](Ref*) {
+
+        goToGameScene(this);
+
+        });
+
+    auto button_leaderboard = mainMenu->getChildByName<ui::Button*>("button_leaderboard");
+    button_leaderboard->setPressedActionEnabled(true);
+    button_leaderboard->addClickEventListener([=](Ref*)
+        {
+            
+
+            goToLeaderboardScene(this);
+        });
+
+    auto button_exit = mainMenu->getChildByName<ui::Button*>("button_exit");
+    button_exit->setPressedActionEnabled(true);
+    button_exit->addClickEventListener([=](Ref*) {
+
+        menuCloseCallback(this);
+
+        });
 
     return true;
 }
@@ -84,7 +125,7 @@ bool MainMenu::init()
 void MainMenu::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
+    Director::getInstance()->end(); 
 
     /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
 
@@ -100,3 +141,11 @@ void MainMenu::goToGameScene(Ref* pSender)
 
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
+
+void MainMenu::goToLeaderboardScene(Ref* pSender)
+{
+    auto scene = Leaderboard::createScene();
+
+    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+}
+

@@ -25,5 +25,5 @@ void Bird::moveBird()
 {
 	/*auto flap = MoveBy::create(BIRD_FLAP*visibleSize.height, Vec2(0.0f, flappyBird->getContentSize().height * 2.5));
 	flappyBird->runAction(flap);*/
-	flappyBird->getPhysicsBody()->setVelocity(Vec2(0.0f, 64.0f));
+	flappyBird->getPhysicsBody()->setVelocity(Vec2(0.0f, BIRD_FLAP*visibleSize.height));
 }

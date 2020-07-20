@@ -2,6 +2,8 @@
 #include "SimpleAudioEngine.h"
 #include "MainMenu.h"
 #include "Definitions.h"
+#include "cocostudio/CocoStudio.h"
+#include "ui/CocosGUI.h"
 
 USING_NS_CC;
 
@@ -11,6 +13,7 @@ Scene* SplashScene::createScene()
 
     auto layer = SplashScene::create();
     scene->addChild(layer);
+   
 
     return scene;
 }
@@ -36,6 +39,7 @@ bool SplashScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
 
+    
 
     auto backgroundSprite = Sprite::create("Splash Screen.png");
     if (backgroundSprite == nullptr)
@@ -53,6 +57,8 @@ bool SplashScene::init()
         //this->scheduleOnce(schedule_selector(SplashScene::goToMainMenu), SPLASH_SCENE_DISPLAY_TIME);
         this->scheduleOnce(schedule_selector(SplashScene::goToMainMenu), SPLASH_SCENE_DISPLAY_TIME);
     }
+
+
     return true;
 }
 
