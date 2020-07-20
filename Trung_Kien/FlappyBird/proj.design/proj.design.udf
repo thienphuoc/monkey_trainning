@@ -3,8 +3,8 @@
     <Item Key="TabsParamsKey">
       <Value ctype="TabsInfo">
         <OpenedDocuments>
-          <FilePathData Path="csb/MainMenu.csd" />
           <FilePathData Path="csb/Leaderboard.csd" />
+          <FilePathData Path="csb/MainMenu.csd" />
         </OpenedDocuments>
         <ActiveDocument Path="csb/Leaderboard.csd" />
       </Value>

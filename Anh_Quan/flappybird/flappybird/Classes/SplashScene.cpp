@@ -117,6 +117,7 @@ bool SplashScene::init()
                 else {
                     CCLOG("leader.csb found");
                 }
+                auto leader_bg = utils::findChild<ui::ImageView*>(leaderBoard, "leader_board_bg");
                 auto item = utils::findChild <ui::ImageView*>(leaderBoard, "item_bg");
                 if (!item) {
                     CCLOG("Cannot found item");
@@ -124,7 +125,7 @@ bool SplashScene::init()
                 else {
                     CCLOG("item found");
                 }
-                std::vector<char> *buffer = response->getResponseData();
+                std::vector<char>* buffer = response->getResponseData();
                 if (!buffer) {
                     CCLOG("Buffer for response returns NULL");
                 }
@@ -141,19 +142,38 @@ bool SplashScene::init()
                     m_document.Parse(data.c_str());
                     std::vector<LeaderBoardInfo> leaderBoardList;
 
-                    for (rapidjson::Value::ConstMemberIterator itr = m_document.MemberBegin(); itr != m_document.MemberEnd(); ++itr)
+                    for (int i = 0; i < m_document.Size(); i++)
                     {
-                       // leaderBoardList.push_back({"thien_phuoc", 2000});
-                        leaderBoardList.push_back({itr->name.GetString(), itr->value.GetInt()});
+                        //leaderBoardList.push_back({"thien_phuoc", 2000});
+                        leaderBoardList.push_back({m_document[i]["name"].GetString(), m_document[i]["score"].GetInt()});
+                       //CCLOG("%s %d",  m_document[i]["name"].GetString(), m_document[i]["score"].GetInt());
                     }
+                    
+                    for (int i = 0; i < leaderBoardList.size(); i++) {
+                        for (int j = i + 1; j < leaderBoardList.size(); j++) {
+                            if (leaderBoardList[j].m_score > leaderBoardList[i].m_score) {
+                                LeaderBoardInfo tmp;
+                                tmp.m_name = leaderBoardList[j].m_name;
+                                tmp.m_score = leaderBoardList[j].m_score;
+                                leaderBoardList[j].m_name = leaderBoardList[i].m_name;
+                                leaderBoardList[j].m_score = leaderBoardList[i].m_score;
+                                leaderBoardList[i].m_score = tmp.m_score;
+                                leaderBoardList[i].m_name = tmp.m_name;
+                            }
+                        }
+                    } 
 
-                    for (auto info : leaderBoardList) {
-                        if (auto listview = utils::findChild <ui::ListView*>(leaderBoard, "list_view")) {
+                    if (auto listview = utils::findChild <ui::ListView*>(leaderBoard, "list_view")) {
+                        for (auto info : leaderBoardList) {
+                            //if (auto listview = utils::findChild <ui::ListView*>(leaderBoard, "list_view")) {
+                                //listview->setScrollBarEnabled(true);
+                               // listview->setBounceEnabled(true);
                             auto newItem = item->clone();
-                            
+                            newItem->setVisible(true);
+
                             if (auto nameLabel = newItem->getChildByName <ui::Text*>("name")) {
                                 nameLabel->setString(info.m_name);
-                                listview->addChild(nameLabel);
+                                //listview->addChild(nameLabel);
                             }
                             else {
                                 CCLOG("Cannot create nameLabel");
@@ -161,26 +181,19 @@ bool SplashScene::init()
 
                             if (auto scoreLabel = newItem->getChildByName <ui::Text*>("score")) {
                                 scoreLabel->setString(StringUtils::format("Score: %i", info.m_score));
-                                listview->addChild(scoreLabel);
+                                //listview->addChild(scoreLabel);
                             }
                             else {
                                 CCLOG("Cannot create scoreLable");
                             }
 
                             listview->addChild(newItem);
-                        }
-                        else {
-                            CCLOG("Cannot find listview");
+
+                            item->removeFromParent();
+                            //}
                         }
                     }
-
-
                 }
-                else
-                {
-                    CCLOG("Got empty data");
-                }
-
 
                 this->addChild(leaderBoard);
 

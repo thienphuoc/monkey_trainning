@@ -17,9 +17,16 @@ bool leaderboard::init() {
 	auto leaderBoardLayer = CSLoader::getInstance()->createNode("csb/Leaderboard.csb");
 	this->addChild(leaderBoardLayer);
 
-	auto listView = leaderBoardLayer->getChildByName<ui::ListView*>("listView");
 
+	auto backgroundLeaderBoard = leaderBoardLayer->getChildByName<ui::ImageView*>("listViewBackground");
 
+	ui::ListView* listView = backgroundLeaderBoard->getChildByName<ui::ListView*>("listView1");
+	//auto listview = utils::findChild <ui::ListView*>(leaderBoardLayer, "listView1");
+
+	auto item = leaderBoardLayer->getChildByName<ui::ImageView*>("item");
+	
+	
+	//this->addChild(leaderBoardLayer);
 	HttpRequest* request = new HttpRequest();
 	request->setRequestType(HttpRequest::Type::GET);
 	request->setUrl("https://isschool.firebaseio.com/leaderboard.json");
@@ -45,7 +52,13 @@ bool leaderboard::init() {
 						temp.second = score;
 						storageData.push_back(temp);
                     }
-
+					auto tempList = ui::ListView::create();
+					tempList->setDirection(ui::ScrollView::Direction::VERTICAL);
+					tempList->setClippingEnabled(false);
+					tempList->setPosition(Vec2(0, 500));
+					//tempList->setAnchorPoint(Vec2(0.5,0.5));
+					//ui::ListView* tempList = listView->clone();
+					
 					for (int i = 0; i < document.Size(); i++) {
 						auto nameLabel = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 24);
 						auto scoreLabel = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 24);
@@ -56,22 +69,19 @@ bool leaderboard::init() {
 						this->addChild(nameLabel);
 						this->addChild(scoreLabel);
 
+						//////
 
-						/*auto nameUI = ui::Text::create();
-						nameUI->setString(storageData[i].first);
-						nameUI->setColor(cocos2d::Color3B::RED);
-						
 
-						auto scoreUI = ui::Text::create();
-						scoreUI->setString(std::to_string(storageData[i].second));
-						nameUI->setColor(cocos2d::Color3B::RED);
-
-						listView->addChild(nameUI);
-
-						auto avatar = ui::ImageView::create("settingsButton.png");*/
-
+						auto temp = item->clone();
+						temp->getChildByName<ui::Text*>("name")->setString(storageData[i].first);
+						temp->getChildByName<ui::Text*>("score")->setString(std::to_string(storageData[i].second));
+						temp->setVisible(true);
+						//listView->pushBackCustomItem(temp);
+						tempList->pushBackCustomItem(temp);
 					}
-					
+					//listView->setPositionZ(1111);
+					leaderBoardLayer->removeChild(item);
+					backgroundLeaderBoard->addChild(tempList);
                 }
 			}
 			else
