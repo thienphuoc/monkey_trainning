@@ -6,7 +6,30 @@
 #include "proj.win32/Definition.h"
 #include "proj.win32/GameScene.h"
 
+
+#include "SplashScene.h"
+#include "MainMenuScene.h"
+#include "GameScene.h"
+#include "ui/CocosGUI.h"
+#include "cocostudio/CocoStudio.h"
+
 USING_NS_CC;
+
+
+struct LeaderBoardInfo
+{
+    std::string m_name;
+    int m_score;
+
+    LeaderBoardInfo() {}
+
+    LeaderBoardInfo(std::string i_name, int i_score) :
+        m_name(i_name),
+        m_score(i_score)
+    {
+
+    }
+};
 
 Scene* MainMenuScene::createScene()
 {
@@ -15,10 +38,8 @@ Scene* MainMenuScene::createScene()
     auto layer = MainMenuScene::create();
 
     scene->addChild(layer);
-
     return scene;
 }
-
 
 
 // on "init" you need to initialize your instance
@@ -31,75 +52,61 @@ bool MainMenuScene::init()
         return false;
     }
 
-    Size visibleSize = Director::getInstance()->getVisibleSize();
-    Vec2 origin = Director::getInstance()->getVisibleOrigin();
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto origin = Director::getInstance()->getVisibleOrigin();
 
-    //SonarCocosHelper::UI::AddCentredBackground(MAIN_MENU_BACKGROUND_FILEPATH, this);
-    Sprite* bacground = Sprite::create(MAIN_MENU_BACKGROUND_FILEPATH);
-    bacground->setPosition(visibleSize.width/2, visibleSize.height/2);
-    this->addChild(bacground);
+    auto mainMenu = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
+    this->addChild(mainMenu);
 
-    Sprite *title = Sprite::create(MAIN_MENU_TITLE_FILEPATH);
-    title->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height *0.75 + origin.y));
-    this->addChild(title);
+    //Go to Game
 
-    Button *playButton = Button::create(MAIN_MENU_PLAY_BUTTON, MAIN_MENU_PLAY_BUTTON_OUTER);
-    playButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2.5 + origin.y));
-    this -> addChild(playButton);
+    auto menu_background = utils::findChild<ui::ImageView*>(mainMenu, "background");
+    menu_background->setVisible(true);
 
-    playButton->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::touchEvent, this));
-    playButton->setTag(TAG_MAIN_MENU_PLAY_BUTTON);
+    auto button_retry = utils::findChild<ui::Button*>(menu_background, "go_to_game_button");
+    button_retry->setPressedActionEnabled(true);
+    button_retry->addClickEventListener([=](Ref*)-> void
+        {
+            auto scene = GameScene::createScene();
+            Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
 
-    Sprite* playButtonOuter = Sprite::create(MAIN_MENU_PLAY_BUTTON_OUTER);
-    playButtonOuter->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2.5 + origin.y));
-    this->addChild(playButtonOuter);
+        });
 
-    SonarCocosHelper::UI ui;
+    auto button_retry = utils::findChild<ui::Button*>(menu_background, "sound_button");
+    button_retry->setPressedActionEnabled(true);
+    
+    button_retry->addClickEventListener([=](Ref*)-> void
+        {
+            int i = 0;
+            auto sprite_sound_on = Sprite::create("res/Sound On.png");
+            sprite_sound_on->setPosition(701.95, 63.42);
 
-    //123
-    ui.AddAudioToggle(SOUND_ON_BUTTON, SOUND_ON_BUTTON_PRESSED, SOUND_OFF_BUTTON, SOUND_OFF_BUTTON_PRESSED, this,
-        SonarCocosHelper::UIButtonPosition::eBottomRight);
+            auto sprite_sound_off = Sprite::create("res/Sound off.png");
+            sprite_sound_off->setPosition(701.95, 63.42);
+            if (i % 2 == 0)
+            {
+                this->addChild(sprite_sound_off);
+                this->addChild(sprite_sound_on);
+                sprite_sound_off->runAction(FadeIn::create(10000));
+                sprite_sound_on->runAction(FadeOut::create(10000));
 
-    Button* achievementsButton = Button::create(ACHIEVEMENTS_BUTTONS, ACHIEVEMENTS_BUTTONS_PRESSED);
-    achievementsButton->setPosition(Vec2(achievementsButton->getContentSize().width/2 + origin.x, achievementsButton->getContentSize().height/2 + origin.y));
-    this->addChild(achievementsButton);
-    achievementsButton->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::touchEvent, this));
 
-    achievementsButton->setTag(TAG_ACHIEVEMENTS_BUTTON);
+            }
+            else
+            {
+
+                this->addChild(sprite_sound_off);
+                this->addChild(sprite_sound_on);
+                sprite_sound_on->runAction(FadeIn::create(10000));
+                sprite_sound_off->runAction(FadeOut::create(10000));
+            }
+            i++;
+
+        });
+
 
     return true;
 }
 
-void MainMenuScene::touchEvent(Ref* sender, Widget::TouchEventType type)
-{
-    Node* node = (Node*)sender;
-    switch (type) 
-    {
-    case Widget::TouchEventType::BEGAN:
-        break;
 
-    case Widget::TouchEventType::MOVED:
-        break;
-
-    case Widget::TouchEventType::ENDED:
-        if (TAG_MAIN_MENU_PLAY_BUTTON == node->getTag())
-        {
-            Scene* scene = GameScene::createScene();
-            TransitionFade* transitionFade = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
-            Director::getInstance()->replaceScene(scene);
-        }
-        else if (TAG_ACHIEVEMENTS_BUTTON == node->getTag())
-        {
-            //SonarCocosHelper::GameCenter::showAchievements();
-            //SonarCocosHelper::GooglePlayServices::showAchievements();
-        }
-        break;
-
-    case Widget::TouchEventType::CANCELED:
-        break;
-
-    default:
-        break;
-    }
-}
 

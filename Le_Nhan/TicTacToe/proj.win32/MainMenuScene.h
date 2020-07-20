@@ -21,11 +21,6 @@ public:
 
     // implement the "static create()" method manually
     CREATE_FUNC(MainMenuScene);
-
-private:
-    void touchEvent(Ref* sender, Widget::TouchEventType type);
-    void AddAudioToggle(const std::string& onButton, const std::string& onButtonPressed, const std::string& offButton, 
-        const std::string& offButtonPressed, cocos2d::Layer* layer, int position);
 };
 
 #endif // __HELLOWORLD_SCENE_H__
