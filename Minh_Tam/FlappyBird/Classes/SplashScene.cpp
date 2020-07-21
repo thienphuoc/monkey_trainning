@@ -26,6 +26,8 @@
 #include "MainMenuScene.h"
 #include "Definitions.h"
 #include "SimpleAudioEngine.h"
+
+
 USING_NS_CC;
 
 Scene* SplashScene::createScene()
@@ -61,6 +63,7 @@ bool SplashScene::init()
     backgroundSprite->setPosition(Point(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
     this->addChild(backgroundSprite);
 
+    
 
     return true;
 }

@@ -1,0 +1,31 @@
+<Solution>
+  <PropertyGroup Name="proj.desing" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Folder Name="fonts">
+          <TTF Name="Roboto-Bold.ttf" />
+          <TTF Name="Roboto-Medium.ttf" />
+          <TTF Name="Roboto-Regular.ttf" />
+        </Folder>
+        <Folder Name="images">
+          <Image Name="about_button.png" />
+          <Image Name="avatar.png" />
+          <Image Name="back_button.png" />
+          <Image Name="background.png" />
+          <Image Name="exit_button.png" />
+          <Image Name="item_bg.png" />
+          <Image Name="leader_board_bg.png" />
+          <Image Name="leader_board_button.png" />
+          <Image Name="leader_board_title.png" />
+          <Image Name="list_view_bg.png" />
+          <Image Name="play_button.png" />
+          <Image Name="pressed_settings_button.png" />
+          <Image Name="settings_button.png" />
+        </Folder>
+        <Project Name="LeaderBoard.csd" Type="Layer" />
+        <Project Name="MainMenu.csd" Type="Layer" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>
