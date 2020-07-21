@@ -12,13 +12,13 @@ Bird::Bird(Scene *scene) {
 	birdBody->setContactTestBitmask(true);
 	bird->setPhysicsBody(birdBody);
 	scene->addChild(bird,100);
-	bird->runAction(RepeatForever::create(MoveBy::create(0.25/2, Vec2(0,-10))));//với mọi độ cao thì tốc độ ko thay đổi
+	bird->runAction(RepeatForever::create(MoveBy::create(0.25/4, Vec2(0,-10))));//với mọi độ cao thì tốc độ ko thay đổi
 
 	
 }
 void Bird::fly() {
 	//MoveBy *f = MoveBy::create(0.25, Vec2(0, 20));
-	MoveTo* f = MoveTo::create(0.123, Vec2(visibleSize.width / 2 + origin.x, bird->getPosition().y+20));
+	MoveTo* f = MoveTo::create(0.123, Vec2(visibleSize.width / 2 + origin.x, bird->getPosition().y+40));
 	//CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("wing.mp3"); Lag
 	bird->runAction(f);
 }

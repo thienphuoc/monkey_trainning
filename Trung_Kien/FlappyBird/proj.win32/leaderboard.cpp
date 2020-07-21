@@ -5,7 +5,6 @@
 #include "ui/CocosGui.h"
 #include <algorithm>
 //#include "rapidjson/document.h"
-using namespace rapidjson;  
 Scene* leaderboard::createScene() {
 	return leaderboard::create();
 }

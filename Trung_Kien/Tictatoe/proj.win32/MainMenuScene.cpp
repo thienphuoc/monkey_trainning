@@ -1,9 +1,13 @@
 #include "MainMenuScene.h"
 #include "GameScene.h"
+#include "SimpleAudioEngine.h"
+
 Scene* MainMenuScene::createScene() {
 	return create();
 }
 bool MainMenuScene::init() {
+	CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("music.mp3",true);
+	//CocosDenshion::SimpleAudioEngine::getInstance()->playBackgroundMusic("victory.mp3",true);
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	Vec2 origin = Director::getInstance()->getVisibleOrigin();
 	Sprite* sprite = Sprite::create("Main Menu Background.png");
@@ -42,7 +46,7 @@ bool MainMenuScene::init() {
 	return true;
 }
 void MainMenuScene::touchEvent(Ref* sender, Widget::TouchEventType type) {
-	Scene* gameScene = GameScene::createScene();
+	Scene* gameScene = GameScene::createScene(this->isSoundOn);
 	TransitionFade* tran = TransitionFade::create(2, gameScene);
 	Director::getInstance()->replaceScene(tran);
 	CCLOG("Clicked");
@@ -55,21 +59,27 @@ void MainMenuScene::volumTouch(Ref* sender, Widget::TouchEventType type,Sprite* 
 	
 	sprite->removeChild(soundButton,NULL);
 	Button* soundButton1 = Button::create("Sound Off.png");
-
+	this->isSoundOn = false;
 	soundButton1->setPosition(Vec2(0, 0));
 	soundButton1->setAnchorPoint(Vec2(0, 0));
 	sprite->addChild(soundButton1);
 	soundButton1->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::volumTouch1, this, sprite, soundButton1));
-	CCLOG("on button");
+	CocosDenshion::SimpleAudioEngine::getInstance()->stopBackgroundMusic();
+	if (this->isSoundOn) CCLOG("sound on = true");
+	else CCLOG("sound on = false");
 }
 void MainMenuScene::volumTouch1(Ref* sender, Widget::TouchEventType type, Sprite* sprite, Button* soundButton1) {
+	this->isSoundOn = true;
 	sprite->removeChild(soundButton1,NULL);
 	Button* soundButton = Button::create("Sound On.png");
 	soundButton->setPosition(Vec2(0, 0));
 	soundButton->setAnchorPoint(Vec2(0, 0));
 	sprite->addChild(soundButton);
 	soundButton->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::volumTouch, this, sprite, soundButton));
-	CCLOG("off button");
+	if (this->isSoundOn) CCLOG("sound on = true");
+	else CCLOG("sound on = false");
+	CocosDenshion::SimpleAudioEngine::getInstance()->resumeBackgroundMusic();
+	//CocosDenshion::SimpleAudioEngine::getInstance()->resumeAllEffects();
 }
 //
 
