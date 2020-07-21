@@ -54,15 +54,15 @@ bool MainMenuScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto backgroundSprite = Sprite::create("Resources/iphonehd/Background.png");
+    auto backgroundSprite = Sprite::create("iphonehd/Background.png");
     backgroundSprite->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
     this->addChild(backgroundSprite);
     
-    auto titleSprite = Sprite::create("Resources/iphonehd/Title.png");
+    auto titleSprite = Sprite::create("iphonehd/Title.png");
     titleSprite->setPosition(Point(origin.x + visibleSize.width/2, visibleSize.height - titleSprite->getContentSize().height));
     this->addChild(titleSprite);
     
-    auto playItem = MenuItemImage::create("Resources/iphonehd/Play Button.png", "Resources/iphonehd/Play Button Clicked.png", CC_CALLBACK_1(MainMenuScene::GotoGameScene, this));
+    auto playItem = MenuItemImage::create("iphonehd/Play Button.png", "iphonehd/Play Button Clicked.png", CC_CALLBACK_1(MainMenuScene::GotoGameScene, this));
     playItem->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
                           
     auto menu = Menu::create(playItem, NULL);

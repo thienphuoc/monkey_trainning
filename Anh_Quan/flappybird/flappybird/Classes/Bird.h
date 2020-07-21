@@ -38,7 +38,7 @@ public:
         isFalling = false;
     }
     void StopFlying()  {
-        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Resources/Sounds/Wing.mp3");
+        CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("Sounds/Wing.mp3");
         isFalling = true;
     }
 private:
