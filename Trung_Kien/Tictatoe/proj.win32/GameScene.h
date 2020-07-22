@@ -22,7 +22,7 @@ public:
 	void initDigitMap();
 
 
-	static Scene* createScene();
+	static Scene* createScene(bool isSoundOn);
 	virtual bool init();
 	CREATE_FUNC(GameScene);
 };

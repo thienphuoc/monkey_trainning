@@ -29,6 +29,21 @@
 
 #include "cocos2d.h"
 
+struct LeaderBoardInfo
+{
+	std::string m_name;
+	int m_score;
+
+	LeaderBoardInfo() {}
+
+	LeaderBoardInfo(std::string i_name, int i_score) :
+		m_name(i_name),
+		m_score(i_score)
+	{
+
+	}
+};
+
 class MainMenuScene : public cocos2d::Scene
 {
 public:

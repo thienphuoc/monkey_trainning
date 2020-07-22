@@ -57,6 +57,11 @@ bool HelloWorld::init()
     sprite->setPosition(this->getBoundingBox().size.width / 2, this->getBoundingBox().size.height / 2);
     
     scheduleOnce(schedule_selector(HelloWorld::switchScene), 2);
+
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("punch.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("victory.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("backgroundMusic.mp3");
+    CocosDenshion::SimpleAudioEngine::getInstance()->preloadBackgroundMusic("music.mp3");
     return true;
 }
 void HelloWorld::switchScene(float dt) {

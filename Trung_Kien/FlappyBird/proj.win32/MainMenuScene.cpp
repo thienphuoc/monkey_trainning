@@ -22,45 +22,7 @@ bool MainMenuScene::init() {
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 
 
-	/*Button *playButton = Button::create("play button.png");
-	playButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-	this->addChild(playButton);
-	playButton->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
-		CCLOG("PLay");
-		Director::getInstance()->replaceScene(GameScene::createScene());
-	});
 
-	Button* leaderboardButton = Button::create("leaderboard.png");
-	leaderboardButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, playButton->getPositionY() - playButton->getContentSize().height));
-	this->addChild(leaderboardButton);
-	leaderboardButton->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
-		CCLOG("leaderboardButton");
-		Director::getInstance()->replaceScene(leaderboard::createScene());
-
-	});
-
-	Button* inforButton = Button::create("inforButton.png");
-	inforButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, leaderboardButton->getPositionY() - leaderboardButton->getContentSize().height));
-	this->addChild(inforButton);
-	inforButton->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
-		CCLOG("inforButton");
-	});
-
-	Button* exitButton = Button::create("exitButton.png");
-	exitButton->setPosition(Vec2(visibleSize.width / 2 + origin.x, inforButton->getPositionY() - inforButton->getContentSize().height));
-	this->addChild(exitButton);
-	exitButton->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
-		CCLOG("exitButton");
-		Director::getInstance()->end();
-	});
-
-	Button* settingButton = Button::create("settingButton.png");
-	settingButton->setAnchorPoint(Vec2(1, 1));
-	settingButton->setPosition(Vec2(visibleSize.width, visibleSize.height));
-	this->addChild(settingButton);
-	settingButton->addTouchEventListener([](Ref* sender, Widget::TouchEventType type) {
-		CCLOG("setting");
-	});*/
 
 
 	auto mainMenuButton = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
@@ -85,6 +47,12 @@ bool MainMenuScene::init() {
 	exitButton->addClickEventListener([](Ref*) {
 		CCLOG("exitButton");
 		Director::getInstance()->end();
+	});
+	auto settingField = mainMenuButton->getChildByName<ImageView*>("settingField");
+	auto settingsButton = mainMenuButton->getChildByName<Button*>("settingsButton");
+	settingsButton->addClickEventListener([=](Ref*) {
+		CCLOG("settingsButton");
+		settingField->setVisible(true);
 	});
 	return true;
 }

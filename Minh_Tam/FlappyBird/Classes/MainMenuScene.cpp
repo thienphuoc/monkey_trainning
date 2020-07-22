@@ -28,6 +28,16 @@
 #include "Definitions.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGUI.h"
+#include "json/rapidjson.h"
+#include "json/document.h"
+
+
+#include "network/HttpRequest.h"
+#include "network/HttpResponse.h"
+#include "network/HttpClient.h"
+
+
+using namespace rapidjson;
 
 USING_NS_CC;
 
@@ -72,6 +82,7 @@ bool MainMenuScene::init()
     this->addChild(menu);*/
 
 
+
     auto mainMenu = CSLoader::getInstance()->createNode("MainMenu.csb");
     this->addChild(mainMenu);
 
@@ -82,7 +93,7 @@ bool MainMenuScene::init()
         MainMenuScene::GotoGameScene(this);
 
         });
-    
+
     auto ExitButton = mainMenu->getChildByName<ui::Button*>("Button_exit");
     ExitButton->setPressedActionEnabled(true);
     ExitButton->addClickEventListener([=](Ref*) {
@@ -91,7 +102,130 @@ bool MainMenuScene::init()
 
         });
 
+    auto loaderButton = mainMenu->getChildByName<ui::Button*>("Button_leader_board");
+    loaderButton->setPressedActionEnabled(true);
+    loaderButton->addClickEventListener([=](Ref*) {
+        network::HttpRequest* request = new network::HttpRequest();
+        request->setRequestType(network::HttpRequest::Type::GET);
+        request->setUrl("https://isschool.firebaseio.com/leaderboard.json");
+        request->setResponseCallback([=](network::HttpClient* sender, network::HttpResponse* response) {
+            if (200 == response->getResponseCode()) // connect success
+            {
+                CCLOG("Connect success");
+                auto leaderBoard = CSLoader::getInstance()->createNode("LeaderBoard.csb");
+                if (!leaderBoard) {
+                    CCLOG("Cannot found LeaderBoard.csb");
+                }
+                else {
+                    CCLOG("LeaderBoard.csb found");
+                }
+                auto leader_bg = utils::findChild<ui::ImageView*>(leaderBoard, "leader_board_bg");
+                auto item = utils::findChild <ui::ImageView*>(leaderBoard, "item_bg");
+                if (!item) {
+                    CCLOG("Cannot found item");
+                }
+                else {
+                    CCLOG("item found");
+                }
+                std::vector<char>* buffer = response->getResponseData();
+                if (!buffer) {
+                    CCLOG("Buffer for response returns NULL");
+                }
+                else {
+                    CCLOG("Buffer created");
+                }
+
+                std::string data = std::string(buffer->begin(), buffer->end());
+                CCLOG("%s", data.c_str());  
+
+                if (!data.empty())
+                {
+                    Document m_document;
+                    m_document.Parse(data.c_str());
+                    std::vector<LeaderBoardInfo> leaderBoardList;
+
+                    for (int i = 0; i < m_document.Size(); i++)
+                    {
+
+                        std::string l_name = m_document[i]["name"].GetString();
+                        int l_score = m_document[i]["score"].GetInt();
+
+                        // CCLOG("%s   ,   %s\n", l_name, l_score);
+                        leaderBoardList.push_back({ l_name, l_score });
+                    }
+
+                    //sort Score
+                    for (int i = 0; i < leaderBoardList.size(); i++)
+                    {
+                        for (int j = 1; j < leaderBoardList.size(); j++)
+                        {
+                            if (leaderBoardList[j].m_score > leaderBoardList[j - 1].m_score)
+                            {
+                                //swap(leaderBoardList[j].m_score, leaderBoardList[j - 1].m_score);
+
+                                std::swap(leaderBoardList[j].m_score, leaderBoardList[j-1].m_score);
+
+                                std::swap(leaderBoardList[j].m_name, leaderBoardList[j - 1].m_name);
+                            }
+                        }
+                    }
+                    for (int i = 0; i < leaderBoardList.size(); i++) {
+                        CCLOG("%s %d 1", m_document[i]["name"].GetString(), m_document[i]["score"].GetInt());
+                    }
+
+                    if (auto listview = utils::findChild <ui::ListView*>(leaderBoard, "listview")) {
+                        for (auto info : leaderBoardList) {
+                            
+                            auto newItem = item->clone();
+                            newItem->setVisible(true);
+
+                            if (auto nameLabel = newItem->getChildByName <ui::Text*>("name")) {
+                                nameLabel->setString(info.m_name);
+                                //listview->addChild(nameLabel);
+                            }
+                            else {
+                                CCLOG("Cannot create nameLabel");
+                            }
+
+                            if (auto scoreLabel = newItem->getChildByName <ui::Text*>("score")) {
+                                scoreLabel->setString(StringUtils::format("Score: %i", info.m_score));
+                                //listview->addChild(scoreLabel);
+                            }
+                            else {
+                                CCLOG("Cannot create scoreLable");
+                            }
+
+                            listview->pushBackCustomItem(newItem);
+
+                            item->removeFromParent();
+                            //}
+                        }
+                    }
+                }
+
+                this->addChild(leaderBoard);
+
+            }
+            else // connect failed
+            {
+                CCLOG("Connect failed");
+            }
+
+            });
+
+
+        request->setTag("Get test");
+        network::HttpClient::getInstance()->send(request);
+        request->release();
+        //        auto loaderBoard = CSLoader::getInstance()->createNode("csb/leader.csb");
+                 // this->addChild(leaderBoard, 1000);
+
+        });
+
     return true;
+
+
+
 }
 
 
