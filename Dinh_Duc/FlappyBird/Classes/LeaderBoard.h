@@ -6,13 +6,10 @@
 
 class Leaderboard : public cocos2d::Layer
 {
-public:
+public:    
+    static cocos2d::Layer* createLeaderboard();
 
-    
-
-    static cocos2d::Scene* createScene();
-
-    virtual bool init();
+    //virtual bool init();
 
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);
@@ -38,10 +35,7 @@ private:
 
     static bool leaderboardCompare(Leaderboard::LeaderBoardInfo a, Leaderboard::LeaderBoardInfo b);
 
-    std::vector<Leaderboard::LeaderBoardInfo> getLeaderBoard();
     
-    
-    void Leaderboard::goToMainMenu(Ref* pSender);
 };
 
 #endif // __LEADERBOARD_H__

@@ -15,28 +15,28 @@
     <ClCompile Include="main.cpp">
       <Filter>win32</Filter>
     </ClCompile>
+    <ClCompile Include="..\Classes\Bird.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameOverScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\GameScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\LeaderBoard.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\MainMenu.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\Pipe.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Classes\SplashScene.cpp">
+      <Filter>src</Filter>
+    </ClCompile>
     <ClCompile Include="..\Classes\AppDelegate.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="MainMenu.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="GameOverScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="GameScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="SplashScene.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Pipe.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="Bird.cpp">
-      <Filter>src</Filter>
-    </ClCompile>
-    <ClCompile Include="LeaderBoard.cpp">
       <Filter>src</Filter>
     </ClCompile>
   </ItemGroup>
@@ -44,31 +44,31 @@
     <ClInclude Include="main.h">
       <Filter>win32</Filter>
     </ClInclude>
-    <ClInclude Include="..\Classes\AppDelegate.h">
+    <ClInclude Include="..\Classes\Bird.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="MainMenu.h">
+    <ClInclude Include="..\Classes\Definitions.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="GameScene.h">
+    <ClInclude Include="..\Classes\GameOverScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="GameOverScene.h">
+    <ClInclude Include="..\Classes\GameScene.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\LeaderBoard.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\MainMenu.h">
+      <Filter>src</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Classes\Pipe.h">
       <Filter>src</Filter>
     </ClInclude>
     <ClInclude Include="..\Classes\SplashScene.h">
       <Filter>src</Filter>
     </ClInclude>
-    <ClInclude Include="Definitions.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Pipe.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="Bird.h">
-      <Filter>src</Filter>
-    </ClInclude>
-    <ClInclude Include="LeaderBoard.h">
+    <ClInclude Include="..\Classes\AppDelegate.h">
       <Filter>src</Filter>
     </ClInclude>
   </ItemGroup>

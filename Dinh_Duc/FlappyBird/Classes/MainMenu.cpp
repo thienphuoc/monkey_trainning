@@ -43,52 +43,7 @@ bool MainMenu::init()
     {
         return false;
     }
-    
-    
-
-    //auto visibleSize = Director::getInstance()->getVisibleSize();
-    //Vec2 origin = Director::getInstance()->getVisibleOrigin();
-
-
-
-    //auto backgroundSprite = Sprite::create("Background.png");
-    //if (backgroundSprite == nullptr)
-    //{
-    //    problemLoading("'Background.png'");
-    //}
-    //else
-    //{
-    //    // position the sprite on the center of the screen
-    //    backgroundSprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height / 2 + origin.y));
-
-    //    // add the sprite as a child to this layer
-    //    this->addChild(backgroundSprite);
-
-    //}
-
-    //auto titleLogo = Sprite::create("Title.png");
-    //titleLogo->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height - titleLogo->getContentSize().height / 2));
-    //this->addChild(titleLogo);
-
-
-    //auto playItem = MenuItemImage::create(
-    //    "Play Button.png", 
-    //    "Play Button Clicked.png",
-    //    CC_CALLBACK_1(MainMenu::goToGameScene, this)
-    //);
-
-    //auto closeItem = MenuItemImage::create(
-    //    "CloseNormal.png",
-    //    "CloseSelected.png",
-    //    CC_CALLBACK_1(MainMenu::menuCloseCallback, this)
-    //);
-    //
-    //playItem->setPosition(Vec2(origin.x+visibleSize.width/2,origin.y+visibleSize.height/2));
-    //closeItem->setPosition(Vec2(origin.x + visibleSize.width - closeItem->getContentSize().width / 2, origin.y + closeItem->getContentSize().height / 2));
-
-    //auto menu = Menu::create(playItem, closeItem, NULL);
-    //menu->setPosition(Vec2::ZERO);
-    //this->addChild(menu);
+   
 
     auto mainMenu = CSLoader::getInstance()->createNode("csb/MainMenu.csb");
     this->addChild(mainMenu);
@@ -102,12 +57,14 @@ bool MainMenu::init()
         });
 
     auto button_leaderboard = mainMenu->getChildByName<ui::Button*>("button_leaderboard");
+    CCLOG("button_leaderboard loaded");
     button_leaderboard->setPressedActionEnabled(true);
     button_leaderboard->addClickEventListener([=](Ref*)
         {
-            
+       
+            auto leaderboard = Leaderboard::createLeaderboard();
+            this->addChild(leaderboard);
 
-            goToLeaderboardScene(this);
         });
 
     auto button_exit = mainMenu->getChildByName<ui::Button*>("button_exit");
@@ -142,10 +99,5 @@ void MainMenu::goToGameScene(Ref* pSender)
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
 
-void MainMenu::goToLeaderboardScene(Ref* pSender)
-{
-    auto scene = Leaderboard::createScene();
 
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
 

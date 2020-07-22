@@ -15,30 +15,26 @@ USING_NS_CC;
 
 
 
-
-Scene* Leaderboard::createScene()
+Layer* Leaderboard::createLeaderboard()
 {
-    auto scene = Scene::create();
     auto leaderboard = Leaderboard::create();
+    
 
-    scene->addChild(leaderboard);
 
-    return scene;
-};
+//bool Leaderboard::init() 
+//{
+//    if (!Layer::init())
+//    {
+//        return false;
+//    }
 
-bool Leaderboard::init()
-{
-    if (!Layer::init())
-    {
-        return false;
-    }
-
-    auto leaderboardLayer = CSLoader::getInstance()->createNode("csb/LeaderBoard.csb");
-    this->addChild(leaderboardLayer);
+    auto leaderboardLayer = CSLoader::getInstance()->createNode("csb/Leaderboard.csb");
+    leaderboard->addChild(leaderboardLayer);
 
     network::HttpRequest* request = new network::HttpRequest();
     request->setRequestType(network::HttpRequest::Type::GET);
     request->setUrl("https://isschool.firebaseio.com/leaderboard.json");
+    CCLOG("HttpRequest created!");
     request->setResponseCallback([=](network::HttpClient* sender, network::HttpResponse* response) {
 
         if (200 == response->getResponseCode()) // connect success
@@ -71,8 +67,7 @@ bool Leaderboard::init()
             }
 
             std::sort(retVec.begin(), retVec.end(), leaderboardCompare);
-
-            
+       
 
             auto listItem = utils::findChild<ui::ImageView*>(leaderboardLayer, "item_bg");
 
@@ -81,13 +76,19 @@ bool Leaderboard::init()
                 if (auto listView = utils::findChild<ui::ListView*>(leaderboardLayer, "listview"))
                 {
                     auto newItem = listItem->clone();
+                    if (auto avatar = utils::findChild<ui::ImageView*>(newItem, "avatar"))
+                    {
+                        avatar->setVisible(true);
+                    }
                     if (auto itemName = utils::findChild<ui::Text*>(newItem, "name"))
                     {
                         itemName->setString(info.m_name);
+                        itemName->setVisible(true);
                     }
                     if (auto itemScore = utils::findChild<ui::Text*>(newItem, "score"))
                     {
                         itemScore->setString(StringUtils::format("Score: %d", info.m_score));
+                        itemScore->setVisible(true);
                     }
 
                     listView->pushBackCustomItem(newItem);
@@ -112,22 +113,23 @@ bool Leaderboard::init()
     
 
     
-    auto button_back = leaderboardLayer->getChildByName<ui::Button*>("button_back");
+    //auto button_back = leaderboardLayer->getChildByName<ui::Button*>("button_back");
+    //CCLOG("button back found!");
+    //button_back->setPressedActionEnabled(false);
+    //button_back->addClickEventListener([=](Ref*)
+    //    {
+    //        //leaderboard->removeFromParent(); 
+    //    });
+
+    auto button_back = utils::findChild<ui::Button*>(leaderboardLayer, "button_back");
     button_back->setPressedActionEnabled(true);
     button_back->addClickEventListener([=](Ref*)
         {
-
-
-            goToMainMenu(this);
+            leaderboard->removeFromParent();
         });
 
-    return true;
-};
-
-//std::vector<Leaderboard::LeaderBoardInfo> Leaderboard::getLeaderBoard()
-//{
-//    return 
-//}
+    return leaderboard;
+}
 
 
 bool Leaderboard::leaderboardCompare(Leaderboard::LeaderBoardInfo a, Leaderboard::LeaderBoardInfo b)
@@ -135,12 +137,6 @@ bool Leaderboard::leaderboardCompare(Leaderboard::LeaderBoardInfo a, Leaderboard
     return (a.m_score > b.m_score);
 }
 
-void Leaderboard::goToMainMenu(Ref* pSender)
-{
-    auto scene = MainMenu::createScene();
-
-    Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-}
 
 void Leaderboard::menuCloseCallback(Ref* pSender)
 {
