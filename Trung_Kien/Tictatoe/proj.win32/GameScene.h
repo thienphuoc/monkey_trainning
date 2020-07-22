@@ -20,9 +20,9 @@ public:
 	int check1();
 	int check2();
 	void initDigitMap();
+	int  greedy(Size size);
 
-
-	static Scene* createScene(bool isSoundOn);
+	static Scene* createScene(bool isSoundOn,bool isPlayWithBot);
 	virtual bool init();
 	CREATE_FUNC(GameScene);
 };

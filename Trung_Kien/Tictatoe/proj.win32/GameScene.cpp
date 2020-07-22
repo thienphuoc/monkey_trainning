@@ -4,8 +4,10 @@
 #include"MainMenuScene.h"
 #include "SimpleAudioEngine.h"
 bool isSoundOn;
-Scene* GameScene::createScene(bool b) {
+bool isPlayWithBot;
+Scene* GameScene::createScene(bool b,bool bot) {
 	isSoundOn = b;
+	isPlayWithBot = bot;
 	return GameScene::create();
 }
 bool GameScene::init() {
@@ -35,33 +37,76 @@ void GameScene::loadMap(Sprite* sprite, int digitMap[][3], Size sizeBox) {
 }
 int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMap[][3]) {
 	bool b = buttonMap[i][j]->getChildren().size() == 0;
-	if (b) {
-		if (GameScene::turn % 2 == 0) {
+	if (!isPlayWithBot) {
+		if (b) {
+			if (GameScene::turn % 2 == 0) {
+				Sprite* xTick = Sprite::create("X.png");
+				xTick->setAnchorPoint(Vec2(0.5, 0.5));
+				xTick->setPosition(size.width / 2, size.height / 2);
+				std::string tag = std::to_string(i) + std::to_string(j);
+				buttonMap[i][j]->addChild(xTick);
+				digitMap[i][j] = 1;
+
+				if (check(i, j) != 0)return check(i, j);
+				if (check1() != 0)return check1();
+				if (check2() != 0)return check2();
+
+
+			}
+			else if (GameScene::turn % 2 == 1) {
+				if (!isPlayWithBot) {
+					Sprite* yTick = Sprite::create("O.png");
+					yTick->setAnchorPoint(Vec2(0.5, 0.5));
+					yTick->setPosition(size.width / 2, size.height / 2);
+					buttonMap[i][j]->addChild(yTick);
+					digitMap[i][j] = 2;
+					if (check(i, j) != 0)return check(i, j);
+					if (check1() != 0)return check1();
+					if (check2() != 0)return check2();
+				}
+
+			}
+			GameScene::turn++;
+		}
+	}else {//play with bot
+		if (b) {
 			Sprite* xTick = Sprite::create("X.png");
 			xTick->setAnchorPoint(Vec2(0.5, 0.5));
 			xTick->setPosition(size.width / 2, size.height / 2);
 			std::string tag = std::to_string(i) + std::to_string(j);
 			buttonMap[i][j]->addChild(xTick);
 			digitMap[i][j] = 1;
-
 			if (check(i, j) != 0)return check(i, j);
 			if (check1() != 0)return check1();
 			if (check2() != 0)return check2();
 
 
-		}
-		else if (GameScene::turn % 2 == 1) {
 			Sprite* yTick = Sprite::create("O.png");
 			yTick->setAnchorPoint(Vec2(0.5, 0.5));
 			yTick->setPosition(size.width / 2, size.height / 2);
-			buttonMap[i][j]->addChild(yTick);
+			/*buttonMap[i][j]->addChild(yTick);
 			digitMap[i][j] = 2;
 			if (check(i, j) != 0)return check(i, j);
 			if (check1() != 0)return check1();
-			if (check2() != 0)return check2();
+			if (check2() != 0)return check2();*/
+			bool temp1 = false;
+			for (int ii = 0; ii < 3; ii++) {
+				for (int jj = 0; jj < 3; jj++) {
+					if (digitMap[ii][jj] == -1) {
+						buttonMap[ii][jj]->addChild(yTick);
+						digitMap[ii][jj] = 2;
+						if (check(ii, jj) != 0)return check(ii, jj);
+						if (check1() != 0)return check1();
+						if (check2() != 0)return check2(); 
+						temp1 = true;
+						break;
+					}
+				}
+				if (temp1) break;
+			}
 		}
-		GameScene::turn++;
 	}
+
 	return 0;
 }
 
@@ -231,6 +276,25 @@ void GameScene::initDigitMap() {
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
 			digitMap[i][j] = -1;
+		}
+	}
+}
+int GameScene::greedy(Size size) {
+	bool temp = false;
+	for (int i = 0; i < 3; i++) {
+		for (int j = 0; j < 3; j++) {
+			if (digitMap[i][j] == -1) {
+				Sprite* yTick = Sprite::create("O.png");
+				yTick->setAnchorPoint(Vec2(0.5, 0.5));
+				yTick->setPosition(size.width / 2, size.height / 2);
+				buttonMap[i][j]->addChild(yTick);
+				digitMap[i][j] = 2;
+				if (check(i, j) != 0)return check(i, j);
+				if (check1() != 0)return check1();
+				if (check2() != 0)return check2();
+				temp = true;
+				return 0;
+			}
 		}
 	}
 }
