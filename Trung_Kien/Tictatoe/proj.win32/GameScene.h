@@ -2,6 +2,7 @@
 #include "cocos2d.h"
 #include "extensions/cocos-ext.h"
 #include "ui/CocosGUI.h"
+#include "AI.h"
 USING_NS_CC;
 USING_NS_CC_EXT;
 using namespace ui;
@@ -24,6 +25,8 @@ public:
 
 	static Scene* createScene(bool isSoundOn,bool isPlayWithBot);
 	virtual bool init();
+	void print();
+	std::pair<int, int> aiGreedy(AI *ai);
 	CREATE_FUNC(GameScene);
 };
 

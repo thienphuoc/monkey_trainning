@@ -24,6 +24,7 @@
     <ClCompile Include="MainMenuScene.cpp" />
     <ClCompile Include="GameScene.cpp" />
     <ClCompile Include="winner.cpp" />
+    <ClCompile Include="AI.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="main.h">
@@ -38,6 +39,7 @@
     <ClInclude Include="MainMenuScene.h" />
     <ClInclude Include="GameScene.h" />
     <ClInclude Include="winner.h" />
+    <ClInclude Include="AI.h" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="game.rc">

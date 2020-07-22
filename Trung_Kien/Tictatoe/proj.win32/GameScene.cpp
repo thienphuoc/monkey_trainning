@@ -1,8 +1,10 @@
-#include "GameScene.h"
+﻿#include "GameScene.h"
 #include<iostream>
 #include"winner.h"
 #include"MainMenuScene.h"
 #include "SimpleAudioEngine.h"
+#include "AI.h"
+
 bool isSoundOn;
 bool isPlayWithBot;
 Scene* GameScene::createScene(bool b,bool bot) {
@@ -69,7 +71,9 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 			GameScene::turn++;
 		}
 	}else {//play with bot
+		AI* ai = new AI();
 		if (b) {
+			//player tick
 			Sprite* xTick = Sprite::create("X.png");
 			xTick->setAnchorPoint(Vec2(0.5, 0.5));
 			xTick->setPosition(size.width / 2, size.height / 2);
@@ -80,36 +84,25 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 			if (check1() != 0)return check1();
 			if (check2() != 0)return check2();
 
-
+			// bot tick
 			Sprite* yTick = Sprite::create("O.png");
 			yTick->setAnchorPoint(Vec2(0.5, 0.5));
 			yTick->setPosition(size.width / 2, size.height / 2);
-			/*buttonMap[i][j]->addChild(yTick);
-			digitMap[i][j] = 2;
-			if (check(i, j) != 0)return check(i, j);
+			std::pair<int, int> t = GameScene::aiGreedy(ai);
+			int ii = t.first, jj = t.second;
+			buttonMap[ii][jj]->addChild(yTick);
+			digitMap[ii][jj] = 2;
+			if (check(ii, jj) != 0)return check(ii, jj);
 			if (check1() != 0)return check1();
-			if (check2() != 0)return check2();*/
-			bool temp1 = false;
-			for (int ii = 0; ii < 3; ii++) {
-				for (int jj = 0; jj < 3; jj++) {
-					if (digitMap[ii][jj] == -1) {
-						buttonMap[ii][jj]->addChild(yTick);
-						digitMap[ii][jj] = 2;
-						if (check(ii, jj) != 0)return check(ii, jj);
-						if (check1() != 0)return check1();
-						if (check2() != 0)return check2(); 
-						temp1 = true;
-						break;
-					}
-				}
-				if (temp1) break;
-			}
+			if (check2() != 0)return check2();
 		}
 	}
 
 	return 0;
 }
-
+void GameScene::print() {
+	CCLOG("pass function thanh cong");
+}
 int GameScene::check(int i, int j) {
 	int hangNgangX = 0, hangDocX = 0, hangDocY = 0, hangNgangY = 0;
 	for (int c = 0; c < 3; c++) {
@@ -279,22 +272,30 @@ void GameScene::initDigitMap() {
 		}
 	}
 }
-int GameScene::greedy(Size size) {
-	bool temp = false;
-	for (int i = 0; i < 3; i++) {
-		for (int j = 0; j < 3; j++) {
-			if (digitMap[i][j] == -1) {
-				Sprite* yTick = Sprite::create("O.png");
-				yTick->setAnchorPoint(Vec2(0.5, 0.5));
-				yTick->setPosition(size.width / 2, size.height / 2);
-				buttonMap[i][j]->addChild(yTick);
-				digitMap[i][j] = 2;
-				if (check(i, j) != 0)return check(i, j);
-				if (check1() != 0)return check1();
-				if (check2() != 0)return check2();
-				temp = true;
-				return 0;
+std::pair<int, int> GameScene::aiGreedy(AI *ai){
+	std::pair<int, int> Pair;
+	bool temp1 = false;
+	int tempMap[3][3];
+	for (int x = 0; x < 3; x++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			tempMap[x][y] = digitMap[x][y];
+		}
+	}
+	for (int ii = 0; ii < 3; ii++) {
+		for (int jj = 0; jj < 3; jj++) {
+			if (digitMap[ii][jj] == -1) {
+				digitMap[ii][jj] = 2;
+				if (check(ii, jj) == 2 ||check1() == 2) {//o win
+					Pair.first = ii;
+					Pair.second = jj;
+					return Pair;
+				}
+				digitMap[ii][jj] = tempMap[ii][jj];
+
 			}
 		}
 	}
+	return ai->basic(digitMap);
 }
