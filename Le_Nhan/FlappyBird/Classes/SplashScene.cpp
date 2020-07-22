@@ -1,4 +1,3 @@
-
 #include "SplashScene.h"
 #include "MainMenuScene.h"
 #include "Definitions.h"
@@ -25,6 +24,7 @@ bool SplashScene::init()
     {
         return false;
     }
+
 
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Hit.mp3");
     CocosDenshion::SimpleAudioEngine::getInstance()->preloadEffect("Sounds/Point.mp3");
