@@ -6,6 +6,7 @@ Board::Board(int n_rows, int n_columns, int n_types, std::vector<int> count) :
 	n_rows(n_rows), n_columns(n_columns),
 	_pokemons(std::vector<std::vector<int>>(n_rows, std::vector<int>(n_columns, -1)))
 {
+	
 	std::map<int, int> countType; // countType[x] counts number of type x
 	for (int i = 0; i < n_rows; ++i) {
 		for (int j = 0; j < n_columns; ++j) {
@@ -17,6 +18,8 @@ Board::Board(int n_rows, int n_columns, int n_types, std::vector<int> count) :
 			addPokemon(i, j, type + 1);
 		}
 	}
+
+
 }
 
 int Board::getNRows()
@@ -99,7 +102,6 @@ std::vector<std::pair<int, int>> Board::findPath(int _x, int _y, int x, int y)
 		}
 	}
 
-	//trace back
 	std::vector<std::pair<int, int>> res;
 	if (trace[s.first][s.second].first != -1) {
 		while (s.first != -2) {
