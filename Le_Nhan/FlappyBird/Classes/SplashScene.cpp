@@ -1,4 +1,3 @@
-
 #include "SplashScene.h"
 #include "MainMenuScene.h"
 #include "Definitions.h"
