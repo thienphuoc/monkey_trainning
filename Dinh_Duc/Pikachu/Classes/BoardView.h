@@ -2,8 +2,8 @@
 
 #include <vector>
 
-#include "cocos2d.h"
 #include "Board.h"
+#include "cocos2d.h"
 
 USING_NS_CC;
 
@@ -23,7 +23,10 @@ private:
 	Board* board;
 	float squareSize, width, height;
 	std::vector<std::vector<Sprite*>> pokemons;
-	
+	cocos2d::FiniteTimeAction* getConnectEffect(int x, int y, int _x, int _y);
+	void connectPokemons(int x, int y, int _x, int _y);
+	void createChoosePokemonEffect(Node* pokemon);
+	void removeChosenPokemonEffect();
 
 
 };

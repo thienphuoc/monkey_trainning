@@ -26,6 +26,8 @@
 #define __GAME_SCENE_H__
 
 #include "cocos2d.h"
+#include "AI.h"
+#include "UI.h"
 
 class GameScene : public cocos2d::Scene
 {
@@ -57,6 +59,7 @@ private:
     void InitGridPieces();
 
     void onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event);
+    UI* ui;
 };
 
 #endif // __GAME_SCENE_H__

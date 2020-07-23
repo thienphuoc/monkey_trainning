@@ -22,7 +22,6 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "AI.h"
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "Definitions.h"
@@ -39,7 +38,6 @@ Scene* GameScene::createScene()
 static void problemLoading(const char* filename)
 {
     printf("Error while loading: %s\n", filename);
-    printf("Depending on how you compiled you might have to add 'Resources/' in front of filenames in HelloWorldScene.cpp\n");
 }
 
 // on "init" you need to initialize your instance
@@ -54,6 +52,8 @@ bool GameScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    //ui = new UI(this, gameState);
 
     auto gameBackground = Sprite::create("Main Menu Background.png");
     gameBackground->setPosition(origin.x + visibleSize.width / 2, origin.y + visibleSize.height / 2);
@@ -179,43 +179,40 @@ void GameScene::onTouchEnded(cocos2d::Touch* touch, cocos2d::Event* event)
                         if (lastMoveWon(i, j, PLAYER_PIECE))
                         {
                             //Game Over
+                            CCLOG("PLAYER WON");
                             GameScene::menuCloseCallback(this);
                         }
                         else if (!isMoveLeft(gridArray))
                         {
                             //Game draw
+                            CCLOG("GAME DRAW");
                             GameScene::menuCloseCallback(this);
                         }
-                        gameState = STATE_AI_PLAYING;
-                        Move aiMove = findBestMove(gridArray);
-                        gridArray[aiMove.x][aiMove.y] = AI_PIECE;
-                        if (AI_PIECE == O_PIECE)
-                            gridPieces[aiMove.x][aiMove.y]->setTexture("O.png");
-                        gridPieces[aiMove.x][aiMove.y]->setVisible(true);
-                        //gridPieces[aiMove.x][aiMove.y]->runAction(FadeIn::create(PIECE_FADE_IN_TIME));
+                        else {
+                            gameState = STATE_AI_PLAYING;
+                            Move aiMove = findBestMove(gridArray);
+                            gridArray[aiMove.x][aiMove.y] = AI_PIECE;
+                            if (AI_PIECE == O_PIECE)
+                                gridPieces[aiMove.x][aiMove.y]->setTexture("O.png");
+                            gridPieces[aiMove.x][aiMove.y]->setVisible(true);
+                            //gridPieces[aiMove.x][aiMove.y]->runAction(FadeIn::create(PIECE_FADE_IN_TIME));
 
-                        if (lastMoveWon(i, j, AI_PIECE))
-                        {
-                            //Game Over
-                            GameScene::menuCloseCallback(this);
-                        }
-                        else if (!isMoveLeft(gridArray))
-                        {
-                            //Game draw
-                            GameScene::menuCloseCallback(this);
-                        }
+                            if (lastMoveWon(aiMove.x, aiMove.y, AI_PIECE))
+                            {
+                                //Game Over
+                                CCLOG("AI WON");
+                                GameScene::menuCloseCallback(this);
+                            }
+                            else if (!isMoveLeft(gridArray))
+                            {
+                                //Game draw
+                                CCLOG("GAME DRAW");
+                                GameScene::menuCloseCallback(this);
+                            }
 
-                        gameState = STATE_PLAYERS_TURN;
+                            gameState = STATE_PLAYERS_TURN;
+                        }
                     }
-                    /*CCLOG("Touched grid (%d,%d)", i, j);
-                    for (int i = 0; i < 3; i++)
-                    {
-                        for (int j = 0; j < 3; j++)
-                        {
-                            CCLOG("AFTER TOUCH: Grid (%d, %d): %d", i, j, gridArray[i][j]);
-
-                        }
-                    }*/
                 }
             }
         }

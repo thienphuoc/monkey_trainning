@@ -2,7 +2,7 @@
 #include "GameScene.h"
 #include "Board.h"
 #include "BoardView.h"
-#include "SimpleAudioEngine.h"
+#include "AudioEngine.h"
 
 USING_NS_CC;
 
@@ -44,7 +44,9 @@ bool GameScene::init()
     menu->setPosition(Vec2::ZERO);
     this->addChild(menu);
 
-    showBoard();
+    showProgressTimer(showBoard());
+    
+
 
     return true;
 }
@@ -80,4 +82,20 @@ Layer* GameScene::showBoard()
     float y = (Director::getInstance()->getVisibleSize().height - boardView->getContentSize().height) / 2;
     boardView->setPosition({ x,y });
     return boardView;
+}
+
+void GameScene::showProgressTimer(Layer* boardView)
+{
+    auto visibleSize = Director::getInstance()->getVisibleSize();
+    auto board = boardView->getBoundingBox();
+
+    auto progressTimer = ProgressTimer::create(Sprite::create("ProgressBar.png"));
+    progressTimer->setType(ProgressTimer::Type::BAR);
+    progressTimer->setMidpoint(Vec2(0.0f, 0.5f));
+    progressTimer->setBarChangeRate(Vec2(1.0f, 0.0f));
+    progressTimer->setPercentage(100);
+    progressTimer->setScale(visibleSize.width / progressTimer->getContentSize().width);
+    progressTimer->setPosition(visibleSize.width / 2, board.getMinY() / 2);
+    this->addChild(progressTimer);
+    progressTimer->runAction(ProgressFromTo::create(90, 100, 0));
 }

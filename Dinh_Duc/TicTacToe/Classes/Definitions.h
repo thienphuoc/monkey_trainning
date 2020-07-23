@@ -13,7 +13,7 @@
 
 
 #define STATE_PLAYERS_TURN 98
-#define STATE_PAUSED 
+#define STATE_PAUSED 97
 #define STATE_WON 96
 #define STATE_LOSE 95
 #define STATE_PLACING_PIECE 94

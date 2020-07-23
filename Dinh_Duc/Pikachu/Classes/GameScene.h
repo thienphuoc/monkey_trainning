@@ -19,6 +19,7 @@ public:
 private:
     void goToMainMenu(Ref* pSender);
     cocos2d::Layer* showBoard();
+    void showProgressTimer(cocos2d::Layer* boardView);
 };
 
 #endif // __GAME_SCENE_H__

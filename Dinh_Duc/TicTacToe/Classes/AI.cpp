@@ -35,11 +35,12 @@ bool isMoveLeft(int gridArray[3][3])
 
     return false;
 }
+
 int evaluate(int gridArray[3][3])
 {
     for (int column = 0; column < 3; column++)
     {
-        //Check if game won by any column
+        //Check if game won vertically
         if (gridArray[0][column] == gridArray[1][column] && gridArray[1][column] == gridArray[2][column])
         {
             if (PLAYER_PIECE == gridArray[0][column])
@@ -51,7 +52,7 @@ int evaluate(int gridArray[3][3])
 
     for (int row = 0; row < 3; row++)
     {
-        //Check if game won by any column
+        //Check if game won horizontally
         if (gridArray[row][0] == gridArray[row][1] && gridArray[row][1] == gridArray[row][2])
         {
             if (PLAYER_PIECE == gridArray[row][0])
@@ -85,8 +86,10 @@ int evaluate(int gridArray[3][3])
 int minimax(int gridArray[3][3], int depth, bool isMax)
 {
     int score = evaluate(gridArray);
-    if (score != 0)
-        return score;
+    if (score == 10)
+        return score - depth;
+    if (score == -10)
+        return score + depth;
 
     if (!isMoveLeft(gridArray))
         return 0;
@@ -104,7 +107,7 @@ int minimax(int gridArray[3][3], int depth, bool isMax)
                 if (EMPTY_PIECE == gridArray[i][j])
                 {
                     gridArray[i][j] = AI_PIECE;
-                    best = max(best, minimax(gridArray, depth + 1, !isMax)-depth);
+                    best = max(best, minimax(gridArray, depth + 1, !isMax));
                     gridArray[i][j] = EMPTY_PIECE;
                 }
             }
@@ -121,8 +124,8 @@ int minimax(int gridArray[3][3], int depth, bool isMax)
             {
                 if (EMPTY_PIECE == gridArray[i][j])
                 {
-                    gridArray[i][j] = AI_PIECE;
-                    best = min(best, minimax(gridArray, depth + 1, !isMax)+depth);
+                    gridArray[i][j] = PLAYER_PIECE;
+                    best = min(best, minimax(gridArray, depth + 1, !isMax));
                     gridArray[i][j] = EMPTY_PIECE;
                 }
             }
@@ -159,4 +162,3 @@ struct Move findBestMove(int gridArray[3][3])
     }
     return bestMove;
 }
-

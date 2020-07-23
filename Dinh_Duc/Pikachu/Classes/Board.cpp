@@ -1,6 +1,7 @@
 #include "Board.h"
 #include <map>
 #include <deque>
+#include <time.h>
 
 
 Board::Board(int n_rows, int n_columns, int n_types, std::vector<int> count) :
@@ -8,6 +9,8 @@ Board::Board(int n_rows, int n_columns, int n_types, std::vector<int> count) :
 	_pokemons(std::vector<std::vector<int>>(n_rows, std::vector<int>(n_columns, -1)))
 {
 	std::map<int, int> countType;
+	srand(time(NULL));
+	
 	for (int i = 0; i < n_rows; i++)
 	{
 		for (int j = 0; j < n_columns; j++)
@@ -50,7 +53,7 @@ void Board::removePokemon(int x, int y)
 
 bool Board::selectPokemon(int x, int y)
 {
-	if (_x == -1 && _y == -1 || _pokemons[x][y] != _pokemons[_x][_y])
+	if (_x == -1 && _y == -1 || _pokemons[x][y] != _pokemons[_x][_y] || !canConnect(_x,_y,x,y))
 		return false;
 	return true;
 }
