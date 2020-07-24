@@ -18,7 +18,7 @@
 	 button->setPosition(Vec2(size.width / 2, button->getBoundingBox().size.height * 1.5 + 50));
 	 endGameScene->addChild(button);
 	 button->addTouchEventListener([=](Ref* pSender, Widget::TouchEventType type) {
-		 Scene* gameScene = GameScene::createScene();
+		 Scene* gameScene = GameScene::createScene(true,false);
 		 TransitionFade* tran = TransitionFade::create(2, gameScene);
 		 Director::getInstance()->replaceScene(tran);
 	});

@@ -99,22 +99,22 @@ bool AppDelegate::applicationDidFinishLaunching() {
     director->setAnimationInterval(1.0f / 60);
 
     // Set the design resolution
-    glview->setDesignResolutionSize(designResolutionSize.width, designResolutionSize.height, ResolutionPolicy::NO_BORDER);
+    glview->setDesignResolutionSize(customResolutionSize.width, customResolutionSize.height, ResolutionPolicy::NO_BORDER);
     auto frameSize = glview->getFrameSize();
     // if the frame's height is larger than the height of medium size.
     if (frameSize.height > mediumResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(largeResolutionSize.height/designResolutionSize.height, largeResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(largeResolutionSize.height/ customResolutionSize.height, largeResolutionSize.width/ customResolutionSize.width));
     }
     // if the frame's height is larger than the height of small size.
     else if (frameSize.height > smallResolutionSize.height)
     {        
-        director->setContentScaleFactor(MIN(mediumResolutionSize.height/designResolutionSize.height, mediumResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(mediumResolutionSize.height/ customResolutionSize.height, mediumResolutionSize.width/ customResolutionSize.width));
     }
     // if the frame's height is smaller than the height of medium size.
     else
     {        
-        director->setContentScaleFactor(MIN(smallResolutionSize.height/designResolutionSize.height, smallResolutionSize.width/designResolutionSize.width));
+        director->setContentScaleFactor(MIN(smallResolutionSize.height/ customResolutionSize.height, smallResolutionSize.width/ customResolutionSize.width));
     }
 
     register_all_packages();

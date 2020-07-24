@@ -3,8 +3,8 @@
 #include "extendLibrary/rapidjson/document.h"
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGui.h"
+#include <algorithm>
 //#include "rapidjson/document.h"
-using namespace rapidjson;  
 Scene* leaderboard::createScene() {
 	return leaderboard::create();
 }
@@ -17,9 +17,15 @@ bool leaderboard::init() {
 	auto leaderBoardLayer = CSLoader::getInstance()->createNode("csb/Leaderboard.csb");
 	this->addChild(leaderBoardLayer);
 
-	auto listView = leaderBoardLayer->getChildByName<ui::ListView*>("listView");
 
 
+	ui::ListView* listView = utils::findChild <ui::ListView*>(leaderBoardLayer, "ListView_2");
+	//auto listview = utils::findChild <ui::ListView*>(leaderBoardLayer, "listView1");
+
+	auto item = utils::findChild <ui::ImageView*>(leaderBoardLayer, "temp");
+	
+	
+	//this->addChild(leaderBoardLayer);
 	HttpRequest* request = new HttpRequest();
 	request->setRequestType(HttpRequest::Type::GET);
 	request->setUrl("https://isschool.firebaseio.com/leaderboard.json");
@@ -35,7 +41,6 @@ bool leaderboard::init() {
                 rapidjson::Document document;
                 document.Parse(data.c_str());
                 if (document.IsArray()) {
-                    //rapidjson::SizeType size = document.Size();
 					std::vector<std::pair<std::string, int>> storageData;
 					std::pair<std::string, int> temp;
                     for (int i = 0; i < document.Size(); i++) {
@@ -45,33 +50,22 @@ bool leaderboard::init() {
 						temp.second = score;
 						storageData.push_back(temp);
                     }
-
+					/*std::sort(storageData.begin(), storageData.end(), [](const std::pair<std::string, int>& a,
+						const std::pair<std::string, int>& b) {
+							return a.second > b.second;	
+					});*/
+					std::sort(storageData.begin(), storageData.end(), [](auto &a,auto &b) {
+							return a.second > b.second;
+					});
 					for (int i = 0; i < document.Size(); i++) {
-						auto nameLabel = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 24);
-						auto scoreLabel = Label::createWithTTF("0", "fonts/Marker Felt.ttf", 24);
-						nameLabel->setPosition(Vec2(origin.x+nameLabel->getContentSize().width+60, visibleSize.height + origin.y - i * nameLabel->getContentSize().height-60));
-						scoreLabel->setPosition(Vec2(visibleSize.width-scoreLabel->getContentSize().width-60, visibleSize.height + origin.y - i * scoreLabel->getContentSize().height-60));
-						nameLabel->setString(storageData[i].first);
-						scoreLabel->setString(std::to_string(storageData[i].second));
-						this->addChild(nameLabel);
-						this->addChild(scoreLabel);
 
-
-						/*auto nameUI = ui::Text::create();
-						nameUI->setString(storageData[i].first);
-						nameUI->setColor(cocos2d::Color3B::RED);
-						
-
-						auto scoreUI = ui::Text::create();
-						scoreUI->setString(std::to_string(storageData[i].second));
-						nameUI->setColor(cocos2d::Color3B::RED);
-
-						listView->addChild(nameUI);
-
-						auto avatar = ui::ImageView::create("settingsButton.png");*/
-
+						auto temp = item->clone();
+						temp->setOpacity(255);//0-255
+						temp->getChildByName<ui::Text*>("name")->setString(storageData[i].first);
+						temp->getChildByName<ui::Text*>("score")->setString(std::to_string(storageData[i].second));
+						listView->pushBackCustomItem(temp);
 					}
-					
+					item->removeFromParent();
                 }
 			}
 			else
@@ -81,7 +75,6 @@ bool leaderboard::init() {
         else {
             //Error
         }
-
 
 
 	});
