@@ -49,9 +49,9 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 				buttonMap[i][j]->addChild(xTick);
 				digitMap[i][j] = 1;
 
-				if (check(i, j) != 0)return check(i, j);
-				if (check1() != 0)return check1();
-				if (check2() != 0)return check2();
+				if (check(i, j, digitMap, false) != 0)return check(i, j, digitMap, false);
+				if (check1(digitMap, false) != 0)return check1(digitMap, false);
+				if (check2(digitMap, false) != 0)return check2(digitMap, false);
 
 
 			}
@@ -62,9 +62,9 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 					yTick->setPosition(size.width / 2, size.height / 2);
 					buttonMap[i][j]->addChild(yTick);
 					digitMap[i][j] = 2;
-					if (check(i, j) != 0)return check(i, j);
-					if (check1() != 0)return check1();
-					if (check2() != 0)return check2();
+					if (check(i, j, digitMap, false) != 0)return check(i, j, digitMap, false);
+					if (check1(digitMap, false) != 0)return check1(digitMap, false);
+					if (check2(digitMap, false) != 0)return check2(digitMap, false);
 				}
 
 			}
@@ -77,24 +77,23 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 			Sprite* xTick = Sprite::create("X.png");
 			xTick->setAnchorPoint(Vec2(0.5, 0.5));
 			xTick->setPosition(size.width / 2, size.height / 2);
-			std::string tag = std::to_string(i) + std::to_string(j);
 			buttonMap[i][j]->addChild(xTick);
 			digitMap[i][j] = 1;
-			if (check(i, j) != 0)return check(i, j);
-			if (check1() != 0)return check1();
-			if (check2() != 0)return check2();
+			if (check(i, j, digitMap, false) != 0)return check(i, j, digitMap, false);
+			if (check1(digitMap, false) != 0)return check1(digitMap, false);
+			if (check2(digitMap, false) != 0)return check2(digitMap, false);
 
 			// bot tick
 			Sprite* yTick = Sprite::create("O.png");
 			yTick->setAnchorPoint(Vec2(0.5, 0.5));
 			yTick->setPosition(size.width / 2, size.height / 2);
-			std::pair<int, int> t = GameScene::aiGreedy(ai);
+			std::pair<int, int> t = GameScene::aiGreedyAdvanced(ai);
 			int ii = t.first, jj = t.second;
 			buttonMap[ii][jj]->addChild(yTick);
 			digitMap[ii][jj] = 2;
-			if (check(ii, jj) != 0)return check(ii, jj);
-			if (check1() != 0)return check1();
-			if (check2() != 0)return check2();
+			if (check(ii, jj, digitMap, false) != 0)return check(ii, jj, digitMap, false);
+			if (check1(digitMap, false) != 0)return check1(digitMap, false);
+			if (check2(digitMap, false) != 0)return check2(digitMap, false);
 		}
 	}
 
@@ -103,25 +102,27 @@ int GameScene::tick(Button* buttonMap[][3], Size size, int i, int j, int digitMa
 void GameScene::print() {
 	CCLOG("pass function thanh cong");
 }
-int GameScene::check(int i, int j) {
+int GameScene::check(int i, int j,int digitMap[3][3],bool isTest) {
 	int hangNgangX = 0, hangDocX = 0, hangDocY = 0, hangNgangY = 0;
 	for (int c = 0; c < 3; c++) {
 		if (digitMap[i][c] == 1) {
 			hangDocX++;
 			if (hangDocX == 3) {
 				//endgame
-				for (int m = 0; m < 3; m++) {
-					Size size = buttonMap[i][m]->getBoundingBox().size;
-					//spriteMap[i][m]->removeAllChildren();
-					Sprite* xTick = Sprite::create("X Win.png");
-					xTick->setAnchorPoint(Vec2(0.5, 0.5));
-					xTick->setPosition(size.width / 2, size.height / 2);
-					buttonMap[i][m]->addChild(xTick);
-					//spriteMap[i][m]->addChild(Sprite::create("X Win.png"), 2);
+				if (!isTest) {
+					for (int m = 0; m < 3; m++) {
+						Size size = buttonMap[i][m]->getBoundingBox().size;
+						//spriteMap[i][m]->removeAllChildren();
+						Sprite* xTick = Sprite::create("X Win.png");
+						xTick->setAnchorPoint(Vec2(0.5, 0.5));
+						xTick->setPosition(size.width / 2, size.height / 2);
+						buttonMap[i][m]->addChild(xTick);
+						//spriteMap[i][m]->addChild(Sprite::create("X Win.png"), 2);
+					}
+					Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+					if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				}
-
-				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-				if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
+				
 				return 1;
 			}
 		}
@@ -129,15 +130,17 @@ int GameScene::check(int i, int j) {
 			hangNgangX++;
 			if (hangNgangX == 3) {
 				//endgame
-				for (int m = 0; m < 3; m++) {
-					Size size = buttonMap[m][j]->getBoundingBox().size;
-					Sprite* xTick = Sprite::create("X Win.png");
-					xTick->setAnchorPoint(Vec2(0.5, 0.5));
-					xTick->setPosition(size.width / 2, size.height / 2);
-					buttonMap[m][j]->addChild(xTick);
+				if (!isTest) {
+					for (int m = 0; m < 3; m++) {
+						Size size = buttonMap[m][j]->getBoundingBox().size;
+						Sprite* xTick = Sprite::create("X Win.png");
+						xTick->setAnchorPoint(Vec2(0.5, 0.5));
+						xTick->setPosition(size.width / 2, size.height / 2);
+						buttonMap[m][j]->addChild(xTick);
+					}
+					Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+					if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				}
-				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-				if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				return 1;
 			}
 		}
@@ -145,15 +148,17 @@ int GameScene::check(int i, int j) {
 			hangDocY++;
 			if (hangDocY == 3) {
 				//endgame
-				for (int m = 0; m < 3; m++) {
-					Size size = buttonMap[i][m]->getBoundingBox().size;
-					Sprite* yTick = Sprite::create("O Win.png");
-					yTick->setAnchorPoint(Vec2(0.5, 0.5));
-					yTick->setPosition(size.width / 2, size.height / 2);
-					buttonMap[i][m]->addChild(yTick);
+				if (!isTest) {
+					for (int m = 0; m < 3; m++) {
+						Size size = buttonMap[i][m]->getBoundingBox().size;
+						Sprite* yTick = Sprite::create("O Win.png");
+						yTick->setAnchorPoint(Vec2(0.5, 0.5));
+						yTick->setPosition(size.width / 2, size.height / 2);
+						buttonMap[i][m]->addChild(yTick);
+					}
+					Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+					if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				}
-				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-				if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				return 2;
 			}
 		}
@@ -161,15 +166,17 @@ int GameScene::check(int i, int j) {
 			hangNgangY++;
 			if (hangNgangY == 3) {
 				//endgame
-				for (int m = 0; m < 3; m++) {
-					Size size = buttonMap[m][j]->getBoundingBox().size;
-					Sprite* yTick = Sprite::create("O Win.png");
-					yTick->setAnchorPoint(Vec2(0.5, 0.5));
-					yTick->setPosition(size.width / 2, size.height / 2);
-					buttonMap[m][j]->addChild(yTick);
+				if (!isTest) {
+					for (int m = 0; m < 3; m++) {
+						Size size = buttonMap[m][j]->getBoundingBox().size;
+						Sprite* yTick = Sprite::create("O Win.png");
+						yTick->setAnchorPoint(Vec2(0.5, 0.5));
+						yTick->setPosition(size.width / 2, size.height / 2);
+						buttonMap[m][j]->addChild(yTick);
+					}
+					Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+					if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				}
-				Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-				if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 				return 2;
 			}
 		}
@@ -177,7 +184,7 @@ int GameScene::check(int i, int j) {
 	}
 	return 0;
 }
-int GameScene::check1() {
+int GameScene::check1(int digitMap[3][3],bool isTest) {
 	int xwin = 0, ywin = 0, xwin1 = 0, ywin1 = 0;
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -185,15 +192,17 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 1) {
 					xwin++;
 					if (xwin == 3) {
-						for (int m = 0; m < 3; m++) {
-							Size size = buttonMap[m][m]->getBoundingBox().size;
-							Sprite* xTick = Sprite::create("X Win.png");
-							xTick->setAnchorPoint(Vec2(0.5, 0.5));
-							xTick->setPosition(size.width / 2, size.height / 2);
-							buttonMap[m][m]->addChild(xTick);
+						if (!isTest) {
+							for (int m = 0; m < 3; m++) {
+								Size size = buttonMap[m][m]->getBoundingBox().size;
+								Sprite* xTick = Sprite::create("X Win.png");
+								xTick->setAnchorPoint(Vec2(0.5, 0.5));
+								xTick->setPosition(size.width / 2, size.height / 2);
+								buttonMap[m][m]->addChild(xTick);
+							}
+							Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+							if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						}
-						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-						if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						return 1;
 					}
 
@@ -201,15 +210,17 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 2) {
 					ywin++;
 					if (ywin == 3) {
-						for (int m = 0; m < 3; m++) {
-							Size size = buttonMap[m][m]->getBoundingBox().size;
-							Sprite* yTick = Sprite::create("O Win.png");
-							yTick->setAnchorPoint(Vec2(0.5, 0.5));
-							yTick->setPosition(size.width / 2, size.height / 2);
-							buttonMap[m][m]->addChild(yTick);
+						if (!isTest) {
+							for (int m = 0; m < 3; m++) {
+								Size size = buttonMap[m][m]->getBoundingBox().size;
+								Sprite* yTick = Sprite::create("O Win.png");
+								yTick->setAnchorPoint(Vec2(0.5, 0.5));
+								yTick->setPosition(size.width / 2, size.height / 2);
+								buttonMap[m][m]->addChild(yTick);
+							}
+							Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+							if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						}
-						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-						if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						return 2;
 					}
 				}
@@ -218,15 +229,17 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 1) {
 					xwin1++;
 					if (xwin1 == 3) {
-						for (int m = 0; m < 3; m++) {
-							Size size = buttonMap[m][2 - m]->getBoundingBox().size;
-							Sprite* xTick = Sprite::create("X Win.png");
-							xTick->setAnchorPoint(Vec2(0.5, 0.5));
-							xTick->setPosition(size.width / 2, size.height / 2);
-							buttonMap[m][2 - m]->addChild(xTick);
+						if (!isTest) {
+							for (int m = 0; m < 3; m++) {
+								Size size = buttonMap[m][2 - m]->getBoundingBox().size;
+								Sprite* xTick = Sprite::create("X Win.png");
+								xTick->setAnchorPoint(Vec2(0.5, 0.5));
+								xTick->setPosition(size.width / 2, size.height / 2);
+								buttonMap[m][2 - m]->addChild(xTick);
+							}
+							Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+							if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						}
-						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-						if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						return 1;
 					}
 
@@ -234,15 +247,17 @@ int GameScene::check1() {
 				if (digitMap[i][j] == 2) {
 					ywin1++;
 					if (ywin1 == 3) {
-						for (int m = 0; m < 3; m++) {
-							Size size = buttonMap[m][2 - m]->getBoundingBox().size;
-							Sprite* yTick = Sprite::create("O Win.png");
-							yTick->setAnchorPoint(Vec2(0.5, 0.5));
-							yTick->setPosition(size.width / 2, size.height / 2);
-							buttonMap[m][2 - m]->addChild(yTick);
+						if (!isTest) {
+							for (int m = 0; m < 3; m++) {
+								Size size = buttonMap[m][2 - m]->getBoundingBox().size;
+								Sprite* yTick = Sprite::create("O Win.png");
+								yTick->setAnchorPoint(Vec2(0.5, 0.5));
+								yTick->setPosition(size.width / 2, size.height / 2);
+								buttonMap[m][2 - m]->addChild(yTick);
+							}
+							Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+							if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						}
-						Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
-						if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
 						return 2;
 					}
 				}
@@ -251,7 +266,7 @@ int GameScene::check1() {
 	}
 	return 0;
 }
-int GameScene::check2() {
+int GameScene::check2(int digitMap[3][3],bool isTest) {
 	int count = 0;
 	for (int i = 0; i < 3; i++) {
 		for (int j = 0; j < 3; j++) {
@@ -259,8 +274,10 @@ int GameScene::check2() {
 		}
 	}
 	if (count == 9) {
-		Director::getInstance()->replaceScene(MainMenuScene::createScene());
-		if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
+		if (!isTest) {
+			Director::getInstance()->replaceScene(TransitionFade::create(2, MainMenuScene::createScene()));
+			if (isSoundOn) CocosDenshion::SimpleAudioEngine::getInstance()->playEffect("victory.mp3");
+		}
 		return 3;
 	}
 	return 0;
@@ -285,14 +302,55 @@ std::pair<int, int> GameScene::aiGreedy(AI *ai){
 	}
 	for (int ii = 0; ii < 3; ii++) {
 		for (int jj = 0; jj < 3; jj++) {
-			if (digitMap[ii][jj] == -1) {
-				digitMap[ii][jj] = 2;
-				if (check(ii, jj) == 2 ||check1() == 2) {//o win
+			if (tempMap[ii][jj] == -1) {
+				tempMap[ii][jj] = 2;
+				if (check(ii, jj,tempMap,false) == 2 ||check1(tempMap,false) == 2) {//o win
 					Pair.first = ii;
 					Pair.second = jj;
 					return Pair;
 				}
-				digitMap[ii][jj] = tempMap[ii][jj];
+				else tempMap[ii][jj] = -1;
+
+			}
+		}
+	}
+	return ai->basic(digitMap);
+}
+std::pair<int, int> GameScene::aiGreedyAdvanced(AI* ai) {
+	std::pair<int, int> Pair;
+	bool temp1 = false;
+	int tempMap[3][3];
+	for (int x = 0; x < 3; x++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			tempMap[x][y] = digitMap[x][y];
+		}
+	}
+	for (int ii = 0; ii < 3; ii++) {
+		for (int jj = 0; jj < 3; jj++) {
+			if (tempMap[ii][jj] == -1) {
+				tempMap[ii][jj] = 2;
+				if (check(ii, jj, tempMap,true) == 2 || check1(tempMap,true) == 2) {//o win
+					Pair.first = ii;
+					Pair.second = jj;
+					return Pair;
+				}
+				else tempMap[ii][jj] = -1;
+
+			}
+		}
+	}
+	for (int ii = 0; ii < 3; ii++) {
+		for (int jj = 0; jj < 3; jj++) {
+			if (tempMap[ii][jj] == -1) {
+				tempMap[ii][jj] = 1;
+				if (check(ii, jj, tempMap,true) == 1 || check1(tempMap,true) == 1) {//x win
+					Pair.first = ii;
+					Pair.second = jj;
+					return Pair;
+				}
+				else tempMap[ii][jj] = -1;
 
 			}
 		}
