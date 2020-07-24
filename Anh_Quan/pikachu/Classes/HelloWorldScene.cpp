@@ -22,15 +22,19 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "MainMenuScene.h"
-#include "Definitions.h"
+#include "HelloWorldScene.h"
 #include "GameScene.h"
-#include "GameOverScene.h"
+#include "AudioManager.h"
 #include "SimpleAudioEngine.h"
 
-Scene* MainMenuScene::createScene()
+USING_NS_CC;
+
+Scene* HelloWorld::createScene()
 {
-    return MainMenuScene::create();
+    auto helloWorld = HelloWorld::create();
+    AudioManager::playBackgroundMusic();
+    return helloWorld;
+    //return HelloWorld::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -41,7 +45,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool MainMenuScene::init()
+bool HelloWorld::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -52,37 +56,56 @@ bool MainMenuScene::init()
 
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
+
+    /////////////////////////////
+    // 2. add a menu item with "X" image, which is clicked to quit the program
+    //    you may modify it.
+
+    // add a "close" icon to exit the progress. it's an autorelease object
+    auto closeItem = MenuItemImage::create(
+                                           "Resources/CloseNormal.png",
+                                           "Resources/CloseSelected.png",
+                                           CC_CALLBACK_1(HelloWorld::menuCloseCallback, this));
+
+    if (closeItem == nullptr ||
+        closeItem->getContentSize().width <= 0 ||
+        closeItem->getContentSize().height <= 0)
+    {
+        problemLoading("'CloseNormal.png' and 'CloseSelected.png'");
+    }
+    else
+    {
+        float x = origin.x + visibleSize.width - closeItem->getContentSize().width/2;
+        float y = origin.y + closeItem->getContentSize().height/2;
+        closeItem->setPosition(Vec2(x,y));
+    }
+
+    // create menu, it's an autorelease object
+    auto menu = Menu::create(closeItem, NULL);
+    menu->setPosition(Vec2::ZERO);
+    this->addChild(menu, 1);
+
+    /////////////////////////////
+    // 3. add your codes below...
+
+    // add a label shows "Hello World"
+    // create and initialize a label
+
+    auto play = MenuItemLabel::create(Label::createWithTTF("Play", "Resources/fonts/Marker Felt.ttf", 40), CC_CALLBACK_1(HelloWorld::play, this));
     
-    auto background = Sprite::create(MAIN_MENU_SCENE_BACKGROUND_FILEPATH);
-    background->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
-    this->addChild(background);
-    
-    Sprite *title = Sprite::create(MAIN_MENU_TITLE_FILEPATH);
-    title->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.75));
-    this->addChild(title);
-    
-    Button *playButton = Button::create(MAIN_MENU_PLAY_BUTTON, MAIN_MENU_PLAY_BUTTON_PRESSED);
-    playButton->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.35));
-    this->addChild(playButton);
-    playButton->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::touchEvent, this));
-    playButton->setTag(TAG_MAIN_MENU_PLAY_BUTTON);
-        
-    Sprite *playButtonOuter = Sprite::create(MAIN_MENU_PLAY_BUTTON_OUTER);
-    playButtonOuter->setPosition(Vec2(origin.x + visibleSize.width/2, origin.y + visibleSize.height*0.35));
-    this->addChild(playButtonOuter);
-    
-    Button *soundButton = Button::create(SOUND_ON_BUTTON, SOUND_OFF_BUTTON);
-   // MenuItemToggle *soundButton = MenuItemToggle::create();
-    soundButton->setPosition(Point(origin.x + visibleSize.width - soundButton->getContentSize().width/2, origin.y + soundButton->getContentSize().height/2));
-    this->addChild(soundButton);
-    
-     
+    play->setPosition(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2);
+    menu->addChild(play);
     
     return true;
 }
 
+void HelloWorld::play(Ref *pSender) {
+    auto gameScene = GameScene::createScene();
+    Director::getInstance()->replaceScene(
+        TransitionFade::create(0.5, gameScene, Color3B(0, 255, 255)));
+}
 
-void MainMenuScene::menuCloseCallback(Ref* pSender)
+void HelloWorld::menuCloseCallback(Ref* pSender)
 {
     //Close the cocos2d-x game scene and quit the application
     Director::getInstance()->end();
@@ -91,39 +114,4 @@ void MainMenuScene::menuCloseCallback(Ref* pSender)
 
     //EventCustom customEndEvent("game_scene_close_event");
     //_eventDispatcher->dispatchEvent(&customEndEvent);
-
-
-}
-
-void MainMenuScene::touchEvent(Ref *sender, Widget::TouchEventType type) {
-    Node *node = (Node *) sender;
-    switch(type) {
-        case Widget::TouchEventType::BEGAN: {
-            
-            break;
-        }
-            
-        case Widget::TouchEventType::ENDED: {
-            if(TAG_MAIN_MENU_PLAY_BUTTON == node->getTag()) {
-                Scene *scene = GameScene::createScene();
-                TransitionFade *transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
-                
-                Director::getInstance()->replaceScene(scene);
-            }
-            break;
-        }
-
-        case Widget::TouchEventType::MOVED: {
-            
-            break;
-        }
-
-        case Widget::TouchEventType::CANCELED: {
-            
-            break;
-        }
-
-        default:
-            break;
-    }
 }

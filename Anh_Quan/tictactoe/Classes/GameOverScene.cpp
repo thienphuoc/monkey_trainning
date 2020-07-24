@@ -22,18 +22,17 @@
  THE SOFTWARE.
  ****************************************************************************/
 
-#include "SplashScene.h"
+#include "GameOverScene.h"
 #include "Definitions.h"
 #include "MainMenuScene.h"
-#include "GameOverScene.h"
 
 #include "SimpleAudioEngine.h"
 
 USING_NS_CC;
 
-Scene* SplashScene::createScene()
+Scene* GameOverScene::createScene()
 {
-    return SplashScene::create();
+    return GameOverScene::create();
 }
 
 // Print useful error message instead of segfaulting when files are not there.
@@ -44,7 +43,7 @@ static void problemLoading(const char* filename)
 }
 
 // on "init" you need to initialize your instance
-bool SplashScene::init()
+bool GameOverScene::init()
 {
     //////////////////////////////
     // 1. super init first
@@ -56,31 +55,22 @@ bool SplashScene::init()
     auto visibleSize = Director::getInstance()->getVisibleSize();
     Vec2 origin = Director::getInstance()->getVisibleOrigin();
     
-    auto background = Sprite::create(SPLASH_SCENE_BACKGROUND_FILEPATH);
+    auto background = Sprite::create(GAME_OVER_BACKGROUND);
     background->setPosition(Point(origin.x + visibleSize.width/2, origin.y + visibleSize.height/2));
     this->addChild(background);
     
-    this->scheduleOnce(schedule_selector(SplashScene::SwitchToMainMenu), SPLASH_SCENE_SHOW_TIME);
-
+    Button *retryButton = Button::create(RETRY_BUTTON, RETRY_BUTTON_PRESSED);
+    retryButton->setPosition(origin + visibleSize/2);
+    this->addChild(retryButton);
+    retryButton->addTouchEventListener(CC_CALLBACK_0(GameOverScene::SwitchToGameScene, this));
+    
     return true;
 }
 
-void SplashScene::menuCloseCallback(Ref* pSender)
-{
-    //Close the cocos2d-x game scene and quit the application
-    Director::getInstance()->end();
-
-    /*To navigate back to native iOS screen(if present) without quitting the application  ,do not use Director::getInstance()->end() as given above,instead trigger a custom event created in RootViewController.mm as below*/
-
-    //EventCustom customEndEvent("game_scene_close_event");
-    //_eventDispatcher->dispatchEvent(&customEndEvent);
 
 
-}
-
-void SplashScene::SwitchToMainMenu(float dt) {
+void GameOverScene::SwitchToGameScene() {
     Scene *scene = MainMenuScene::createScene();
-    //Scene *scene = GameOverScene::createScene();
     TransitionFade *transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
      
     Director::getInstance()->replaceScene(transition);

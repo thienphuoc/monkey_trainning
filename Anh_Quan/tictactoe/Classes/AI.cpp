@@ -34,18 +34,6 @@ using namespace std;
 
 USING_NS_CC;
 
-/*
- Reward:
-    + Prevent a change to win of enemy: +1
-    + Create a change to win with one piece in a line: +1
-    + Create a change to win with 2 pieces in a line: +20
-    + Lose: -40
-    + Win: +40
-    + Enemy has a change to win with one piece in a line: -1
-    + Enemy has a change to win with 2 pieces in a line: -20
-    + Enemy prevent player to win: -1
- */
-
 AI::AI(int playerPiece) {
     maxReward = LOSE_REWARD;
     
@@ -100,17 +88,12 @@ int AI::computeReward(int (*gridArray)[3][3], int piece, int (*canReward)[8], in
            // }
         }
     }
-    
-    //CCLOG("In function computeReward: s1: %i, s2: %i", *s1, *s2);
-        
+            
     reward = reward + getReward(*s1, piece, (canReward)[6]);
-    //CCLOG("reward: %i", reward);
     reward = reward + getReward(*s2, piece, (canReward)[7]);
-    //CCLOG("s1: %i, s2: %i. reward: %i, piece: %i", *s1, *s2, reward, piece);
     for(int i = 0; i < 3; i++) {
         reward = reward + getReward((*rowSum)[i], piece, (canReward)[i]);
         reward = reward + getReward((*columnSum)[i], piece, (canReward)[3 + i]);
-        //CCLOG("rowSum[%i]: %i, columnSum[%i]: %i. reward: %i", i, (*rowSum)[i], i, (*columnSum)[i], reward);
     }
         
     return reward;
@@ -119,7 +102,6 @@ int AI::computeReward(int (*gridArray)[3][3], int piece, int (*canReward)[8], in
 int AI::computePlayerBestReward(int (*gridArray)[3][3], int (*canReward)[8]) {
     int bestReward = LOSE_REWARD;
     
-    // After AI has placed a piece, we will compute the best reward that a player can have
     int rowSum[3], columnSum[3], s1, s2;
     for(int i = 0; i < 3; i++) {
         for(int j = 0; j < 3; j++) {
@@ -131,9 +113,7 @@ int AI::computePlayerBestReward(int (*gridArray)[3][3], int (*canReward)[8]) {
                     columnSum[t] = 0;
                 }
                 
-                //CCLOG("Called from computePlayerBestReward: (i = %i, j = %i)", i, j);
                 int reward = computeReward(gridArray, playerPiece, canReward, &rowSum, &columnSum, &s1, &s2);
-               //CCLOG("Player reward in (%i %i): %i", i, j, reward);
                 if(reward > bestReward) {
                     bestReward = reward;
                 }
@@ -161,9 +141,6 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
         columnSum[i] = 0;
     }
     
-    //CCLOG("s1: %i, s2: %i", s1, s2);
-    //lostReward = computeReward(gridArray, playerPiece, &canReward, &rowSum, &columnSum, &s1, &s2);
-    //CCLOG("lostReward: %i", lostReward);
     for(int i = 0; i < 3; i++) {
         int j;
         for(j = 0; j < 3; j++) {
@@ -172,7 +149,6 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
             // the best reward node is the created node ,else release it.
             // bestReward = currentReward - playerBestReward.
             if((*gridArray)[i][j] == EMPTY_PIECE) {
-                //CCLOG("Empty place in (%i, %i)", i, j);
                 (*gridArray)[i][j] = aiPiece;
                 
                 s1 = 0; s2 = 0;
@@ -180,16 +156,10 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
                     rowSum[t] = 0;
                     columnSum[t] = 0;
                 }
-                
-                //CCLOG("Called from placePiece");
-                
+                                
                 aiReward = computeReward(gridArray, aiPiece, &canReward, &rowSum, &columnSum, &s1, &s2);
-                CCLOG("aiReward at (%i, %i): %i", i, j, aiReward);
-                //CCLOG("aiReward in (%i, %i): %i, s1: %i, s2: %i", i, j, aiReward, rowSum[1],columnSum[1] );
                 if(aiReward >= WIN_REWARD) {
                     bestX = i; bestY = j;
-                    CCLOG("Found an place that leads to win at (%i, %i)", i, j);
-                    //CCLOG("BESTX: %i, BESTY: %i, %i, rowSum[0]: %i, columnSum[0]: %i", i, j, aiReward, rowSum[0], columnSum[0]); 
                     (*gridArray)[i][j] = EMPTY_PIECE;
                     
                     break;
@@ -257,15 +227,15 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
                      } else {
                          CCLOG("Error occurred when preventing AI from winning.");
                          
-                         exit(-1);
+                         //exit(-1);
                      }
                 }
                     // Else, compute the maximum reward that player can earn.
                 playerBestReward = computePlayerBestReward(gridArray, &canReward);
+                
                 if(playerBestReward < WIN_REWARD)
                     playerBestReward = preventAIWinReward;
                 
-                CCLOG("aiReward in (%i, %i): %i, playerBestReward: %i", i, j, aiReward, playerBestReward);
                 stateReward = aiReward - playerBestReward;
                 if(stateReward > bestReward) {
                     bestReward = stateReward;
@@ -285,15 +255,13 @@ void AI::placePiece(int ( *gridArray )[3][3], cocos2d::Sprite *gridPieces[3][3],
     if(bestX < 0 || bestY < 0) {
         CCLOG("Error occurred when computing the best place for AI");
         
-        exit(-1);
-    } else {
-        CCLOG("Best position locates at (%i, %i)", bestX, bestY);
+        //exit(-1);
     }
     
-    *gameState = STATE_PLAYING;
     (*gridArray)[bestX][bestY] = AI_PIECE;
     gridPieces[bestX][bestY]->setTexture(O_PIECE_FILEPATH);
     gridPieces[bestX][bestY]->setVisible(true);
     gridPieces[bestX][bestY]->runAction(cocos2d::FadeIn::create( PIECE_FADE_IN_TIME ));
+    *gameState = STATE_PLAYING;
 }
 
