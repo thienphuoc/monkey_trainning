@@ -25,6 +25,7 @@
 #include "SplashScene.h"
 #include "Definitions.h"
 #include "MainMenuScene.h"
+#include "GameOverScene.h"
 
 #include "SimpleAudioEngine.h"
 
@@ -79,6 +80,7 @@ void SplashScene::menuCloseCallback(Ref* pSender)
 
 void SplashScene::SwitchToMainMenu(float dt) {
     Scene *scene = MainMenuScene::createScene();
+    //Scene *scene = GameOverScene::createScene();
     TransitionFade *transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
      
     Director::getInstance()->replaceScene(transition);

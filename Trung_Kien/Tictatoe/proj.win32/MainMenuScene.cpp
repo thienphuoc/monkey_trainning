@@ -20,7 +20,7 @@ bool MainMenuScene::init() {
 	title->setPosition(size.width / 2, size.height  *0.75);//absolute position
 
 
-	Button* button = Button::create("Play Button.png");
+	Button* button = Button::create("Play Button.png");//play with human
 	button->setPosition(Vec2(size.width / 2, button->getBoundingBox().size.height*1.5+50));
 	this->addChild(button);
 	button->addTouchEventListener(CC_CALLBACK_2(MainMenuScene::touchEvent, this));
@@ -29,6 +29,16 @@ bool MainMenuScene::init() {
 	this->addChild(outerButton);
 
 
+	Button* playWithBotButton = Button::create("Play Button.png");//play with bot
+	playWithBotButton->setPosition(Vec2(size.width / 2, button->getBoundingBox().size.height * 1.5));
+	this->addChild(playWithBotButton);
+	playWithBotButton->addTouchEventListener([=](Ref* sender, Widget::TouchEventType type) {
+		Scene* gameScene = GameScene::createScene(this->isSoundOn, true);
+		TransitionFade* tran = TransitionFade::create(2, gameScene);
+		Director::getInstance()->replaceScene(tran);
+		CCLOG("Clicked");
+	});
+	
 
 	Button *soundButton = Button::create("Sound On.png");
 	soundButton->setPosition(Vec2(0,0));
@@ -46,7 +56,7 @@ bool MainMenuScene::init() {
 	return true;
 }
 void MainMenuScene::touchEvent(Ref* sender, Widget::TouchEventType type) {
-	Scene* gameScene = GameScene::createScene(this->isSoundOn);
+	Scene* gameScene = GameScene::createScene(this->isSoundOn,false);
 	TransitionFade* tran = TransitionFade::create(2, gameScene);
 	Director::getInstance()->replaceScene(tran);
 	CCLOG("Clicked");

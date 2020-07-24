@@ -25,6 +25,7 @@
 #include "GameScene.h"
 #include "SimpleAudioEngine.h"
 #include "Definitions.h"
+#include "GameOverScene.h"
 #include <iostream>
 
 USING_NS_CC;
@@ -111,6 +112,7 @@ bool GameScene::onTouchMoved(cocos2d::Touch *touch, cocos2d::Event *event) {
     return true;
 }
 bool GameScene::onTouchEnded(cocos2d::Touch *touch, cocos2d::Event *event) {
+    
     if(STATE_PLAYING == gameState) {
         CheckAndPlacePiece(touch);
     }
@@ -174,16 +176,42 @@ void GameScene::CheckAndPlacePiece(cocos2d::Touch *touch) {
 }
 
 void GameScene::CheckWin(int x, int y) {
-    Check3PiecesForMatch();
-    
-    if(gameState != STATE_WON) {
+   Check3PiecesForMatch();
+ 
+    if(gameState != STATE_WON && gameState != STATE_DRAW) {
+        CCLOG("%i", gameState);
+        //CCLOG("AI is playing");
         gameState = STATE_AI_PLAYING;
         ai->placePiece(&gridArray, gridPieces, &gameState);
         Check3PiecesForMatch();
+       
+        //CCLOG("%i", gameState);
+        //int tmpState = gameState;
+        //if(tmpState == STATE_WON || tmpState == STATE_DRAW) {
+        if(gameState == STATE_WON || gameState == STATE_DRAW) {
+            //CCLOG("%i", gameState);
+            //Scene *scene = GameOverScene::createScene();
+            //Director::getInstance()->replaceScene(scene);
+            CCLOG("AI move leads to end game");
+            //Scene *scene = GameOverScene::createScene();
+            //Director::getInstance()->replaceScene(scene);
+        }
     }
+   // else {
+    if(gameState == STATE_WON || gameState == STATE_DRAW) {
+        //CCLOG("%i", gameState);
+        Scene *scene = GameOverScene::createScene();
+        Director::getInstance()->replaceScene(scene);
+        //CCLOG("Player move leads to end game");
+        //TransitionFade *transition = TransitionFade::create(SCENE_TRANSITION_TIME, scene);
+         
+        //Director::getInstance()->replaceScene(transition);
+    }
+     
 }
 
 void GameScene::Check3PiecesForMatch() {
+    CCLOG("Check 3 pieces for match");
     int rowSum[3];
     int columnSum[3];
     int s1 = 0, s2 = 0;
@@ -249,5 +277,25 @@ void GameScene::Check3PiecesForMatch() {
             this->addChild(winningSprite[i]);
             winningSprite[i]->runAction( Sequence::create( DelayTime::create( PIECE_FADE_IN_TIME * 0.5 ), FadeIn::create( PIECE_FADE_IN_TIME ), NULL ) );
         }
+        gameState = STATE_WON;
+        return;
+        
+       // return true;
+    } else {
+        int emptyCount = 0;
+        for(x = 0; x < 3; x++) {
+            for(y = 0; y < 3; y++) {
+                if(gridArray[x][y] == EMPTY_PIECE) {
+                    emptyCount++;
+                }
+            }
+        }
+        if(emptyCount == 0) {
+            gameState = STATE_DRAW;
+            return;
+           // return true;
+        }
     }
+    return;
+   // return false;
 }
