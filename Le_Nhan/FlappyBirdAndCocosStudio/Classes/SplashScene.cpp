@@ -77,12 +77,23 @@ bool SplashScene::init()
 
         });
 
+    //exit game
+    auto button_exit_menu = mainMenu->getChildByName<ui::Button*>("button_exit");
+    button_exit_menu->setPressedActionEnabled(true);
+    button_exit_menu->addClickEventListener([=](Ref*)-> void
+        {
+            Director::getInstance()->end();
+        });
+
     //Go to score
     auto button_leder_broad = mainMenu->getChildByName<ui::Button*>("button_leader_board");
     button_leder_broad->setPressedActionEnabled(true);
     button_leder_broad->addClickEventListener([=](Ref*)-> void
         {
-            
+
+ 
+
+
             // Request List Score
             HttpRequest* request = new HttpRequest();
             request->setRequestType(HttpRequest::Type::GET);
@@ -106,7 +117,7 @@ bool SplashScene::init()
 
                         for (int i = 0; i < m_document.Size(); i++)
                         {
-                           
+
                             string l_name = m_document[i]["name"].GetString();
                             int l_score = m_document[i]["score"].GetInt();
 
@@ -128,23 +139,9 @@ bool SplashScene::init()
                         }
 
                         //Go to table socre
+
                         auto leaderbroad = CSLoader::getInstance()->createNode("csb/Leadbroad.csb");
                         this->addChild(leaderbroad, 1000);
-
-
-                        //return Mainmenu
-                        auto button_exit = leaderbroad->getChildByName<ui::Button*>("exit_button");
-                        button_exit->setPressedActionEnabled(true);
-                        button_exit->addClickEventListener([=](Ref*)-> void
-                            {
-                                log("nhaannn");
-                                 auto scene = SplashScene::createScene();
-                                 Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-
-                                 //auto scene = GameScene::createScene();
-                                 //Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
-
-                            });
 
 
 
@@ -173,6 +170,22 @@ bool SplashScene::init()
                         }
 
                         item->removeFromParent();
+
+
+                        //return Mainmenu
+                        auto button_exit = leaderbroad->getChildByName<ui::Button*>("exit_button");
+                        button_exit->setPressedActionEnabled(true);
+                        button_exit->addClickEventListener([=](Ref*)-> void
+                            {
+                                log("nhaannn");
+                                auto scene = SplashScene::createScene();
+                                Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+
+                                //auto scene = GameScene::createScene();
+                                //Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
+
+                            });
+
                     }
                     else
                     {
@@ -228,7 +241,6 @@ void SplashScene::GoToMainMenuScene(float dt)
     auto scene = MainMenuScene::createScene();
     Director::getInstance()->replaceScene(TransitionFade::create(TRANSITION_TIME, scene));
 }
-
 
 
 

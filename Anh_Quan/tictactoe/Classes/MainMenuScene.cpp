@@ -25,6 +25,7 @@
 #include "MainMenuScene.h"
 #include "Definitions.h"
 #include "GameScene.h"
+#include "GameOverScene.h"
 #include "SimpleAudioEngine.h"
 
 Scene* MainMenuScene::createScene()

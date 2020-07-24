@@ -7,7 +7,7 @@ USING_NS_CC_EXT;
 using namespace ui;
 class MainMenuScene :public cocos2d::Scene
 {
-	
+	bool isSoundOn = true;
 public:
 	int countSound = 1;
 	static cocos2d::Scene* createScene();
