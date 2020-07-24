@@ -29,7 +29,7 @@ bool MainMenuScene::init() {
 	this->addChild(outerButton);
 
 
-	Button* playWithBotButton = Button::create("Play Button.png");//play with bot
+	Button* playWithBotButton = Button::create("Play With Bot Button.png");//play with bot
 	playWithBotButton->setPosition(Vec2(size.width / 2, button->getBoundingBox().size.height * 1.5));
 	this->addChild(playWithBotButton);
 	playWithBotButton->addTouchEventListener([=](Ref* sender, Widget::TouchEventType type) {

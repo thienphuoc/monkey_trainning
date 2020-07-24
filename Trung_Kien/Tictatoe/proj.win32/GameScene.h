@@ -17,9 +17,9 @@ public:
 	int tick(Button* buttonMap[][3], Size size, int i, int j, int digitMap[][3]);
 	int checkXwin();
 	int checkYwin();
-	int check(int i,int j);
-	int check1();
-	int check2();
+	int check(int i,int j,int digitMap[3][3],bool isTest);
+	int check1(int digitMap[3][3],bool isTest);
+	int check2(int digitMap[3][3],bool isTest);
 	void initDigitMap();
 	int  greedy(Size size);
 
@@ -27,6 +27,7 @@ public:
 	virtual bool init();
 	void print();
 	std::pair<int, int> aiGreedy(AI *ai);
+	std::pair<int, int> aiGreedyAdvanced(AI* ai);
 	CREATE_FUNC(GameScene);
 };
 
