@@ -4,7 +4,6 @@
 #include "cocos2d.h"
 #include "AI.h"
 #include "MainMenuScene.h"
-#include "GameOverScene.h"
 
 class GameScene : public cocos2d::Scene
 {

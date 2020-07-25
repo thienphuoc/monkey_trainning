@@ -4,7 +4,7 @@
 #define SPLASH_SCENE_SHOW_TIME 3.0f
 
 
-#define SPLASH_SCENE_BACKGROUND_FILEPATH "res/Splash Background.png"
+#define SPLASH_SCENE_BACKGROUND_FILEPATH "splash/tamtam.png"
 #define MAIN_MENU_BACKGROUND_FILEPATH "res/Main Menu Background.png"
 #define GAME_BACKGROUND_FILEPATH "res/Main Menu Background.png"
 #define GAME_OVER_BACKGROUND "res/Pause Background.png"
