@@ -3,6 +3,7 @@
 #include "Definitions.h"
 #include "cocostudio/CocoStudio.h"
 
+
 USING_NS_CC;
 
 Scene* GameScene::createScene()
@@ -37,6 +38,22 @@ bool GameScene::init()
     auto gameMenu = CSLoader::getInstance()->createNode("GameScene.csb");
     this->addChild(gameMenu);
 
+    auto BackButton = gameMenu->getChildByName<ui::Button*>("Button_Back");
+    BackButton->setPressedActionEnabled(true);
+    BackButton->addClickEventListener([=](Ref*) {
+
+        GameScene::GotoMenuScene(this);
+
+        });
+
+    auto RetryButton = gameMenu->getChildByName<ui::Button*>("Button_Retry");
+    RetryButton->setPressedActionEnabled(true);
+    RetryButton->addClickEventListener([=](Ref*) {
+
+        Director::getInstance()->replaceScene(TransitionFade::create(SCENE_TRANSITION_TIME, GameScene::createScene()));
+
+        });
+
     gridSprite = Sprite::create(GRID_FILEPATH);
     gridSprite->setPosition(Vec2(visibleSize.width / 2 + origin.x, visibleSize.height * 0.4 + origin.y));
     this->addChild(gridSprite);
@@ -52,7 +69,7 @@ bool GameScene::init()
     }
 
     turn = X_PIECE;
-
+    ai = new AI(turn);
     gameState = STATE_PLAYING;
 
     EventListenerTouchOneByOne* listener = EventListenerTouchOneByOne::create();
@@ -94,59 +111,15 @@ void GameScene::onTouchCancelled(cocos2d::Touch* touch, cocos2d::Event* event)
 
 void GameScene::InitGridRects()
 {
-    gridSpaces[0][0] = Rect(gridSprite->getBoundingBox().getMinX(),
-        gridSprite->getBoundingBox().getMinY(),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
+    float size = gridSprite->getBoundingBox().size.width / 3;
+    float minX = gridSprite->getBoundingBox().getMinX();
+    float minY = gridSprite->getBoundingBox().getMinY();
 
-    gridSpaces[1][0] = Rect(gridSprite->getBoundingBox().getMinX() + gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().getMinY(),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[2][0] = Rect(gridSprite->getBoundingBox().getMinX() + ((gridSprite->getBoundingBox().size.width / 3) * 2),
-        gridSprite->getBoundingBox().getMinY(),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[0][1] = Rect(gridSprite->getBoundingBox().getMinX(),
-        gridSprite->getBoundingBox().getMinY() + gridSprite->getBoundingBox().size.height / 3,
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[1][1] = Rect(gridSprite->getBoundingBox().getMinX() + gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().getMinY() + gridSprite->getBoundingBox().size.height / 3,
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[2][1] = Rect(gridSprite->getBoundingBox().getMinX() + ((gridSprite->getBoundingBox().size.width / 3) * 2),
-        gridSprite->getBoundingBox().getMinY() + gridSprite->getBoundingBox().size.height / 3,
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[0][2] = Rect(gridSprite->getBoundingBox().getMinX(),
-        gridSprite->getBoundingBox().getMinY() + ((gridSprite->getBoundingBox().size.height / 3) * 2),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[1][2] = Rect(gridSprite->getBoundingBox().getMinX() + gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().getMinY() + ((gridSprite->getBoundingBox().size.height / 3) * 2),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
-
-    gridSpaces[2][2] = Rect(gridSprite->getBoundingBox().getMinX() + ((gridSprite->getBoundingBox().size.width / 3) * 2),
-        gridSprite->getBoundingBox().getMinY() + ((gridSprite->getBoundingBox().size.height / 3) * 2),
-        gridSprite->getBoundingBox().size.width / 3,
-        gridSprite->getBoundingBox().size.height / 3
-    );
+    for (int x = 0; x < 3; x++) {
+        for (int y = 0; y < 3; y++) {
+            gridSpaces[x][y] = Rect(minX + x * size, minY + y * size, size, size);
+        }
+    }
 }
 
 void GameScene::InitGridPieces()
@@ -166,101 +139,126 @@ void GameScene::InitGridPieces()
 
 void GameScene::checkAndPlacePiece(cocos2d::Touch* touch)
 {
-    Rect rect1 = gridSprite->getBoundingBox();
+    Rect rect = gridSprite->getBoundingBox();
     Point touchPoint = touch->getLocation();
 
-    for (int x = 0; x < 3; x++)
-    {
-        for (int y = 0; y < 3; y++)
-        {
-            if (gridSpaces[x][y].containsPoint(touchPoint))
-            {
-                if (gridArray[x][y] == EMPTY_PIECE)
-                {
-                    gameState = STATE_PLACING_PIECE;
+    float touchX = touchPoint.x;
+    float touchY = touchPoint.y;
+    float size = gridSprite->getBoundingBox().size.width / 3;
+    int x = (int)(touchX - rect.getMinX()) / size;
+    int y = (int)(touchY - rect.getMinY()) / size;
+    //CCLOG("%i %i", x, y);
 
-                    gridArray[x][y] = turn;
+    if (gridArray[x][y] == EMPTY_PIECE) {
+        gameState = STATE_PLACING_PIECE;
+        gridArray[x][y] = turn;
 
-                    // check who's current turn it is and switch
-                    if (X_PIECE == turn)
-                    {
-                        gridPieces[x][y]->setTexture(X_PIECE_FILEPATH);
-                    }
-                    else
-                    {
-                        gridPieces[x][y]->setTexture(O_PIECE_FILEPATH);
-                    }
-
-                    gridPieces[x][y]->setVisible(true);
-
-                    gridPieces[x][y]->runAction(Sequence::create(FadeIn::create(PIECE_FADE_IN_TIME), CallFunc::create(std::bind(&GameScene::checkWin, this, x, y)), NULL));
-                }
-            }
+        if (turn == X_PIECE) {
+            gridPieces[x][y]->setTexture(X_PIECE_FILEPATH);
         }
+        else {
+            gridPieces[x][y]->setTexture(O_PIECE_FILEPATH);
+        }
+
+        gridPieces[x][y]->setVisible(true);
+        gridPieces[x][y]->runAction(Sequence::create(FadeIn::create(PIECE_FADE_IN_TIME), CallFunc::create(std::bind(&GameScene::checkWin, this, x, y)), NULL));
     }
 }
 
 void GameScene::checkWin(int x, int y)
 {
-    check3PiecesForMatch(0, 0, 1, 0, 2, 0);
-    check3PiecesForMatch(0, 1, 1, 1, 2, 1);
-    check3PiecesForMatch(0, 2, 1, 2, 2, 2);
-    check3PiecesForMatch(0, 0, 0, 1, 0, 2);
-    check3PiecesForMatch(1, 0, 1, 1, 1, 2);
-    check3PiecesForMatch(2, 0, 2, 1, 2, 2);
-    check3PiecesForMatch(0, 0, 1, 1, 2, 2);
-    check3PiecesForMatch(0, 2, 1, 1, 2, 0);
+    check3PiecesForMatch(0, 0, 1, 0, 2, 0, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 1, 1, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 0, 1, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 0, 1, 1, 1, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 2, 1, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 1, 1, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 1, 1, 1, 0, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 1, 2, 0, 2, PLAYER_PIECE);
 
-    // check who's current turn it is and switch
-    if (X_PIECE == turn)
+    if (STATE_WON != gameState)
     {
-        turn = O_PIECE;
-    }
-    else
-    {
-        turn = X_PIECE;
+        gameState = STATE_AI_PLAYING;
+        ai->PlacePiece(&gridArray, gridPieces, &gameState);
+
+        check3PiecesForMatch(0, 0, 1, 0, 2, 0, AI_PIECE);
+        check3PiecesForMatch(0, 0, 1, 1, 2, 2, AI_PIECE);
+        check3PiecesForMatch(0, 0, 0, 1, 0, 2, AI_PIECE);
+        check3PiecesForMatch(1, 0, 1, 1, 1, 2, AI_PIECE);
+        check3PiecesForMatch(2, 0, 2, 1, 2, 2, AI_PIECE);
+        check3PiecesForMatch(2, 0, 1, 1, 0, 2, AI_PIECE);
+        check3PiecesForMatch(2, 1, 1, 1, 0, 1, AI_PIECE);
+        check3PiecesForMatch(2, 2, 1, 2, 0, 2, AI_PIECE);
     }
 
-    if (STATE_PLACING_PIECE == gameState)
+
+    int emptyNum = 9;
+
+    for (int i = 0; i < 3; i++)
     {
-        gameState = STATE_PLAYING;
+        for (int j = 0; j < 3; j++)
+        {
+            if (EMPTY_PIECE != gridArray[i][j])
+            {
+                emptyNum--;
+            }
+        }
     }
+
+    if (emptyNum == 0)
+    {
+        gameState = STATE_DRAW;
+    }
+
 }
 
-void GameScene::check3PiecesForMatch(int x1, int y1, int x2, int y2, int x3, int y3)
+void GameScene::check3PiecesForMatch(int x1, int y1, int x2, int y2, int x3, int y3, int PiecesToCheck)
 {
-    if (turn == gridArray[x1][y1] && turn == gridArray[x2][y2] && turn == gridArray[x3][y3])
+    if (PiecesToCheck == gridArray[x1][y1] && PiecesToCheck == gridArray[x2][y2] && PiecesToCheck == gridArray[x3][y3])
     {
-        __String winningPieceStr;
-
-        if (O_PIECE == turn)
+        __String winStr;
+        if (O_PIECE == PiecesToCheck)
         {
-            winningPieceStr = O_WINNING_PIECE_FILEPATH;
+            winStr = O_WINNING_PIECE_FILEPATH;
         }
         else
         {
-            winningPieceStr = X_WINNING_PIECE_FILEPATH;
+            winStr = X_WINNING_PIECE_FILEPATH;
         }
 
-        Sprite* winningPieces[3];
+        Sprite* winningPipes[3];
 
-        winningPieces[0] = Sprite::create(winningPieceStr.getCString());
-        winningPieces[0]->setPosition(gridPieces[x1][y1]->getPosition());
-        winningPieces[0]->setOpacity(0);
-        this->addChild(winningPieces[0]);
-        winningPieces[1] = Sprite::create(winningPieceStr.getCString());
-        winningPieces[1]->setPosition(gridPieces[x2][y2]->getPosition());
-        winningPieces[1]->setOpacity(0);
-        this->addChild(winningPieces[1]);
-        winningPieces[2] = Sprite::create(winningPieceStr.getCString());
-        winningPieces[2]->setPosition(gridPieces[x3][y3]->getPosition());
-        winningPieces[2]->setOpacity(0);
-        this->addChild(winningPieces[2]);
+        winningPipes[0] = Sprite::create(winStr.getCString());
+        winningPipes[0]->setPosition(gridPieces[x1][y1]->getPosition());
+        winningPipes[0]->setOpacity(0);
+        this->addChild(winningPipes[0]);
 
-        winningPieces[0]->runAction(FadeIn::create(PIECE_FADE_IN_TIME));
-        winningPieces[1]->runAction(Sequence::create(DelayTime::create(PIECE_FADE_IN_TIME * 0.5), FadeIn::create(PIECE_FADE_IN_TIME), NULL));
-        winningPieces[2]->runAction(Sequence::create(DelayTime::create(PIECE_FADE_IN_TIME * 1.5), FadeIn::create(PIECE_FADE_IN_TIME), NULL));
+        winningPipes[1] = Sprite::create(winStr.getCString());
+        winningPipes[1]->setPosition(gridPieces[x2][y2]->getPosition());
+        winningPipes[1]->setOpacity(0);
+        this->addChild(winningPipes[1]);
 
-        gameState = STATE_WON;
+        winningPipes[2] = Sprite::create(winStr.getCString());
+        winningPipes[2]->setPosition(gridPieces[x3][y3]->getPosition());
+        winningPipes[2]->setOpacity(0);
+        this->addChild(winningPipes[2]);
+
+        winningPipes[0]->runAction(FadeIn::create(PIECE_FADE_IN_TIME));
+        winningPipes[1]->runAction(Sequence::create(DelayTime::create(PIECE_FADE_IN_TIME * 0.5), FadeIn::create(PIECE_FADE_IN_TIME), NULL));
+        winningPipes[2]->runAction(Sequence::create(DelayTime::create(PIECE_FADE_IN_TIME * 1.5), FadeIn::create(PIECE_FADE_IN_TIME), NULL));
+        if (PLAYER_PIECE == PiecesToCheck)
+        {
+            gameState = STATE_WON;
+        }
+        else
+        {
+            gameState = STATE_LOSE;
+        }
     }
+}
+void GameScene::GotoMenuScene(cocos2d::Ref* sender) 
+{
+    auto scene = MainMenuScene::createScene();
+    Director::getInstance()->replaceScene(TransitionFade::create(SCENE_TRANSITION_TIME, scene));
+
 }
