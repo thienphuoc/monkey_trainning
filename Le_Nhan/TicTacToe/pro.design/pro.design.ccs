@@ -5,6 +5,8 @@
       <RootFolder Name=".">
         <Folder Name="csb">
           <Project Name="GameOver.csd" Type="Layer" />
+          <Project Name="Pause_game_bg.csd" Type="Layer" />
+          <Project Name="PauseGame.csd" Type="Layer" />
         </Folder>
         <Folder Name="fonts">
           <Folder Name="res">
@@ -34,6 +36,7 @@
           <Image Name="Splash Background.png" />
           <Image Name="X Win.png" />
           <Image Name="X.png" />
+          <Image Name="gameover.png" />
         </Folder>
       </RootFolder>
     </Group>

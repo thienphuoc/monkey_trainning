@@ -5,6 +5,7 @@
 #include "SonarCocosHelperCPP/SonarFrameworks.h"
 #include "proj.win32/Definition.h"
 #include "proj.win32/GameScene.h"
+#include "GameOverScene.h"
 
 
 #include "SplashScene.h"
@@ -15,21 +16,6 @@
 
 USING_NS_CC;
 
-
-struct LeaderBoardInfo
-{
-    std::string m_name;
-    int m_score;
-
-    LeaderBoardInfo() {}
-
-    LeaderBoardInfo(std::string i_name, int i_score) :
-        m_name(i_name),
-        m_score(i_score)
-    {
-
-    }
-};
 
 Scene* MainMenuScene::createScene()
 {
@@ -72,10 +58,10 @@ bool MainMenuScene::init()
 
         });
 
-    auto button_retry = utils::findChild<ui::Button*>(menu_background, "sound_button");
-    button_retry->setPressedActionEnabled(true);
+    auto button_sound = utils::findChild<ui::Button*>(menu_background, "sound_button");
+    button_sound->setPressedActionEnabled(true);
     
-    button_retry->addClickEventListener([=](Ref*)-> void
+    button_sound->addClickEventListener([=](Ref*)-> void
         {
             int i = 0;
             auto sprite_sound_on = Sprite::create("res/Sound On.png");

@@ -54,15 +54,17 @@ bool GameOverScene::init()
     //Go to Game
 
     auto item_window = utils::findChild<ui::ImageView*>(mainMenu, "Window_button");
+    //auto item_window = mainMenu->getChildByName<ui::ImageView*>("Window_button");
+
     item_window->setVisible(true);
 
    auto button_retry = utils::findChild<ui::Button*>(item_window, "Retry_button");
+    //auto button_retry = item_window->getChildByName<ui::Button*>("Retry_button");
    button_retry->setPressedActionEnabled(true);
    button_retry->addClickEventListener([=](Ref*)-> void
         {
             auto scene = GameScene::createScene();
             Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
-
         });
 
    auto button_main_menu = utils::findChild<ui::Button*>(item_window, "Home_button");
@@ -71,9 +73,6 @@ bool GameOverScene::init()
        {
            auto scene = MainMenuScene::createScene();
            Director::getInstance()->replaceScene(TransitionFade::create(2, scene));
-
-
-
        });
 
 

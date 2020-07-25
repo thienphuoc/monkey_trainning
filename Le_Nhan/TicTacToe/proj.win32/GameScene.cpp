@@ -4,6 +4,8 @@
 #include "proj.win32/Definition.h"
 #include "SonarCocosHelperCPP/SonarFrameworks.h"
 #include "GameOverScene.h"
+#include "cocostudio/CocoStudio.h"
+#include "MainMenuScene.h"
 
 USING_NS_CC;
 
@@ -26,8 +28,52 @@ bool GameScene::init()
     {
         return false;
     }
-    SonarCocosHelper::UI::AddCentredBackground(GAME_MENU_BACKGROUND_FILEPATH, this);
-    gridSprite = Sprite::create(GRID_FILEPATH);
+
+
+
+     auto mainMenu = CSLoader::getInstance()->createNode("csb/Pause_game_bg.csb");
+     this->addChild(mainMenu);
+
+     auto background_game = mainMenu->getChildByName<ui::ImageView*>("Game_Background");
+     //background_game->setVisible(true);
+
+     auto button_pause_game = background_game->getChildByName<ui::Button*>("Button_pause");
+     button_pause_game->setPressedActionEnabled(true);
+     button_pause_game->addClickEventListener([=](Ref*)->void
+         {
+             //Director::getInstance()->pause();
+             auto pause_game_bg = CSLoader::getInstance()->createNode("csb/PauseGame.csb");
+             pause_game_bg->runAction(FadeIn::create(0.5));
+             
+             auto bg_pause = pause_game_bg->getChildByName<ui::ImageView*>("bg_Pause");
+
+             auto button_return_game_scene = utils::findChild<ui::Button*>(bg_pause, "return_game_Scene");
+             button_return_game_scene->setPressedActionEnabled(true);
+             button_return_game_scene->addClickEventListener([=](Ref*) -> void
+                 {
+                     pause_game_bg->runAction(FadeOut::create(0.5));
+                 });
+
+
+             auto button_return_menu_game = utils::findChild<ui::Button*>(bg_pause, "return_menu_game");
+             button_return_menu_game->setPressedActionEnabled(true);
+             button_return_menu_game->addClickEventListener([=](Ref*) -> void
+                 {
+                     Director::getInstance()->replaceScene(TransitionFade::create(0.25, MainMenuScene::createScene()));
+                 });
+             this->addChild(pause_game_bg);
+
+
+            
+
+         });
+
+
+
+   // SonarCocosHelper::UI::AddCentredBackground(GAME_MENU_BACKGROUND_FILEPATH, this);
+  //  auto mainMenu = CSLoader::getInstance()->createNode("csb/Pause_game_b.csb");
+    //this->addChild(mainMenu);
+   gridSprite = Sprite::create(GRID_FILEPATH);
     gridSprite->setPosition(SonarCocosHelper::UI::GetScreenCenter());
     this->addChild(gridSprite);
 
