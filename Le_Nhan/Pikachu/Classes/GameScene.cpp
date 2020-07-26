@@ -55,42 +55,55 @@ bool GameScene::init()
 	pause_game_button->setPressedActionEnabled(true);
 	pause_game_button->addClickEventListener([=](Ref*) -> void
 		{
+			count_click_pause_game++;
+			if (count_click_pause_game == 1)
+			{
+				auto pauseGame = CSLoader::getInstance()->createNode("csb/PauseGame.csb");
+				//game_background->removeChild(pause_game_button);
+				//pause_game_button->removeFromParent();
 
-			auto pauseGame = CSLoader::getInstance()->createNode("csb/PauseGame.csb");
-			//game_background->removeChild(pause_game_button);
-			//pause_game_button->removeFromParent();
-			
-			//gb_game_pikachu->runAction(FadeOut::create(0.5));
-			pauseGame->runAction(FadeOut::create(0.5));
+				//gb_game_pikachu->runAction(FadeOut::create(0.5));
+				//pauseGame->runAction(FadeOut::create(0.5));
 
 
-			auto bg_paugame = utils::findChild<ui::ImageView*>(pauseGame, "pause_game_bg");
+				auto bg_paugame = utils::findChild<ui::ImageView*>(pauseGame, "pause_game_bg");
 
 
-			auto return_menu_button = utils::findChild<ui::Button*>(bg_paugame, "return_main_menu");
-			return_menu_button->setPressedActionEnabled(true);
-			return_menu_button->addClickEventListener([=](Ref*)->void
-				{
-					Director::getInstance()->resume();
-					Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenuScene::createScene()));
-				});
+				auto return_menu_button = utils::findChild<ui::Button*>(bg_paugame, "return_main_menu");
+				return_menu_button->setPressedActionEnabled(true);
+				return_menu_button->addClickEventListener([=](Ref*)->void
+					{
+						Director::getInstance()->resume();
+						Director::getInstance()->replaceScene(TransitionFade::create(0.5, MainMenuScene::createScene()));
+						count_click_pause_game = 0;
+					});
 
-			auto button_resume_game = utils::findChild<ui::Button*>(bg_paugame, "return_game");
-			button_resume_game->setPressedActionEnabled(true);
-			button_resume_game->addClickEventListener([=](Ref*)->void
-				{
-					Director::getInstance()->resume();
-					pauseGame->runAction(FadeOut::create(0.5));
-					//game_background->addChild(copy_pause_game_button);
-					pause_game_button->runAction(FadeIn::create(0.5));
-					gb_game_pikachu->runAction(FadeIn::create(0.5));
-				});
-			
-			//pause_game_button->runAction(FadeOut::create(0.25));
-			
-			this->addChild(pauseGame);
-			
-			Director::getInstance()->pause();
+				auto button_resume_game = utils::findChild<ui::Button*>(bg_paugame, "return_game");
+				button_resume_game->setPressedActionEnabled(true);
+				button_resume_game->addClickEventListener([=](Ref*)->void
+					{
+						Director::getInstance()->resume();
+						pauseGame->removeFromParent();
+						count_click_pause_game = 0;
+
+						//pauseGame->runAction(FadeOut::create(0.5));
+						//game_background->addChild(copy_pause_game_button);
+						//pause_game_button->runAction(FadeIn::create(0.5));
+						//gb_game_pikachu->runAction(FadeIn::create(0.5));
+					});
+
+				//pause_game_button->runAction(FadeOut::create(0.25));
+
+				this->addChild(pauseGame);
+
+				Director::getInstance()->pause();
+			}
+			else count_click_pause_game++;
+
+		
+
+
+
 		});
 
 	/*auto resume_game = game_background->getChildByName<ui::Button*>("exit_button");
