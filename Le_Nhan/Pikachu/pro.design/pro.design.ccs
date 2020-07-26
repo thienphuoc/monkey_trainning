@@ -4,9 +4,10 @@
     <Group ctype="ResourceGroup">
       <RootFolder Name=".">
         <Folder Name="csb">
+          <Project Name="GameOver_bg.csd" Type="Layer" />
           <Project Name="GameScene.csd" Type="Layer" />
           <Project Name="MainMenu.csd" Type="Layer" />
-          <Project Name="GameOver_bg.csd" Type="Layer" />
+          <Project Name="PauseGame.csd" Type="Layer" />
         </Folder>
         <Folder Name="fonts">
           <TTF Name="arial.ttf" />
@@ -35,19 +36,29 @@
           <Image Name="8.png" />
           <Image Name="9.png" />
         </Folder>
+        <Image Name="03-512.png" />
         <Image Name="back1.png" />
         <Image Name="back2.png" />
+        <Image Name="bg_pikachu.png" />
         <Image Name="CloseNormal.png" />
         <Image Name="CloseSelected.png" />
+        <Image Name="e2.png" />
+        <Image Name="Game_ovevr.png" />
         <Image Name="gameover.png" />
         <Image Name="HelloWorld.png" />
         <Image Name="Home Button.png" />
+        <Image Name="images.png" />
+        <Image Name="Pause Background.png" />
         <Image Name="Pause Window.png" />
-        <Image Name="play_game_button.PNG" />
+        <Image Name="pause-button.png" />
+        <Image Name="play_game.png" />
+        <Image Name="pokemon.png" />
         <Image Name="ProgressBar.png" />
+        <Image Name="ProgressBar1.png" />
         <Image Name="ProgressCircle.png" />
         <Image Name="Resume Button.png" />
         <Image Name="Retry Button.png" />
+        <Image Name="return.png" />
       </RootFolder>
     </Group>
   </SolutionFolder>
