@@ -51,7 +51,8 @@ bool GameScene::init()
              button_return_game_scene->setPressedActionEnabled(true);
              button_return_game_scene->addClickEventListener([=](Ref*) -> void
                  {
-                     pause_game_bg->runAction(FadeOut::create(0.5));
+                     pause_game_bg->removeFromParent();
+                     //pause_game_bg->runAction(FadeOut::create(0.5));
                  });
 
 
@@ -196,28 +197,119 @@ void GameScene::checkAndPlacePiece(Touch* touch)
 
 void GameScene::checkWin(int x, int y)
 {
+    check3PiecesForMatch(0, 0, 0, 1, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 0, 2, 0, 1, PLAYER_PIECE);
     check3PiecesForMatch(0, 0, 1, 0, 2, 0, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 2, 0, 1, 0, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 1, 1, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 0, 2, 2, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 1, 0, 0, 0, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 0, 0, 1, 0, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 2, 1, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 2, 2, 2, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 1, 1, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 0, 0, 2, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(1, 2, 0, 2, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 2, 1, 1, 1, 0, PLAYER_PIECE);
+    check3PiecesForMatch(1, 2, 1, 0, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(0, 1, 0, 0, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 1, 1, 1, 2, 1, PLAYER_PIECE);
+    check3PiecesForMatch(0, 1, 2, 1, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(1, 0, 0, 0, 2, 0, PLAYER_PIECE);
+    check3PiecesForMatch(1, 0, 1, 1, 1, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 0, 1, 2, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 1, 2, 0, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 1, 1, 1, 0, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 1, 0, 1, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 1, 2, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 0, 2, 1, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 2, 1, 2, 0, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 2, 0, 2, 1, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 1, 1, 0, 0, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 0, 0, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 0, 1, 0, 0, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 0, 0, 0, 1, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 1, 2, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 2, 2, 1, 2, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 1, 1, 2, 0, PLAYER_PIECE);
+    check3PiecesForMatch(0, 2, 2, 0, 1, 1, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 1, 0, 1, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 1, 2, 1, 0, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 0, 0, 2, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 2, 2, 0, 0, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 0, 1, 2, 1, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 2, 1, 0, 1, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 2, 0, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(1, 1, 0, 2, 2, 0, PLAYER_PIECE);
+
+
+
+    /*check3PiecesForMatch(0, 0, 1, 0, 2, 0, PLAYER_PIECE);
     check3PiecesForMatch(0, 0, 1, 1, 2, 2, PLAYER_PIECE);
     check3PiecesForMatch(0, 0, 0, 1, 0, 2, PLAYER_PIECE);
     check3PiecesForMatch(1, 0, 1, 1, 1, 2, PLAYER_PIECE);
     check3PiecesForMatch(2, 0, 2, 1, 2, 2, PLAYER_PIECE);
     check3PiecesForMatch(2, 0, 1, 1, 0, 2, PLAYER_PIECE);
     check3PiecesForMatch(2, 1, 1, 1, 0, 1, PLAYER_PIECE);
-    check3PiecesForMatch(2, 2, 1, 2, 0, 2, PLAYER_PIECE);
+    check3PiecesForMatch(2, 2, 1, 2, 0, 2, PLAYER_PIECE);*/
 
     if (STATE_WON != gameState)
     {
         gameState = STATE_AI_PLAYING;
         ai->PlacePiece(&gridArray, gridPieces, &gameState);
-
+        check3PiecesForMatch(0, 0, 0, 1, 0, 2, AI_PIECE);
+        check3PiecesForMatch(0, 0, 0, 2, 0, 1, AI_PIECE);
         check3PiecesForMatch(0, 0, 1, 0, 2, 0, AI_PIECE);
+        check3PiecesForMatch(0, 0, 2, 0, 1, 0, AI_PIECE);
+        check3PiecesForMatch(0, 0, 1, 1, 2, 2, AI_PIECE);
+        check3PiecesForMatch(0, 0, 2, 2, 1, 1, AI_PIECE);
+        check3PiecesForMatch(2, 0, 1, 0, 0, 0, AI_PIECE);
+        check3PiecesForMatch(2, 0, 0, 0, 1, 0, AI_PIECE);
+        check3PiecesForMatch(2, 0, 2, 1, 2, 2, AI_PIECE);
+        check3PiecesForMatch(2, 0, 2, 2, 2, 1, AI_PIECE);
+        check3PiecesForMatch(2, 0, 1, 1, 0, 2, AI_PIECE);
+        check3PiecesForMatch(2, 0, 0, 2, 1, 1, AI_PIECE);
+        check3PiecesForMatch(1, 2, 0, 2, 2, 2, AI_PIECE);
+        check3PiecesForMatch(1, 2, 1, 1, 1, 0, AI_PIECE);
+        check3PiecesForMatch(1, 2, 1, 0, 1, 1, AI_PIECE);
+        check3PiecesForMatch(0, 1, 0, 0, 0, 2, AI_PIECE);
+        check3PiecesForMatch(0, 1, 1, 1, 2, 1, AI_PIECE);
+        check3PiecesForMatch(0, 1, 2, 1, 1, 1, AI_PIECE);
+        check3PiecesForMatch(1, 0, 0, 0, 2, 0, AI_PIECE);
+        check3PiecesForMatch(1, 0, 1, 1, 1, 2, AI_PIECE);
+        check3PiecesForMatch(1, 0, 1, 2, 1, 1, AI_PIECE);
+        check3PiecesForMatch(2, 1, 2, 0, 2, 2, AI_PIECE);
+        check3PiecesForMatch(2, 1, 1, 1, 0, 1, AI_PIECE);
+        check3PiecesForMatch(2, 1, 0, 1, 1, 1, AI_PIECE);
+        check3PiecesForMatch(2, 2, 1, 2, 0, 2, AI_PIECE);
+        check3PiecesForMatch(2, 2, 0, 2, 1, 2, AI_PIECE);
+        check3PiecesForMatch(2, 2, 2, 1, 2, 0, AI_PIECE);
+        check3PiecesForMatch(2, 2, 2, 0, 2, 1, AI_PIECE);
+        check3PiecesForMatch(2, 2, 1, 1, 0, 0, AI_PIECE);
+        check3PiecesForMatch(2, 2, 0, 0, 1, 1, AI_PIECE);
+        check3PiecesForMatch(0, 2, 0, 1, 0, 0, AI_PIECE);
+        check3PiecesForMatch(0, 2, 0, 0, 0, 1, AI_PIECE);
+        check3PiecesForMatch(0, 2, 1, 2, 2, 2, AI_PIECE);
+        check3PiecesForMatch(0, 2, 2, 2, 1, 2, AI_PIECE);
+        check3PiecesForMatch(0, 2, 1, 1, 2, 0, AI_PIECE);
+        check3PiecesForMatch(0, 2, 2, 0, 1, 1, AI_PIECE);
+        check3PiecesForMatch(1, 1, 1, 0, 1, 2, AI_PIECE);
+        check3PiecesForMatch(1, 1, 1, 2, 1, 0, AI_PIECE);
+        check3PiecesForMatch(1, 1, 0, 0, 2, 2, AI_PIECE);
+        check3PiecesForMatch(1, 1, 2, 2, 0, 0, AI_PIECE);
+        check3PiecesForMatch(1, 1, 0, 1, 2, 1, AI_PIECE);
+        check3PiecesForMatch(1, 1, 2, 1, 0, 1, AI_PIECE);
+        check3PiecesForMatch(1, 1, 2, 0, 0, 2, AI_PIECE);
+        check3PiecesForMatch(1, 1, 0, 2, 2, 0, AI_PIECE);
+
+        /*check3PiecesForMatch(0, 0, 1, 0, 2, 0, AI_PIECE);
         check3PiecesForMatch(0, 0, 1, 1, 2, 2, AI_PIECE);
         check3PiecesForMatch(0, 0, 0, 1, 0, 2, AI_PIECE);
         check3PiecesForMatch(1, 0, 1, 1, 1, 2, AI_PIECE);
         check3PiecesForMatch(2, 0, 2, 1, 2, 2, AI_PIECE);
         check3PiecesForMatch(2, 0, 1, 1, 0, 2, AI_PIECE);
         check3PiecesForMatch(2, 1, 1, 1, 0, 1, AI_PIECE);
-        check3PiecesForMatch(2, 2, 1, 2, 0, 2, AI_PIECE);
+        check3PiecesForMatch(2, 2, 1, 2, 0, 2, AI_PIECE);*/
     }
 
 
