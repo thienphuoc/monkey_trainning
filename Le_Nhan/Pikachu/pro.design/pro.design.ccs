@@ -6,8 +6,10 @@
         <Folder Name="csb">
           <Project Name="GameOver_bg.csd" Type="Layer" />
           <Project Name="GameScene.csd" Type="Layer" />
+          <Project Name="LoseGame.csd" Type="Layer" />
           <Project Name="MainMenu.csd" Type="Layer" />
           <Project Name="PauseGame.csd" Type="Layer" />
+          <Project Name="WinGame.csd" Type="Layer" />
         </Folder>
         <Folder Name="fonts">
           <TTF Name="arial.ttf" />
@@ -48,6 +50,7 @@
         <Image Name="HelloWorld.png" />
         <Image Name="Home Button.png" />
         <Image Name="images.png" />
+        <Image Name="LoseGame.png" />
         <Image Name="Pause Background.png" />
         <Image Name="Pause Window.png" />
         <Image Name="pause-button.png" />
@@ -59,6 +62,8 @@
         <Image Name="Resume Button.png" />
         <Image Name="Retry Button.png" />
         <Image Name="return.png" />
+        <Image Name="Win_game.png" />
+        <File Name="youlose.gif" />
       </RootFolder>
     </Group>
   </SolutionFolder>

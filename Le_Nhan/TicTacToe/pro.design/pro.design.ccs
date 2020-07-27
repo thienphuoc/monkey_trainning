@@ -19,6 +19,7 @@
           <File Name=".gitkeep" />
           <Image Name="Achievements.png" />
           <Image Name="Game Title.png" />
+          <Image Name="gameover.png" />
           <Image Name="Grid.png" />
           <Image Name="Home Button.png" />
           <Image Name="Main Menu Background.png" />
@@ -36,7 +37,6 @@
           <Image Name="Splash Background.png" />
           <Image Name="X Win.png" />
           <Image Name="X.png" />
-          <Image Name="gameover.png" />
         </Folder>
       </RootFolder>
     </Group>

@@ -6,6 +6,21 @@
       <ObjectData Name="Layer" Tag="15" ctype="GameLayerObjectData">
         <Size X="600.0000" Y="600.0000" />
         <Children>
+          <AbstractNodeData Name="Button_1" ActionTag="-1091276206" Alpha="0" Tag="22" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" PercentWidthEnable="True" PercentHeightEnable="True" PercentWidthEnabled="True" PercentHeightEnabled="True" TouchEnable="True" FontSize="14" Scale9Enable="True" LeftEage="15" RightEage="15" TopEage="11" BottomEage="11" Scale9OriginX="15" Scale9OriginY="11" Scale9Width="16" Scale9Height="14" ShadowOffsetX="2.0000" ShadowOffsetY="-2.0000" ctype="ButtonObjectData">
+            <Size X="600.0000" Y="600.0000" />
+            <AnchorPoint ScaleX="0.5000" ScaleY="0.5000" />
+            <Position X="300.0000" Y="300.0000" />
+            <Scale ScaleX="1.0000" ScaleY="1.0000" />
+            <CColor A="255" R="255" G="255" B="255" />
+            <PrePosition X="0.5000" Y="0.5000" />
+            <PreSize X="1.0000" Y="1.0000" />
+            <TextColor A="255" R="65" G="65" B="70" />
+            <DisabledFileData Type="Default" Path="Default/Button_Disable.png" Plist="" />
+            <PressedFileData Type="Default" Path="Default/Button_Press.png" Plist="" />
+            <NormalFileData Type="Default" Path="Default/Button_Normal.png" Plist="" />
+            <OutlineColor A="255" R="255" G="0" B="0" />
+            <ShadowColor A="255" R="110" G="110" B="110" />
+          </AbstractNodeData>
           <AbstractNodeData Name="pause_game_bg" ActionTag="1300640245" Tag="16" IconVisible="False" PositionPercentXEnabled="True" PositionPercentYEnabled="True" LeftMargin="66.5000" RightMargin="66.5000" TopMargin="67.5000" BottomMargin="67.5000" LeftEage="154" RightEage="154" TopEage="153" BottomEage="153" Scale9OriginX="154" Scale9OriginY="153" Scale9Width="159" Scale9Height="159" ctype="ImageViewObjectData">
             <Size X="467.0000" Y="465.0000" />
             <Children>

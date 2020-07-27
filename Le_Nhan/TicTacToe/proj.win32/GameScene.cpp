@@ -51,6 +51,7 @@ bool GameScene::init()
              button_return_game_scene->setPressedActionEnabled(true);
              button_return_game_scene->addClickEventListener([=](Ref*) -> void
                  {
+                     Director::getInstance()->resume();
                      pause_game_bg->removeFromParent();
                      //pause_game_bg->runAction(FadeOut::create(0.5));
                  });
@@ -59,10 +60,13 @@ bool GameScene::init()
              auto button_return_menu_game = utils::findChild<ui::Button*>(bg_pause, "return_menu_game");
              button_return_menu_game->setPressedActionEnabled(true);
              button_return_menu_game->addClickEventListener([=](Ref*) -> void
-                 {
+                 { 
+                     Director::getInstance()->resume();
                      Director::getInstance()->replaceScene(TransitionFade::create(0.25, MainMenuScene::createScene()));
+                     pause_game_bg->removeFromParent();
                  });
              this->addChild(pause_game_bg);
+             Director::getInstance()->pause();
 
 
             

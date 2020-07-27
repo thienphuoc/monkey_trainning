@@ -17,8 +17,53 @@ AI::AI(int playerPiece)
 		aiPieces = O_PIECE;
 	}
 
-
 	checkMathVector.push_back({ 0, 0, 0, 1, 0, 2 });
+	checkMathVector.push_back({ 0, 0, 0, 2, 0, 1 });
+	checkMathVector.push_back({ 0, 0, 1, 0, 2, 0 });
+	checkMathVector.push_back({ 0, 0, 2, 0, 1, 0 });
+	checkMathVector.push_back({ 0, 0, 1, 1, 2, 2});
+	checkMathVector.push_back({ 0, 0, 2, 2, 1, 1});
+	checkMathVector.push_back({ 2, 0, 1, 0, 0, 0});
+	checkMathVector.push_back({ 2, 0, 0, 0, 1, 0});
+	checkMathVector.push_back({ 2, 0, 2, 1, 2, 2});
+	checkMathVector.push_back({ 2, 0, 2, 2, 2, 1});
+	checkMathVector.push_back({ 2, 0, 1, 1, 0, 2});
+	checkMathVector.push_back({ 2, 0, 0, 2, 1, 1});
+	checkMathVector.push_back({ 1, 2, 0, 2, 2, 2});
+	checkMathVector.push_back({ 1, 2, 1, 1, 1, 0});
+	checkMathVector.push_back({ 1, 2, 1, 0, 1, 1});
+	checkMathVector.push_back({ 0, 1, 0, 0, 0, 2});
+	checkMathVector.push_back({ 0, 1, 1, 1, 2, 1});
+	checkMathVector.push_back({ 0, 1, 2, 1, 1, 1});
+	checkMathVector.push_back({ 1, 0, 0, 0, 2, 0});
+	checkMathVector.push_back({ 1, 0, 1, 1, 1, 2});
+	checkMathVector.push_back({ 1, 0, 1, 2, 1, 1});
+	checkMathVector.push_back({ 2, 1, 2, 0, 2, 2});
+	checkMathVector.push_back({ 2, 1, 1, 1, 0, 1});
+	checkMathVector.push_back({ 2, 1, 0, 1, 1, 1});
+	checkMathVector.push_back({ 2, 2, 1, 2, 0, 2});
+	checkMathVector.push_back({ 2, 2, 0, 2, 1, 2});
+	checkMathVector.push_back({ 2, 2, 2, 1, 2, 0});
+	checkMathVector.push_back({ 2, 2, 2, 0, 2, 1});
+	checkMathVector.push_back({ 2, 2, 1, 1, 0, 0});
+	checkMathVector.push_back({ 2, 2, 0, 0, 1, 1});
+	checkMathVector.push_back({ 0, 2, 0, 1, 0, 0});
+	checkMathVector.push_back({ 0, 2, 0, 0, 0, 1});
+	checkMathVector.push_back({ 0, 2, 1, 2, 2, 2});
+	checkMathVector.push_back({ 0, 2, 2, 2, 1, 2});
+	checkMathVector.push_back({ 0, 2, 1, 1, 2, 0});
+	checkMathVector.push_back({ 0, 2, 2, 0, 1, 1});
+	checkMathVector.push_back({ 1, 1, 1, 0, 1, 2});
+	checkMathVector.push_back({ 1, 1, 1, 2, 1, 0});
+	checkMathVector.push_back({ 1, 1, 0, 0, 2, 2});
+	checkMathVector.push_back({ 1, 1, 2, 2, 0, 0});
+	checkMathVector.push_back({ 1, 1, 0, 1, 2, 1});
+	checkMathVector.push_back({ 1, 1, 2, 1, 0, 1});
+	checkMathVector.push_back({ 1, 1, 2, 0, 0, 2});
+	checkMathVector.push_back({ 1, 1, 0, 2, 2, 0});
+
+
+	/*checkMathVector.push_back({ 0,  0, 0, 1, 0, 2 });
 	checkMathVector.push_back({ 0, 0, 1, 0, 2, 0 });
 	checkMathVector.push_back({ 0, 0, 1, 1, 2, 2 });
 	checkMathVector.push_back({ 2, 0, 1, 0, 0, 0 });
@@ -41,7 +86,7 @@ AI::AI(int playerPiece)
 	checkMathVector.push_back({ 2, 1, 1, 1, 1, 0 });
 	checkMathVector.push_back({ 0, 2, 0, 0, 0, 1 });
 	checkMathVector.push_back({ 2, 2, 2, 0, 2, 1 });
-	checkMathVector.push_back({ 0, 2, 2, 2, 1, 2 });
+	checkMathVector.push_back({ 0, 2, 2, 2, 1, 2 });*/
 }
 
 void AI::PlacePiece(int (*gridArray)[3][3], cocos2d::Sprite* gridPieces[3][3], int* gameState)
@@ -61,7 +106,7 @@ void AI::PlacePiece(int (*gridArray)[3][3], cocos2d::Sprite* gridPieces[3][3], i
 
 		checkIfPieceIsEmpty(1, 1, gridArray, gridPieces);
 
-		checkIfPieceIsEmpty(1, 1, gridArray, gridPieces);
+		//checkIfPieceIsEmpty(1, 1, gridArray, gridPieces);
 		checkIfPieceIsEmpty(0, 0, gridArray, gridPieces);
 		checkIfPieceIsEmpty(0, 1, gridArray, gridPieces);
 		checkIfPieceIsEmpty(0, 2, gridArray, gridPieces);
