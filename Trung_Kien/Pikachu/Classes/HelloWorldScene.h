@@ -26,7 +26,8 @@
 #define __HELLOWORLD_SCENE_H__
 
 #include "cocos2d.h"
-
+#include "cocostudio/CocoStudio.h"
+#include "ui/CocosGUI.h"
 class HelloWorld : public cocos2d::Scene
 {
 public:
@@ -34,7 +35,6 @@ public:
 
     virtual bool init();
 
-    void play(Ref *pSender);
     
     // a selector callback
     void menuCloseCallback(cocos2d::Ref* pSender);

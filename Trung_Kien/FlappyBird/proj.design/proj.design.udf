@@ -1,5 +1,14 @@
 <UserData Version="3.10.0.0">
   <Properties>
+    <Item Key="TabsParamsKey">
+      <Value ctype="TabsInfo">
+        <OpenedDocuments>
+          <FilePathData Path="csb/Leaderboard.csd" />
+          <FilePathData Path="csb/MainMenu.csd" />
+        </OpenedDocuments>
+        <ActiveDocument Path="csb/Leaderboard.csd" />
+      </Value>
+    </Item>
     <Item Key="CocosRecentOperation">
       <Value ctype="CocosRecentOperation">
         <LastPublishType Value="Resource" />
@@ -18,7 +27,7 @@
         <iOS_Target Value="proj.design-mobile" />
         <iOS_BundleID Value="" />
         <Platform Value="None" />
-        <RunPlatform Value="None" />
+        <RunPlatform Value="Windows" />
         <FrameworkVersion Value="cocos2d-x-3.10" />
         <IsDebugKeystore Value="True" />
         <KeystorePassword Value="" />

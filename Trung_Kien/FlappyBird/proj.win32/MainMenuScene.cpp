@@ -54,5 +54,7 @@ bool MainMenuScene::init() {
 		CCLOG("settingsButton");
 		settingField->setVisible(true);
 	});
+	this->scheduleOnce([](float dt) {CCLOG("asfkjshgugekjgrglriroihioh"); }, 3, "asd");
+	
 	return true;
 }

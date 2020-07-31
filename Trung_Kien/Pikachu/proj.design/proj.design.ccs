@@ -1,0 +1,52 @@
+<Solution>
+  <PropertyGroup Name="proj.design" Version="3.10.0.0" Type="CocosStudio" />
+  <SolutionFolder>
+    <Group ctype="ResourceGroup">
+      <RootFolder Name=".">
+        <Folder Name="csb">
+          <Project Name="MenuScene.csd" Type="Layer" />
+        </Folder>
+        <Folder Name="Resources">
+          <Folder Name="fonts">
+            <TTF Name="arial.ttf" />
+            <TTF Name="Marker Felt.ttf" />
+          </Folder>
+          <Folder Name="pokemons">
+            <Image Name="1.png" />
+            <Image Name="10.png" />
+            <Image Name="11.png" />
+            <Image Name="12.png" />
+            <Image Name="13.png" />
+            <Image Name="14.png" />
+            <Image Name="15.png" />
+            <Image Name="16.png" />
+            <Image Name="17.png" />
+            <Image Name="18.png" />
+            <Image Name="19.png" />
+            <Image Name="2.png" />
+            <Image Name="20.png" />
+            <Image Name="21.png" />
+            <Image Name="3.png" />
+            <Image Name="4.png" />
+            <Image Name="5.png" />
+            <Image Name="6.png" />
+            <Image Name="7.png" />
+            <Image Name="8.png" />
+            <Image Name="9.png" />
+            <File Name="MainScene.csb" />
+          </Folder>
+          <Folder Name="res">
+            <File Name=".gitkeep" />
+          </Folder>
+          <Image Name="back1.png" />
+          <Image Name="CloseNormal.png" />
+          <Image Name="CloseSelected.png" />
+          <Image Name="HelloWorld.png" />
+          <Image Name="playButton.png" />
+          <Image Name="background.png" />
+        </Folder>
+        <Image Name="background1.png" />
+      </RootFolder>
+    </Group>
+  </SolutionFolder>
+</Solution>

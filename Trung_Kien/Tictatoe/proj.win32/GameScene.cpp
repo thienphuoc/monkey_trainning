@@ -357,3 +357,34 @@ std::pair<int, int> GameScene::aiGreedyAdvanced(AI* ai) {
 	}
 	return ai->basic(digitMap);
 }
+std::pair<int, int> GameScene::aiMiniMax(AI* ai) {
+
+	std::pair<int, int> Pair;
+	bool temp1 = false;
+	int tempMap[3][3];
+	for (int x = 0; x < 3; x++)
+	{
+		for (int y = 0; y < 3; y++)
+		{
+			tempMap[x][y] = digitMap[x][y];
+		}
+	}
+	for (int ii = 0; ii < 3; ii++) {
+
+
+
+		for (int jj = 0; jj < 3; jj++) {
+			if (tempMap[ii][jj] == -1) {
+				tempMap[ii][jj] = 2;
+				if (check(ii, jj, tempMap, false) == 2 || check1(tempMap, false) == 2) {//o win
+					Pair.first = ii;
+					Pair.second = jj;
+					return Pair;
+				}
+				else tempMap[ii][jj] = -1;
+
+			}
+		}
+	}
+	return ai->basic(digitMap);
+}

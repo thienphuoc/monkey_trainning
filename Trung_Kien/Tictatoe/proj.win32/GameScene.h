@@ -28,6 +28,7 @@ public:
 	void print();
 	std::pair<int, int> aiGreedy(AI *ai);
 	std::pair<int, int> aiGreedyAdvanced(AI* ai);
+	std::pair<int, int> aiMiniMax(AI* ai);
 	CREATE_FUNC(GameScene);
 };
 

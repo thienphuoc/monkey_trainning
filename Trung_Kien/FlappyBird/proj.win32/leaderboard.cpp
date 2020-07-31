@@ -4,11 +4,13 @@
 #include "cocostudio/CocoStudio.h"
 #include "ui/CocosGui.h"
 #include <algorithm>
+#include "GameScene.h"
 //#include "rapidjson/document.h"
 Scene* leaderboard::createScene() {
 	return leaderboard::create();
 }
 bool leaderboard::init() {
+	
 	auto visibleSize = Director::getInstance()->getVisibleSize();
 	auto origin = Director::getInstance()->getVisibleOrigin();
 	CCLOG("aaaaaaaaaaaaa");
@@ -80,8 +82,16 @@ bool leaderboard::init() {
 	});
 	request->setTag("Get test");
 	HttpClient::getInstance()->send(request);
+	
 	request->release();
+	auto keyListener = EventListenerKeyboard::create();
+	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
+	};
+	keyListener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event* event) {
+		//Director::getInstance()->replaceScene(GameScene::createScene()); // lỗi nếu replace scene trước khi http loaded??
+		Director::getInstance()->pushScene(GameScene::createScene());//push scene thì leaderscene vẫn còn nên http dù chưa chạy xong vẫn đc chạy tiếp??? do đó ko có lỗi
+	};
+	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
+	
 	return true;
 }
-
-

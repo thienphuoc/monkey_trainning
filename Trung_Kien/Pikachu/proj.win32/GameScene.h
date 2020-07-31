@@ -19,6 +19,8 @@ public:
 
 	void back(Ref* pSender);
 
+	void showProgressTimer();
+
 	CREATE_FUNC(GameScene);
 };
 

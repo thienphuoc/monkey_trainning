@@ -5,9 +5,9 @@ class Board
 {
 	int n_rows, n_columns;	// number of rows and columns
 
-	std::vector<std::vector<int>> _pokemons;	// pokemons
 
 public:
+	std::vector<std::vector<int>> _pokemons;	// pokemons
 
 	int _x = -1, _y = -1;	// selected pokemon row and column
 	

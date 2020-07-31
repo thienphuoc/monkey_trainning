@@ -5,7 +5,7 @@
 USING_NS_CC;
 Scene* GameScene::createScene() {
 	auto scene = Scene::createWithPhysics();
-	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_ALL);
+	scene->getPhysicsWorld()->setDebugDrawMask(PhysicsWorld::DEBUGDRAW_NONE);
 
 	auto layer = GameScene::create();
 	
@@ -16,6 +16,7 @@ Scene* GameScene::createScene() {
 	
 }
 bool GameScene::init() {
+	
 	CCLOG("GAme SCeneeeeeeeeee");
 	Sprite* sprite = Sprite::create("background.png");
 	this->addChild(sprite);

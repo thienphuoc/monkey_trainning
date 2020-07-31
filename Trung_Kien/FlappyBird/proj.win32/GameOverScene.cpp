@@ -1,5 +1,6 @@
 #include "GameOverScene.h"
 #include "GameScene.h"
+#include "MainMenuScene.h"
 int score;
 Scene* GameOverScene::createScene(int n) {
 	score = n;
@@ -18,7 +19,7 @@ bool GameOverScene::init() {
 	keyListener->onKeyPressed = [=](EventKeyboard::KeyCode keyCode, Event* event) {
 	};
 	keyListener->onKeyReleased = [](EventKeyboard::KeyCode keyCode, Event* event) {
-		Director::getInstance()->replaceScene(GameScene::createScene());
+		Director::getInstance()->replaceScene(MainMenuScene::createScene());
 	};
 	_eventDispatcher->addEventListenerWithSceneGraphPriority(keyListener, this);
 

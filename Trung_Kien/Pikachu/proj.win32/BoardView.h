@@ -28,5 +28,10 @@ public:
 
 	bool removePokemon(int row, int column);
 
+	FiniteTimeAction* getConnectEffect(int x, int y, int _x, int _y);
+
+	void connectPokemons(int x, int y, int _x, int _y);
+	void createChoosePokemonEffect(Node* pokemon);
+	void removeChoosePokemonEffect();
 	CREATE_FUNC(BoardView);
 };
